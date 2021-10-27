@@ -151,3 +151,12 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+#history files
+.history
+
+#coverage
+coverage
+
+#deprecated files
+deprecated
