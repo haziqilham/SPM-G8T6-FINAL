@@ -59,7 +59,7 @@ class TestComputeCharge(unittest.TestCase):
         #Formula: Base Shipping Charge + Customs Charges + Package Charges + Air Freight Charges
 
         #Working: 100 + 100 + 100 + (10*3 + 10*4) = 370
-        self.assertEquals(self.air.computeCharges(), 320)
+        self.assertEquals(self.air.computeCharges(), 370)
         #Working: 140 + 25 + 100 + (10*3 + 10*4) = 335
         self.assertEquals(self.air2.computeCharges(), 335)
 
