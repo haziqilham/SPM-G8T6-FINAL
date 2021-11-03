@@ -4,7 +4,7 @@ from flask_cors import CORS
 import datetime as dt
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mariadb+mariadbconnector://admin:ilovespm88@spm-database.c3izrtomcbks.us-east-2.rds.amazonaws.com:3306/spm_database'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://admin:ilovespm88@spm-database.c3izrtomcbks.us-east-2.rds.amazonaws.com:3306/spm_database'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_size': 100,
@@ -293,3 +293,29 @@ class CourseProgression(db.Model):
     
 
 
+@app.route("/class/<int:class_id>")
+def class_by_id(class_id):
+    classes = Class.query.filter_by(class_id=class_id).first()
+    if classes:
+        return jsonify({
+            "data": classes.to_dict()
+        }), 200
+    else:
+        return jsonify({
+            "message": "Class not found."
+        }), 404
+
+@app.route("/course/<int:course_id>")
+def course_by_id(course_id):
+    course = Course.query.filter_by(course_id=course_id).first()
+    if course:
+        return jsonify({
+            "data": course.to_dict()
+        }), 200
+    else:
+        return jsonify({
+            "message": "Course not found."
+        }), 404
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
