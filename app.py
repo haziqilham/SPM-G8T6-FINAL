@@ -12,6 +12,7 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_size': 100,
 db = SQLAlchemy(app)
 CORS(app)
 
+#JunHong
 class User(db.Model):
     __tablename__ = 'user'
 
@@ -74,7 +75,7 @@ class User(db.Model):
                         else:
                             self.to_dict(self)
 
-
+#Marcus
 class Course(db.Model):
     __tablename__ = 'course'
 
@@ -90,8 +91,9 @@ class Course(db.Model):
         return result    
 
     def archivecourse(self):
-        course = Course.query.filter_by(course_id = self.course_id).first()
-        course.archive_date = dt.date.today()
+        self.archive_date = dt.date.today()
+        #course = Course.query.filter_by(course_id = self.course_id).first()
+        #course.archive_date = dt.date.today()
 
 
 class Prerequisites(db.Model):
@@ -108,6 +110,7 @@ class Prerequisites(db.Model):
             result[column] = getattr(self, column)
         return result
 
+#Haziq
 class Class(db.Model):
     __tablename__ = 'class'
 
@@ -131,15 +134,15 @@ class Class(db.Model):
         return result
 
     #check if the class is full
-    def checkCapacity(self, classid):
-        enrolled = CourseProgression.query.filter_by(class_id = classid, status = "enrolled").all()
-        classinfo = Class.query.filter_by(class_id = classid).first()
-        if len(enrolled) < classinfo.capacity:
+    def checkCapacity(self):
+        capacity = self.capacity
+        enrolled = CourseProgression.query.filter_by(class_id = self.class_id, status = "enrolled").all()
+        if len(enrolled) < capacity:
             return True
         else:
             raise Exception("Class is at max capacity.")
 
-
+#Claudia
 class Chapter(db.Model):
     __tablename__ = 'chapter'
 
@@ -156,6 +159,7 @@ class Chapter(db.Model):
             result[column] = getattr(self, column)
         return result
 
+#Xinyi
 class Quiz(db.Model):
     __tablename__ = 'quiz'
 
