@@ -10,5 +10,16 @@ class TestUser(unittest.TestCase):
             'name': 'marcus',
             'designation':'engineer',
             'department':'engineering',
-            'role':'learner'
-        })
+            'role':'learner'}
+        )
+
+    def test_enroll(self):
+        user1 = User(user_name='marcus', name='marcus', designation='engineer', department='engineering', role='learner')
+        enroll = user1.enroll(2)
+
+
+
+#class TestCourse(unittest.TestCase):
+
+if __name__ == "__main__":
+    unittest.main()
