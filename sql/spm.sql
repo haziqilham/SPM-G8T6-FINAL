@@ -217,15 +217,16 @@ CREATE table `quiz`(
     `quiz_id` INT(11) NOT NULL,
     `chapter_id` INT(11) NOT NULL,
     `duration` INT(11) NOT NULL,
-    `graded` BOOLEAN NOT NULL
+    `graded` BOOLEAN NOT NULL,
+    `passing_mark` INT(11)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table 'quiz'
 --
 
-INSERT INTO `quiz` (`quiz_id`, `chapter_id`, `duration`, `graded`) VALUES
-(1, 1, 20, 0);
+INSERT INTO `quiz` (`quiz_id`, `chapter_id`, `duration`, `graded`, `passing_mark`) VALUES
+(1, 1, 20, 1, 50);
 
 -- --------------------------------------------------------
 
