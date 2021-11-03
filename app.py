@@ -16,11 +16,11 @@ class User(db.Model):
     __tablename__ = 'user'
 
     user_id = db.Column(db.Integer, primary_key=True, auto_increment=True)
-    user_name = db.Column(db.Varchar(50), nullable=False)
-    name = db.Column(db.Varchar(50), nullable=False)
-    designation = db.Column(db.Varchar(50), nullable=False)
-    department = db.Column(db.Varchar(50), nullable=False)
-    role = db.Column(db.Varchar(50), nullable=False)
+    user_name = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(50), nullable=False)
+    designation = db.Column(db.String(50), nullable=False)
+    department = db.Column(db.String(50), nullable=False)
+    role = db.Column(db.String(50), nullable=False)
 
     def to_dict(self):
         columns = self.__mapper__.column_attrs.keys()
@@ -79,7 +79,7 @@ class Course(db.Model):
     __tablename__ = 'course'
 
     course_id = db.Column(db.Integer, primary_key=True, auto_increment=True)
-    course_name = db.Column(db.Varchar(50), nullable=False)
+    course_name = db.Column(db.String(50), nullable=False)
     archive_date = db.Column(db.Date)
 
     def to_dict(self):
@@ -114,7 +114,7 @@ class Class(db.Model):
     class_id = db.Column(db.Integer, primary_key=True, auto_increment=True)
     course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), nullable=False)
     trainer_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False) 
-    class_name = db.Column(db.Varchar(50), nullable=False)
+    class_name = db.Column(db.String(50), nullable=False)
     capacity = db.Column(db.Integer, nullable=False)
     start_Date = db.Column(db.Date, nullable=False)
     end_Date = db.Column(db.Date, nullable=False)
@@ -145,9 +145,9 @@ class Chapter(db.Model):
 
     chapter_id = db.Column(db.Integer, primary_key=True, auto_increment=True)
     class_id = db.Column(db.Integer, db.ForeignKey('class.class_id'), nullable=False)
-    chapter_name = db.Column(db.Varchar(50), nullable=False)
+    chapter_name = db.Column(db.String(50), nullable=False)
     order = db.Column(db.Integer, nullable=False)
-    chapter_materials = db.Column(db.Varchar(50), nullable=False)
+    chapter_materials = db.Column(db.String(50), nullable=False)
 
     def to_dict(self):
         columns = self.__mapper__.column_attrs.keys()
@@ -197,7 +197,7 @@ class Question(db.Model):
 
     question_id = db.Column(db.Integer, primary_key=True, auto_increment=True)
     quiz_id = db.Column(db.Integer, db.ForeignKey('quiz.quiz_id'), nullable=False)
-    question = db.Column(db.Varchar(250), nullable=False)
+    question = db.Column(db.String(250), nullable=False)
     marks = db.Column(db.Integer, nullable=False)
 
     def to_dict(self):
@@ -258,7 +258,7 @@ class Options(db.Model):
 
     options_id = db.Column(db.Integer, primary_key=True, nullable=False)
     question_mcq_id = db.Column(db.Integer, db.ForeignKey('question.question_id'), nullable=False)
-    value = db.Column(db.Varchar(50), nullable=False)
+    value = db.Column(db.String(50), nullable=False)
     corrected_value = db.Column(db.Boolean, nullable=False)
 
     def to_dict(self):
@@ -276,7 +276,7 @@ class CourseProgression(db.Model):
     course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), nullable=False)    
     class_id = db.Column(db.Integer, db.ForeignKey('class.class_id'), nullable=False)
     chapter_id = db.Column(db.Integer, db.ForeignKey('chapter.chapter_id'), nullable=False)
-    status = db.Column(db.Varchar(50), nullable=False)
+    status = db.Column(db.String(50), nullable=False)
     completion_date = db.Column(db.Date)
     score = db.Column(db.Integer)
 
