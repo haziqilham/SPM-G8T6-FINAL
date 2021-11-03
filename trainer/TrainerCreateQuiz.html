@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+
+    <title>Create Trainer</title>
+
+    <link rel="stylesheet" href="">
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- Bootstrap libraries -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous">
+    </script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <!-- Image and text -->
+    <nav class="navbar navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">
+            All in One
+        </a>
+        <span class="navbar-text">
+            Trainer Account
+        </span>
+    </nav>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Courses</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Quiz<span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div id="app" class="container">
+        <p>
+            <h3>Create Quiz
+            </h3>
+        </p>
+
+        <form>
+            <b>Enter Quiz Name</b>
+
+            <div class="form-group">
+                <input type="text" class="form-control" id="search-name">
+            </div>
+
+            <b>Graded</b>
+            <div class="form-group">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" value="Yes">
+                    <label class="form-check-label" for="inlineCheckbox1">Yes</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" value="No">
+                    <label class="form-check-label" for="inlineCheckbox2">No</label>
+                </div>
+            </div>
+
+            <b>Duration</b>
+
+            <div class="form-group">
+                <input type="text" class="form-control" id="search-name">
+            </div>
+            <b>Passing Mark</b>
+
+            <div class="form-group">
+                <input type="text" class="form-control" id="search-name">
+            </div>
+
+
+            <!-- v-for Number of Questions-->
+            <b>Number of Questions</b>
+            <div class="form-group">
+                <input type="number" class="form-control" v-model='numQuestions'>
+            </div>
+
+            <!-- Question Template-->
+            <template v-for="n in parseInt(numQuestions)" :key="n">
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">Question {{n}}</label>
+                    <div class="col-sm-10">
+                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                    </div>
+                </div>
+                <fieldset class="form-group">
+                    <div class="row">
+                        <legend class="col-form-label col-sm-2 pt-0">Question Type</legend>
+                        <div class="col-sm-10">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" value="1" v-model="toggle" id="mcq">
+                                <label class="form-check-label" for="mcq">
+                                    MCQ
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" value="2" v-model="toggle" id="tf">
+                                <label class="form-check-label" for="tf">
+                                    True/False
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <!-- Show if MCQ is selected-->
+                <div v-if="toggle==1">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Number of Options</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control mb-3" v-model='options'>
+                            <fieldset class="form-group">
+                                <!-- v-for MCQ Options-->
+                                <template v-for="n in parseInt(options)" :key="n">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input type="checkbox" aria-label="Checkbox for following text input">
+                                            </div>
+                                        </div>
+                                        <input type="text" class="form-control" aria-label="Text input with checkbox">
+                                    </div>
+                                </template>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Show if True/False is selected-->
+                <div v-if="toggle==2">
+                    <fieldset class="form-group">
+                        <div class="row">
+                            <legend class="col-form-label col-sm-2 pt-0">Answer</legend>
+                            <div class="col-sm-10">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1"
+                                        value="option1">
+                                    <label class="form-check-label" for="gridRadios1">
+                                        <b>True</b>
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2"
+                                        value="option2">
+                                    <label class="form-check-label" for="gridRadios2">
+                                        <b>False</b>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </template>
+
+
+            <button type="button" class="btn btn-primary">Create Quiz</button>
+
+
+
+
+
+            <div></div>
+
+
+        </form>
+
+        <p>
+            <em><strong>Pages:</strong> <a href="view-consultations.html">View Consultation Records</a></em>
+        </p>
+
+    </div>
+    <script>
+        var get_all_URL = "http://localhost:5003/quiz";
+
+        var app = new Vue({
+            el: "#app",
+            data: {
+                // quiz_id: 0,
+                // quiz_name: "",
+                // graded: false,
+                // duration: 0,
+                // passing_mark: 0,
+                toggle: null,
+                options: 0,
+                numQuestions: 0,
+            },
+            methods: {
+                getQuiz: function () {
+                    // on Vue instance created, load the book list
+                    const response =
+                        fetch(get_all_URL)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(response);
+                            if (data.code === 404) {
+                                // no doctors in db
+                                this.message = data.message;
+                            } else {
+                                this.doctors = data.data;
+                            }
+                        })
+                        .catch(error => {
+                            // Errors when calling the service; such as network error,
+                            // service offline, etc
+                            console.log(this.message + error);
+
+                        });
+
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

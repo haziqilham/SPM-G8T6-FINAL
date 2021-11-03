@@ -1,13 +1,19 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> Marcus
 # Ignore Mac system files
 .DS_store
 
 # Ignore node_modules folder
 node_modules
 
+<<<<<<< HEAD
 # Ignore all text files
 *.txt
 
+=======
+>>>>>>> Marcus
 # Ignore files related to API keys
 .env
 
@@ -153,9 +159,20 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+<<<<<<< HEAD
 .history
 =======
 .history 
 
 .DS_Store
 >>>>>>> JunHong
+=======
+#history files
+.history
+
+#coverage
+coverage
+
+#deprecated files
+deprecated
+>>>>>>> Marcus
