@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-print ("Pushed from JH branch to CI pipeline test")
-=======
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
@@ -295,5 +292,4 @@ class CourseProgression(db.Model):
         return result
     
 
->>>>>>> Xinyi
 
