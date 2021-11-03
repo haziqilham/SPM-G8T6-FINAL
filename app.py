@@ -211,11 +211,11 @@ class Question(db.Model):
             result[column] = getattr(self, column)
         return result
     
-    def computeMarks(self, questionid, answer):
+    def computeMarks(self, answer):
         if answer == True or answer == False:
-            correctans = Questiontf.correctanswer(questionid)
+            correctans = Questiontf.correctanswer(self.question_id)
         else:
-            correctans = Questionmcq.correctanswer(questionid)
+            correctans = Questionmcq.correctanswer(self.question_id)
         
         if correctans == answer:
             return self.marks
