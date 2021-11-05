@@ -30,51 +30,6 @@ class User(db.Model):
             result[column] = getattr(self, column)
         return result
 
-    def enroll(self, classid):
-        #get Class info
-        classinfo = Class.query.filter_by(class_id = classid).first()
-
-        #get Course id from class info
-        courseid = classinfo.Course_id
-        #check Capacity
-        if Class.checkCapacity(classid):
-            #check prereq
-            prereqs = Prerequisites.query.filter_by(course_id = courseid).all()
-            #append all prereq into list
-            if len(prereqs) > 0:
-                prereqlist = []
-                for i in prereqs:
-                    prereqlist.append(i.prereq_course_id)
-
-            #check user's existing course progress
-            progress = CourseProgression.query.filter_by(user_id = self.user_id).all()
-            #check that user is not currently in progress or enrolled into the course
-            if len(progress) > 0:
-                for i in progress:
-                    if i.course_id == courseid:
-                        if i.status == "ongoing" or i.status == "enrolled":
-                            raise Exception("User is already enrolled into the course.")
-
-            #append into completed list
-            completedlist = []
-            if len(progress) > 0:
-                for i in progress:
-                    if i.status == 'completed':
-                        completedlist.append(i.course_id)
-
-            #check that user meets all prereq
-            if len(prereqlist) == 0 and len(completedlist) == 0:
-                self.to_dict(self)
-            else: 
-                if len(prereqlist) > 0 and len(completedlist) < 1:
-                    raise Exception("User does not meet the course requirements.")               
-                else:
-                    for i in prereqlist:
-                        if i not in completedlist:
-                            raise Exception("User does not meet the course requirements.")
-                        else:
-                            self.to_dict(self)
-
 #Marcus
 class Course(db.Model):
     __tablename__ = 'course'
@@ -132,15 +87,6 @@ class Class(db.Model):
         for column in columns:
             result[column] = getattr(self, column)
         return result
-
-    #check if the class is full
-    def checkCapacity(self):
-        capacity = self.capacity
-        enrolled = CourseProgression.query.filter_by(class_id = self.class_id, status = "enrolled").all()
-        if len(enrolled) < capacity:
-            return True
-        else:
-            raise Exception("Class is at max capacity.")
 
 #Claudia
 class Chapter(db.Model):
@@ -279,7 +225,7 @@ class CourseProgression(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
     course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), nullable=False)    
     class_id = db.Column(db.Integer, db.ForeignKey('class.class_id'), nullable=False)
-    chapter_id = db.Column(db.Integer, db.ForeignKey('chapter.chapter_id'), nullable=False)
+    chapter_id = db.Column(db.Integer, db.ForeignKey('chapter.chapter_id'))
     status = db.Column(db.String(50), nullable=False)
     completion_date = db.Column(db.Date)
     score = db.Column(db.Integer)
@@ -292,20 +238,54 @@ class CourseProgression(db.Model):
         return result
     
 
+#base render home page
+@app.route("/")
+def index():
+    return render_template('index.html')
 
-@app.route("/class/<int:class_id>")
-def class_by_id(class_id):
-    classes = Class.query.filter_by(class_id=class_id).first()
-    if classes:
+#USER
+#display all users
+@app.route("/users")
+def allUsers():
+    users = User.query.all()
+    if users:
         return jsonify({
-            "data": classes.to_dict()
+            "data": [user.to_dict() for user in users]
         }), 200
     else:
         return jsonify({
-            "message": "Class not found."
+            "message": "There are no users found."
         }), 404
 
-@app.route("/course/<int:course_id>")
+#display user by user_id
+@app.route("/users/<int:user_id>")
+def user_by_id(user_id):
+    getuser = User.query.filter_by(user_id=user_id).first()
+    if getuser:
+        return jsonify({
+            "data": getuser.to_dict()
+        }), 200
+    else:
+        return jsonify({
+            "message": "User not found."
+        }), 404
+
+#COURSE
+#display all courses that are not archived
+@app.route("/courses")
+def allCourses():
+    courses = Course.query.filter_by(archive_date=None).all()
+    if courses:
+        return jsonify({
+            "data": [course.to_dict() for course in courses]
+        }), 200
+    else:
+        return jsonify({
+            "message": "There are no courses found."
+        }), 404
+
+#display course by course_id 
+@app.route("/courses/<int:course_id>")
 def course_by_id(course_id):
     course = Course.query.filter_by(course_id=course_id).first()
     if course:
@@ -317,9 +297,208 @@ def course_by_id(course_id):
             "message": "Course not found."
         }), 404
 
-@app.route("/")
-def index():
-    return render_template('index.html')
+#CLASS
+#display all classes from the course
+@app.route("/classes")
+def classes_by_course(course_id):
+    classes = Class.query.filter_by(course_id=course_id).order_by()
+    if classes:
+        return jsonify({
+            "data": [oneclass.to_dict() for oneclass in classes]
+        }), 200
+    else:
+        return jsonify({
+            "message": "This course has no classes yet."
+        }), 404
+
+#display class info by class id
+@app.route("/classes/<int:class_id>")
+def class_by_id(class_id):
+    getclass = Class.query.filter_by(class_id=class_id).first()
+    if getclass:
+        return jsonify({
+            "data": getclass.to_dict()
+        }), 200
+    else:
+        return jsonify({
+            "message": "Class not found."
+        }), 404
+
+#enroll into class base functions:
+
+#check if user is already enrolled into course
+def enrollhistory(user_id, course_id):
+    #check user's existing course progress
+    progress = CourseProgression.query.filter_by(user_id=user_id, course_id=course_id).all()
+        #check that user is not currently in progress or enrolled into the course
+    if progress.count() > 0:
+        for i in progress:
+            if i.course_id == course_id:
+                if i.status == "ongoing" or i.status == "enrolled":
+                    return False
+    else:
+        return True
+
+#check if user has already completed the course
+def completionhistory(user_id, course_id):
+    #check user's existing course progress
+    progress = CourseProgression.query.filter_by(user_id=user_id, course_id=course_id).all()
+    #check that user has not already completed the course
+    if progress.count() > 0:
+        for i in progress:
+            if i.course_id == course_id:
+                if i.status == "completed":
+                    return False
+    else:
+        return True
+
+#check if class is open for enrollment
+def openclass(class_id):
+    classinfo = Class.query.filter_by(class_id=class_id).first()
+    if dt.date.today() >= classinfo.start_enrollment or dt.date.today() <= classinfo.end_enrollment:
+        return True
+    else:
+        return False
+
+#check if class is full
+def checkcapacity(class_id):
+    classinfo = Class.query.filter_by(class_id=class_id).first()
+    capacity = classinfo.capacity
+    enrolled = CourseProgression.query.filter_by(class_id=class_id, status="enrolled").all()
+    if enrolled.count() >= capacity:
+        return False
+    else:
+        return True
+
+
+#draw list of course prereqs
+def courseprereqs(course_id):
+    prereqs = Prerequisites.query.filter_by(course_id=course_id).all()
+    prereqlist = []
+    if prereqs.count() > 0:
+        for i in prereqs:
+            prereqlist.append(i.prereq_course_id)
+    return prereqlist
+
+#draw list of completed courses of user
+def completedcourses(user_id):
+    completed = CourseProgression.query.filter_by(user_id=user_id, status="completed").all()
+    completedlist = []
+    if completed.count() > 0:
+        for i in completed:
+            completedlist.append(i.course_id)
+    return completedlist
+
+#check if user meets prereq
+def prereqmet(course_id, user_id):
+    prereqlist = courseprereqs(course_id)
+    completedlist = completedcourses(user_id)
+    if len(prereqlist) != 0:
+        if len(prereqlist) > len(completedlist):
+            return False
+        else:
+            for prereq in prereqlist:
+                if prereq not in completedlist:
+                    return False
+    else:
+        return True
+
+
+#enroll user into class - USER SELF ENROLL
+@app.route("learner/<int:course_id>/<int:class_id>/<int:user_id>")
+def enroll(course_id, class_id, user_id):
+    if enrollhistory(user_id, course_id):
+        if completionhistory(user_id, course_id):
+            if openclass(class_id):
+                if checkcapacity(class_id):
+                    if prereqmet(course_id, user_id):
+                        #create enrollment details
+                        enrollment = CourseProgression(
+                            user_id = user_id,
+                            course_id = course_id,
+                            class_id = class_id
+                        )
+                        #commit to DB
+                        try:
+                            db.session.add(enrollment)
+                            db.session.commit()
+                            return jsonify({
+                                "message": "You have been enrolled into the class."
+                            }), 200
+                        except Exception:
+                            return jsonify({
+                                "message": "Unable to enroll, please try again later."
+                            }), 500
+                    else:
+                        return jsonify({
+                            "message": "You have not cleared the course's prerequisites."
+                        }), 200
+                else:
+                    return jsonify({
+                        "message": "Class is full."
+                    }), 200
+            else:
+                return jsonify({
+                    "message": "This class is not open for enrollment."
+                }), 200
+        else:
+            return jsonify({
+                "message": "You have already completed this course."
+            }), 200
+    else:
+        return jsonify({
+            "message": "You are already enrolled into the course."
+        }), 200
+
+
+#enroll user into class - HR ENROLL ENGINEER
+@app.route("admin/<int:course_id>/<int:class_id>/<int:user_id>")
+def enroll(course_id, class_id, user_id):
+    if enrollhistory(user_id, course_id):
+        if completionhistory(user_id, course_id):
+            if openclass(class_id):
+                if checkcapacity(class_id):
+                    if prereqmet(course_id, user_id):
+                        #create enrollment details
+                        enrollment = CourseProgression(
+                            user_id = user_id,
+                            course_id = course_id,
+                            class_id = class_id
+                        )
+                        #commit to DB
+                        try:
+                            db.session.add(enrollment)
+                            db.session.commit()
+                            return jsonify({
+                                "message": "Learner has been enrolled into the class."
+                            }), 200
+                        except Exception:
+                            return jsonify({
+                                "message": "Unable to enroll, please try again later."
+                            }), 500
+                    else:
+                        return jsonify({
+                            "message": "Learner has not cleared the course's prerequisites."
+                        }), 200
+                else:
+                    return jsonify({
+                        "message": "Class is full."
+                    }), 200
+            else:
+                return jsonify({
+                    "message": "This class is not open for enrollment."
+                }), 200
+        else:
+            return jsonify({
+                "message": "Learner has already completed this course."
+            }), 200
+    else:
+        return jsonify({
+            "message": "Learner has already enrolled into the course."
+        }), 200
+
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
