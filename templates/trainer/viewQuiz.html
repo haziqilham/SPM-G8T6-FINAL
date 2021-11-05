@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <!-- Bootstrap libraries -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+    </script>
+
+
+    <title>Trainer Home</title>
+
+    <style>
+        img.center {
+            display: block;
+            margin: 0 auto;
+        }
+
+        .bottom-right {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- NAV BAR-->
+    <div>
+        <nav class="navbar navbar-dark bg-primary">
+            <a class="navbar-brand mx-auto" href="#">
+                All in One
+            </a>
+            <!-- Navigation TO OTHER ACCOUNTS-->
+            <div class="btn-group dropstart">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    Trainer
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="../learner/learnerhome.html">Learner Account</a></li>
+                    <li><a class="dropdown-item" href="./trainerHome.html">Trainer Account</a></li>
+                    <li><a class="dropdown-item" href="#">Admin Account</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="./trianerHome.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./viewQuiz.html">View Quiz</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./createQuiz.html">Create Quiz</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <div id="main-container" class="container">
+        <p>
+            <h3>Quiz List
+                <a class="btn btn-primary float-right" href="TrainerCreateQuiz.html">Create Quiz</a>
+            </h3>
+        </p>
+
+        <table class="table table-striped mt-4">
+            <thead>
+                <tr>
+                    <th>Current Quiz</th>
+                    <th>Class Average</th>
+                    <th>Class Result</th>
+                    <th>Action</th>
+                </tr>
+                <tr v-for="quiz in quiz_list">
+                    <td>{{ quiz.quiz_name}} e.g. Chapter 1</td>
+                    <td>{{ quiz.quiz_score }} e.g. 7/10</td>
+                    <td><button type="button" class="btn btn-primary">View</button>
+                    </td>
+                    <td><button type="button" class="btn btn-primary">Edit</button></td>
+                </tr>
+            </thead>
+        </table>
+        <div class="text-danger" v-if="!hasDoctors">{{ message }}</div>
+        <!-- Error message if can't get data from microservice-->
+    </div> <!-- row v-show: !edit END-->
+    </div> <!-- container END-->
+
+    </div>
+    <script>
+        var get_all_URL = "http://localhost:5003/quiz";
+
+        var app = new Vue({
+            el: "#app",
+            data: {
+                quiz_list = [],
+            },
+            methods: {
+                getQuiz: function () {
+                    // on Vue instance created, load the book list
+                    const response =
+                        fetch(get_all_URL)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(response);
+                            if (data.code === 404) {
+                                // no doctors in db
+                                this.message = data.message;
+                            } else {
+                                this.quiz_list = data.data;
+                            }
+                        })
+                        .catch(error => {
+                            // Errors when calling the service; such as network error,
+                            // service offline, etc
+                            console.log(this.message + error);
+
+                        });
+
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
