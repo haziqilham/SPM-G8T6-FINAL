@@ -8,7 +8,7 @@
 
     <title>Home</title>
 
-    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="../../static/assets/adminstlye.css">
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -35,52 +35,54 @@
 </head>
 
 <body>
-    <!-- Image and text -->
-    <nav class="navbar navbar-dark bg-primary">
-        <a class="navbar-brand" href="#">
+    <div>
+        <nav class="navbar navbar-dark bg-primary">
+          <a class="navbar-brand" href="../index.html">
             All in One
-        </a>
-        <span class="navbar-text">
-            G8T6
-        </span>
-    </nav>
+          </a>
+          <span class="navbar-text">
+            Admin Account
+          </span>
+        </nav>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="../index.html">Home </a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="#">Courses<span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Trainers</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Learners</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+    </div>
+    
+
+    <h1 style="padding-left: 50px; padding-top: 20px;">Courses</h1>
+    <hr>
 
     <div class='container my-4'>
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <div class="col">
                 <div class="card h-100">
-                    <img src="../static/assets/trainer.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Trainer</h5>
-                        <p class="card-text">Go to trainer page here. You can create quiz here</p>
-                    </div>
-                    <div class="card-footer">
-                        <a href='./trainer/TrainerViewQuiz.html' class="text-primary">Access Here</a>
+                    <img src="../../static/assets/newcourse.png" class="card-img-top" alt="...">
+                    <div class="card-footer" style="font-size: 20px;">
+                        <a href='./2.1newcourse.html' class="text-primary">Create New Course</a>
                     </div>
                 </div>
             </div>
             <div class="col">
                 <div class="card h-100">
-                    <img src="../static/assets/learner.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Learner</h5>
-                        <p class="card-text">You can enroll into courses here and take quizzes and view courses and classes
-                        </p>
-                    </div>
-                    <div class="card-footer">
-                         <a href='./learner/learnerhome.html' class="text-primary">Access Here</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="../static/assets/admin.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Admin</h5>
-                        <p class="card-text">You can assign learners to courses here.</p>
-                    </div>
-                    <div class="card-footer">
-                        <a href='./HRadmin/1courses.html' class="text-primary">Access Here</a>
+                    <img src="../../static/assets/managecourse.png" class="card-img-top" alt="...">
+                    <div class="card-footer" style="font-size: 20px;">
+                         <a href='./3.1courselist.html' class="text-primary">Manage Existing Courses</a>
                     </div>
                 </div>
             </div>

@@ -1,48 +1,86 @@
+@import url(https://fonts.googleapis.com/css?family=Work+Sans:300,600);
+
 #myInput {
     width: 100%; /* Full-width */
     font-size: 16px; /* Increase font-size */
     padding: 12px 20px 12px; /* Add some padding */
     border: 1px solid #ddd; /* Add a grey border */
     margin-bottom: 12px; /* Add some space below the input */
-  }
+}
 
-  #enroltable {
-    border-collapse: collapse; /* Collapse borders */
-    border: 1px solid #ddd; /* Add a grey border */
-  }
-  
-  #enroltable th, #enroltable td {
-    text-align: left; /* Left-align text */
-    padding: 12px; /* Add padding */
-  }
-  
-  #enroltable tr {
-    /* Add a bottom border to all table rows */
-    border-bottom: 1px solid #ddd;
-  }
-  
-  #enroltable tr.header, #enroltable tr:hover {
-    /* Add a grey background color to the table header and on hover */
-    background-color: #f1f1f1;
-  }
-
-  #classlist {
+#enroltable {
     border-collapse: collapse; /* Collapse borders */
     border: 1px solid #ddd; /* Add a grey border */
     width: 100%;
-  }
+}
   
-  #classlist th, #classlist td {
+#enroltable th, #enroltable td {
     text-align: left; /* Left-align text */
     padding: 12px; /* Add padding */
-  }
+}
   
-  #classlist tr {
+#enroltable tr {
     /* Add a bottom border to all table rows */
     border-bottom: 1px solid #ddd;
-  }
+}
   
-  #classlist tr.header, #classlist tr:hover {
+#enroltable tr.header, #enroltable tr:hover {
     /* Add a grey background color to the table header and on hover */
     background-color: #f1f1f1;
-  }
+}
+
+#classlist {
+    border-collapse: collapse; /* Collapse borders */
+    border: 1px solid #ddd; /* Add a grey border */
+    width: 100%;
+}
+  
+#classlist th, #classlist td {
+    text-align: left; /* Left-align text */
+    padding: 12px; /* Add padding */
+}
+  
+#classlist tr {
+    /* Add a bottom border to all table rows */
+    border-bottom: 1px solid #ddd;
+}
+  
+#classlist tr.header, #classlist tr:hover {
+    /* Add a grey background color to the table header and on hover */
+    background-color: #f1f1f1;
+}
+
+.container-newcourse{
+  padding-left: 50px;
+}
+
+
+.button {
+  background-color: rgb(61, 61, 207); 
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+.buttoncontainer {
+  height: 200px;
+  width: 300px;
+  border: 3px solid green;
+}
+
+.buttoncenter{
+  padding-top: 100px;
+  margin: 0;
+  position: absolute;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.badge {
+  color: white;
+}
