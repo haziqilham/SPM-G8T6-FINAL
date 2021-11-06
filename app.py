@@ -330,14 +330,17 @@ def class_by_id(class_id):
 def enrollhistory(user_id, course_id):
     #check user's existing course progress
     progress = CourseProgression.query.filter_by(user_id=user_id, course_id=course_id).all()
-        #check that user is not currently in progress or enrolled into the course
+    
+    #check that user is not currently in progress or enrolled into the course
     if progress.count() > 0:
         for i in progress:
             if i.course_id == course_id:
                 if i.status == "ongoing" or i.status == "enrolled":
                     return False
-    else:
-        return True
+    #else:
+    return True
+
+
 
 #check if user has already completed the course
 def completionhistory(user_id, course_id):
@@ -349,13 +352,14 @@ def completionhistory(user_id, course_id):
             if i.course_id == course_id:
                 if i.status == "completed":
                     return False
-    else:
-        return True
+    #else:
+    return True
 
 #check if class is open for enrollment
 def openclass(class_id):
     classinfo = Class.query.filter_by(class_id=class_id).first()
-    if dt.date.today() >= classinfo.start_enrollment or dt.date.today() <= classinfo.end_enrollment:
+    #if dt.date.today() >= classinfo.start_enrollment or dt.date.today() <= classinfo.end_enrollment:
+    if dt.date.today() >= classinfo.start_enrollment and dt.date.today() <= classinfo.end_enrollment:
         return True
     else:
         return False
@@ -400,12 +404,13 @@ def prereqmet(course_id, user_id):
             for prereq in prereqlist:
                 if prereq not in completedlist:
                     return False
-    else:
-        return True
+    #else:
+    return True
 
 
 #enroll user into class - USER SELF ENROLL
-@app.route("learner/<int:course_id>/<int:class_id>/<int:user_id>")
+#@app.route("learner/<int:course_id>/<int:class_id>/<int:user_id>")
+@app.route("/learner/<int:course_id>/<int:class_id>/<int:user_id>")
 def enroll(course_id, class_id, user_id):
     if enrollhistory(user_id, course_id):
         if completionhistory(user_id, course_id):
@@ -452,7 +457,8 @@ def enroll(course_id, class_id, user_id):
 
 
 #enroll user into class - HR ENROLL ENGINEER
-@app.route("admin/<int:course_id>/<int:class_id>/<int:user_id>")
+#@app.route("admin/<int:course_id>/<int:class_id>/<int:user_id>")
+@app.route("/admin/<int:course_id>/<int:class_id>/<int:user_id>")
 def enroll(course_id, class_id, user_id):
     if enrollhistory(user_id, course_id):
         if completionhistory(user_id, course_id):
