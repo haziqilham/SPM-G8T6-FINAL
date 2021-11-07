@@ -1,0 +1,15 @@
+For HRadmin, the numbers in front shows the process flow.
+They are there for the ease of debugging :)
+
+1. Course (Create or Manage course)
+
+2. Create course
+    2.1 New Course (Fill in description)
+    2.2 Trainer List (Assign a Trainer to the Course)
+    2.3 Updated New Course (Hardcoded updated assigned trainer)
+
+3. Manage course
+    3.1 Course List
+    3.2 Class list (Shows enrolled)
+    3.3 Enrol Learner (Shows learners)
+    3.4 Updated Class List (Hardcoded updated enrolled learners)
