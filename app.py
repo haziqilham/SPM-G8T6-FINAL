@@ -324,8 +324,13 @@ def class_by_id(class_id):
             "message": "Class not found."
         }), 404
 
-#enroll into class base functions:
+#display all classes that user is currently enrolled in
+@app.route("/classes/<int:user_id>")
 
+
+
+#ENROLL FUNCTION:
+#base checkers:
 #check if user is already enrolled into course
 def enrollhistory(user_id, course_id):
     #check user's existing course progress
@@ -338,7 +343,6 @@ def enrollhistory(user_id, course_id):
                     return False
     else:
         return True
-
 #check if user has already completed the course
 def completionhistory(user_id, course_id):
     #check user's existing course progress
@@ -351,7 +355,6 @@ def completionhistory(user_id, course_id):
                     return False
     else:
         return True
-
 #check if class is open for enrollment
 def openclass(class_id):
     classinfo = Class.query.filter_by(class_id=class_id).first()
@@ -359,7 +362,6 @@ def openclass(class_id):
         return True
     else:
         return False
-
 #check if class is full
 def checkcapacity(class_id):
     classinfo = Class.query.filter_by(class_id=class_id).first()
@@ -369,8 +371,6 @@ def checkcapacity(class_id):
         return False
     else:
         return True
-
-
 #draw list of course prereqs
 def courseprereqs(course_id):
     prereqs = Prerequisites.query.filter_by(course_id=course_id).all()
@@ -379,7 +379,6 @@ def courseprereqs(course_id):
         for i in prereqs:
             prereqlist.append(i.prereq_course_id)
     return prereqlist
-
 #draw list of completed courses of user
 def completedcourses(user_id):
     completed = CourseProgression.query.filter_by(user_id=user_id, status="completed").all()
@@ -388,7 +387,6 @@ def completedcourses(user_id):
         for i in completed:
             completedlist.append(i.course_id)
     return completedlist
-
 #check if user meets prereq
 def prereqmet(course_id, user_id):
     prereqlist = courseprereqs(course_id)
@@ -404,7 +402,7 @@ def prereqmet(course_id, user_id):
         return True
 
 
-#enroll user into class - USER SELF ENROLL
+#USER SELF ENROLL: enroll user into class 
 @app.route("learner/<int:course_id>/<int:class_id>/<int:user_id>")
 def enroll(course_id, class_id, user_id):
     if enrollhistory(user_id, course_id):
@@ -451,7 +449,7 @@ def enroll(course_id, class_id, user_id):
         }), 200
 
 
-#enroll user into class - HR ENROLL ENGINEER
+#HR ENROLL ENGINEER: enroll user into class
 @app.route("admin/<int:course_id>/<int:class_id>/<int:user_id>")
 def enroll(course_id, class_id, user_id):
     if enrollhistory(user_id, course_id):
@@ -496,6 +494,9 @@ def enroll(course_id, class_id, user_id):
         return jsonify({
             "message": "Learner has already enrolled into the course."
         }), 200
+
+
+
 
 
 
