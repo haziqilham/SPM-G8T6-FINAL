@@ -3,6 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import datetime as dt
 
+from sqlalchemy.sql.elements import Null
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://admin:ilovespm88@spm-database.c3izrtomcbks.us-east-2.rds.amazonaws.com:3306/spm_database'
 
@@ -237,6 +239,7 @@ class CourseProgression(db.Model):
             result[column] = getattr(self, column)
         return result
     
+db.create_all()
 
 #base render home page
 @app.route("/")
@@ -300,8 +303,9 @@ def course_by_id(course_id):
 #CLASS
 #display all classes from the course
 @app.route("/classes")
-def classes_by_course(course_id):
-    classes = Class.query.filter_by(course_id=course_id).order_by()
+def classes_by_course():
+    #to implement order by start date
+    classes = Class.query.all()
     if classes:
         return jsonify({
             "data": [oneclass.to_dict() for oneclass in classes]
@@ -324,9 +328,84 @@ def class_by_id(class_id):
             "message": "Class not found."
         }), 404
 
+#CHAPTER
+#update chapter progress for user when user clicks 'complete chapter' button
+@app.route("/<int:class_id>/<int:chapter_id>/<int:user_id>")
+def updateprogress(class_id, chapter_id, user_id):
+    currentprogress = CourseProgression.query.filter_by(user_id=user_id, class_id=class_id).first()
+    currentprogress.chapter_id = chapter_id
+    try:
+        db.session.commit()
+    except Exception:
+        return jsonify({
+            "message": "Trouble registering completion, please try again later or contact an administrator."
+        }), 500
+
+@app.route("/<int:chapters")
+
+#ATTENDING THE CLASS FUNCTION:
 #display all classes that user is currently enrolled in
 @app.route("/classes/<int:user_id>")
+def class_by_user(user_id):
+    userclass = CourseProgression.query.filter_by(user_id=user_id, status="enrolled" or "ongoing").all()
+    if userclass:
+        return jsonify({
+            "data": [uclass.to_dict() for uclass in userclass]
+        }), 200
+    else:
+        return jsonify({
+            "message": "You are not enrolled in any class at the moment."
+        }), 404
 
+#display chapters of classes that user has access to
+@app.route("/<int:class_id>/<int:user_id>/chapters")
+def user_chapter(class_id, user_id):
+    userprogress = CourseProgression.query.filter_by(user_id=user_id, class_id=class_by_id).first()
+    userchapter = userprogress.chapter_id
+    #retrieve user's latest completed chapter / if user has not started, order = 0
+    if userchapter !=  None:
+        chapterinfo = Chapter.query.filter_by(chapter_id=userchapter).first()
+        chapterorder = chapterinfo.order
+    else:
+        chapterorder = 0
+    
+    chapter_data = []
+    for i in range(1,chapterorder+2):
+        chapter = Chapter.query.filter_by(class_id=class_id, order=i).first()
+        chapter_data.append({
+            'chapter_id': chapter.chapter_id,
+            'class_id': chapter.class_id,
+            'chapter_name': chapter.chapter_name,
+            'order': chapter.order,
+            'chapter_materials':chapter.chapter_materials
+        })
+
+    return jsonify({
+        "data": [cdata.to_dict() for cdata in chapter_data]
+        }), 200
+
+
+#QUIZ
+#display quiz
+@app.route("/<int:chapter_id>/quiz")
+def getquiz(chapter_id):
+    quizinfo = Quiz.query.filter_by(chapter_id=chapter_id).first()
+    if quizinfo:
+        return jsonify({
+            "data": quizinfo.to_dict()
+        }), 200
+    else:
+        return jsonify({
+            "message": "There is no quiz at the moment."
+        }), 404
+
+#QUESTION
+
+@app.route("/<int:chapter_id>/quiz/questions")
+def getquestions(chapter_id):
+    quizinfo = Quiz.query.filter_by(chapter_id=chapter_id).first()
+    quiz_id = quizinfo.quiz_id
+    
 
 
 #ENROLL FUNCTION:
