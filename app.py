@@ -47,10 +47,9 @@ class Course(db.Model):
             result[column] = getattr(self, column)
         return result    
 
-    def archivecourse(self):
-        self.archive_date = dt.date.today()
-        #course = Course.query.filter_by(course_id = self.course_id).first()
-        #course.archive_date = dt.date.today()
+#TO BE DECIDED - replace as app routing? or leave it
+    #def archivecourse(self):
+        #self.archive_date = dt.date.today()
 
 
 class Prerequisites(db.Model):
@@ -123,26 +122,6 @@ class Quiz(db.Model):
         for column in columns:
             result[column] = getattr(self, column)
         return result
-
-    def computeScore(self, answerdict):
-        marks = 0
-        for key, value in answerdict.items():
-            questionid = key
-            answer = value
-            marks += Question.computeMarks(questionid, answer)
-        return marks
-
-    def passCourse(self, answerdict, userid):
-        marks = self.computeScore(answerdict)
-        if marks >= self.passing_mark:
-            chapterinfo = Chapter.query.filter_by(chapter_id = self.chapter_id).first()
-            classid = chapterinfo.class_id
-            usercourse = CourseProgression.query.filter_by(user_id = userid, class_id = classid).first()
-            usercourse.status = 'completed'
-            usercourse.completion_date = dt.date.today()
-            usercourse.score = marks
-        else:
-            raise Exception("You have failed the course.")
         
 class Question(db.Model):
     __tablename__ = 'question'
@@ -184,10 +163,6 @@ class Questiontf(db.Model):
             result[column] = getattr(self, column)
         return result
 
-    def correctanswer(self, questionid):
-        correct = Questiontf.query.filter_by(question_tf_id = questionid).first()
-        return correct.corrected_value
-
 class Questionmcq(db.Model):
     __tablename__ = 'question_mcq'
 
@@ -199,11 +174,6 @@ class Questionmcq(db.Model):
         for column in columns:
             result[column] = getattr(self, column)
         return result
-
-    #check if answer is correct
-    def correctanswer(self, questionid):
-        correct = Options.query.filter_by(question_mcq_id = questionid, correct_value = True).first()
-        return correct.value    
 
 class Options(db.Model):
     __tablename__ = 'options'
@@ -336,6 +306,20 @@ def class_by_id(class_id):
         }), 404
 
 #CHAPTER
+#TRAINER - display all chapters for creation of quiz
+@app.route("/<int:class_id>/chapters")
+def chapters_by_class(class_id):
+    #order by order
+    chapters = Chapter.query.filter_by(class_id=class_id).order_by(Chapter.order.asc()).all()
+    if chapters:
+        return jsonify({
+            "data": [chapter.to_dict() for chapter in chapters]
+        }), 200
+    else:
+        return jsonify({
+            "message": "This class has no chapters yet."
+        }), 404
+
 #update chapter progress for user when user clicks 'complete chapter' button
 @app.route("/<int:class_id>/<int:chapter_id>/<int:user_id>")
 def updateprogress(class_id, chapter_id, user_id):
@@ -377,18 +361,18 @@ def user_chapter(class_id, user_id):
     chapter_data = []
     for i in range(1,chapterorder+2):
         chapter = Chapter.query.filter_by(class_id=class_id, order=i).first()
-        chapter_data.append({
-            'chapter_id': chapter.chapter_id,
-            'class_id': chapter.class_id,
-            'chapter_name': chapter.chapter_name,
-            'order': chapter.order,
-            'chapter_materials':chapter.chapter_materials
-        })
+        if chapter:
+            chapter_data.append({
+                'chapter_id': chapter.chapter_id,
+                'class_id': chapter.class_id,
+                'chapter_name': chapter.chapter_name,
+                'order': chapter.order,
+                'chapter_materials':chapter.chapter_materials
+            })
 
     return jsonify({
         "data": [cdata.to_dict() for cdata in chapter_data]
         }), 200
-
 
 #QUIZ
 #display quiz
@@ -404,13 +388,199 @@ def getquiz(chapter_id):
             "message": "There is no quiz at the moment."
         }), 404
 
-#QUESTION
+#create quiz
+@app.route("/createquiz", methods=['POST'])
+def create_quiz():
+    data = request.get_json()
+    if not all(key in data.keys() for
+                key in ('chapter_id', 'duration', 'graded')):
+        return jsonify({
+            "message": "Incorrect JSON object provided."
+        }), 500
+    #validate chapter
+    chapter = Chapter.query.filter_by(chapter_id=data['chapter_id']).first()
+    if not chapter:
+        return jsonify({
+            "message": "Chapter does not exist."
+        })
+    #create quiz record
+    quiz = Quiz(
+        chapter_id=data['chapter_id'], 
+        duration=data['duration'],
+        graded=data['graded']
+    )
+    #commit to db
+    try:
+        db.session.add(quiz)
+        db.session.commit()
+        return jsonify(quiz.to_dict()), 201
+    except Exception:
+        return jsonify({
+            "message": "Unable to create quiz, please try again later or contact an administrator."
+        }), 500
 
+
+#QUESTION
+#retrieving questions for quiz
 @app.route("/<int:chapter_id>/quiz/questions")
 def getquestions(chapter_id):
     quizinfo = Quiz.query.filter_by(chapter_id=chapter_id).first()
     quiz_id = quizinfo.quiz_id
+    questions = Question.query.filter_by(quiz_id=quiz_id).all()
+    finaldict = {}
+    qdict = {}
+    options = []
+    for question in questions:
+        #find out if the question is tf or mcq
+        question_tf = Questiontf.query.filter_by(question_tf_id=question.question_id).first()
+        if question_tf:
+            qdict[question.question]=[True, False]                
+            finaldict[question.question_id]= qdict
+            options = []
+            qdict = {}
+        else:
+            question_mcq = Options.query.filter_by(question_mcq_id=question.question_id).all()
+            for option in question_mcq:
+                options.append(option.value)
+                qdict[question.question]= options
+                finaldict[question.question_id]= qdict
+                options = []
+                qdict = {}
+    if finaldict:
+        return jsonify({
+            "data": finaldict.to_dict()
+        }), 200
+    else:
+        return jsonify({
+            "message": "There was an error retrieving quiz questions, please contact an administrator."
+        }), 404
+
+
+#create quiz questions
+@app.route("/quiz/createquestions", methods=['POST'])
+def create_questions():
+    data = request.get_json()
+    if not all(key in data.keys() for
+                key in ('quiz_id', 'question', 'marks')):
+        return jsonify({
+            "message": "Incorrect JSON object provided."
+        }), 500
+    #validate quiz
+    quiz = Quiz.query.filter_by(quiz_id=data['quiz_id']).first()
+    if not quiz:
+        return jsonify({
+            "message": "Invalid quiz details"
+        })
+    #create question record
+    question = Question(
+        quiz_id=data['quiz_id'], 
+        question=data['question'],
+        marks=data['marks']
+    )
+    #commit to db
+    try:
+        db.session.add(question)
+        db.session.commit()
+        return jsonify(question.to_dict()), 201
+    except Exception:
+        return jsonify({
+            "message": "Unable to create question, please try again later or contact an administrator."
+        }), 500
+
+
+#create quiz options
+@app.route("/quiz/question/createoptions", methods=['POST'])
+def create_options():
+    data = request.get_json()
+    #options is a list value containing all options
+    if not all(key in data.keys() for
+                key in ('question_id', 'correct_value', 'options')):
+        return jsonify({
+            "message": "Incorrect JSON object provided."
+        }), 500
+    #validate question
+    question = Question.query.filter_by(question_id=data['question_id']).first()
+    if not question:
+        return jsonify({
+            "message": "Invalid question details."
+        })
+    #create question record
+    if data['options'].count() < 3:
+        question = Questiontf(
+            question_tf_id=data['question_id'],
+            corrected_value=data['correct_value']
+        )
+    else:
+        question = Questionmcq(
+            question_mcq_id=data['question_mcq_id'], 
+        )
+        for option in data['options']:
+            options = Options(
+                question_mcq_id=data['question_mcq_id'],
+                value=option,
+                corrected_value=data['correct_value']
+            )
+    #commit to db
+    try:
+        db.session.add(question)
+        if options:
+            db.session.add(options)
+        db.session.commit()
+        return jsonify(question.to_dict()), 201
+    except Exception:
+        return jsonify({
+            "message": "Unable to create question options, please try again later or contact an administrator."
+        }), 500
+
     
+#GRADE QUIZ
+#frontend vue for loop marks each question individually
+#retrieves the answer of each question
+@app.route("/quiz/<int:question_id>")
+def retrieveanswer(question_id):
+    #find out if the question is tf or mcq
+    question_tf = Questiontf.query.filter_by(question_tf_id=question_id).first()
+    if question_tf:
+        question_tf = Questiontf.query.filter_by(question_tf_id=question_id).first()
+        answer = question_tf.corrected_value
+    else:
+        question_mcq = Options.query.filter_by(question_mcq_id=question_id, correct_value = True).first()
+        answer = question_mcq.value
+
+    return jsonify({
+        "data": answer
+    }), 200
+
+#check if user passed quiz and record completion
+@app.route("/<int:user_id>/<int:quiz_id)/<int:totalmarks>")
+def passCourse(user_id, quiz_id, totalmarks):
+    #query to retrieve passing_mark of quiz
+    quizinfo = Quiz.query.filter_by(quiz_id=quiz_id).first()
+    passing_mark = quizinfo.passing_mark
+    #query to retrieve class_id
+    chapterinfo = Chapter.query.filter_by(chapter_id=quizinfo.chapter_id).first()
+    class_id = chapterinfo.class_id
+    #record completion
+    usercourse = CourseProgression.query.filter_by(user_id = user_id, class_id = class_id).first()
+    usercourse.completion_date = dt.date.today()
+    usercourse.score = totalmarks
+    message = ""
+    #record pass or fail
+    if totalmarks >= passing_mark:
+        usercourse.status = 'completed'
+        message = "You have successfully completed the course, please inform your supervisor."
+    else:
+        usercourse.status = 'failed'
+        message = "You have failed the course, please inform your supervisor."
+    try:
+        db.session.commit()
+        return jsonify({
+            "message": message
+        }), 200
+    except Exception:
+        return jsonify({
+            "message": "There was a problem registering your quiz result, please inform an administrator."
+        }), 500
 
 
 #ENROLL FUNCTION:
@@ -584,10 +754,6 @@ def enroll(course_id, class_id, user_id):
         return jsonify({
             "message": "Learner has already enrolled into the course."
         }), 200
-
-
-
-
 
 
 
