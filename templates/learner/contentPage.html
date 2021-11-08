@@ -38,7 +38,7 @@
   <!-- NAV BAR-->
   <div>
     <nav class="navbar navbar-dark bg-primary">
-      <a class="navbar-brand mx-auto" href="#">
+      <a class="navbar-brand mx-auto" href="../../index.html">
         All in One
       </a>
       <!-- Navigation TO OTHER ACCOUNTS-->
@@ -47,9 +47,9 @@
           Learner
         </button>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Learner Account</a></li>
-          <li><a class="dropdown-item" href="#">Trainer Account</a></li>
-          <li><a class="dropdown-item" href="#">Admin Account</a></li>
+          <li><a class="dropdown-item" href="./learnerhome.html">Learner Account</a></li>
+          <li><a class="dropdown-item" href="../trainer/trainerHome.html">Trainer Account</a></li>
+          <li><a class="dropdown-item" href="../HRadmin/classlist.html">Admin Account</a></li>
         </ul>
       </div>
     </nav>
@@ -73,24 +73,24 @@
 
   <!-- COURSES STUFF -->
   <div class='container'>
-     <h3 class='my-3'> Course Name </h3>
-     <table class="table table-striped mt-4">
-       <thead>
-         <tr>
-           <th>Chapter Name</th>
-           <th>Description</th>
-           <th></th>
-           <th>Quiz</th>
-         </tr>
-         <tr v-for="quiz in quiz_list">
-           <td>Intro to</td>
-           <td>Go to</td>
-           <td><button type="button" class="btn btn-primary">Enter</button>
-           </td>
-           <td><a class="btn btn-primary" href="./takeQuiz.html" role="button">Start Quiz</a></td>
-         </tr>
-       </thead>
-     </table>
+    <h3 class='my-3'> Course Name </h3>
+    <table class="table table-striped mt-4">
+      <thead>
+        <tr>
+          <th>Chapter Name</th>
+          <th>Description</th>
+          <th></th>
+          <th>Quiz</th>
+        </tr>
+        <tr v-for="quiz in quiz_list">
+          <td>Intro to</td>
+          <td>Go to</td>
+          <td><button type="button" class="btn btn-primary">Enter</button>
+          </td>
+          <td><a class="btn btn-primary" href="./takeQuiz.html" role="button">Start Quiz</a></td>
+        </tr>
+      </thead>
+    </table>
   </div>
 
   <!-- Modal -->
