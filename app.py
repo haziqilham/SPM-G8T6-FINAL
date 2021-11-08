@@ -552,7 +552,7 @@ def retrieveanswer(question_id):
     }), 200
 
 #check if user passed quiz and record completion
-@app.route("/<int:user_id>/<int:quiz_id)/<int:totalmarks>")
+@app.route("/<int:user_id>/<int:quiz_id>/<int:totalmarks>")
 def passCourse(user_id, quiz_id, totalmarks):
     #query to retrieve passing_mark of quiz
     quizinfo = Quiz.query.filter_by(quiz_id=quiz_id).first()
