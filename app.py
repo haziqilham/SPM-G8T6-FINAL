@@ -277,6 +277,26 @@ def course_by_id(course_id):
             "message": "Course not found."
         }), 404
 
+#display courses user is enrolled in
+@app.route("/courses/<int:user_id>")
+def class_by_user(user_id):
+    userclass = CourseProgression.query.filter_by(user_id=user_id, status="enrolled" or "ongoing").all()
+    if userclass:
+        coursedict = []
+        for uclass in userclass:
+            courseinfo = Course.query.filter_by(course_id=uclass.course_id)
+            coursedict.append(courseinfo)
+    
+        return jsonify({
+            "data": [course.to_dict() for course in coursedict]
+        }), 200
+
+    else:
+        return jsonify({
+            "message": "You are not enrolled in any course at the moment."
+        }), 404
+
+
 #CLASS
 #display all classes from the course
 @app.route("/classes")
@@ -304,6 +324,7 @@ def class_by_id(class_id):
         return jsonify({
             "message": "Class not found."
         }), 404
+
 
 #CHAPTER
 #TRAINER - display all chapters for creation of quiz
