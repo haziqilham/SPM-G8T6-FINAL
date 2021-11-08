@@ -246,6 +246,13 @@ db.create_all()
 def index():
     return render_template('index.html')
 
+@app.route("/HRadmin")
+def hr_index():
+    return render_template('HRadmin/courses.html')
+
+@app.route("/HRadmin/Courselist")
+def hr_list():
+    return render_template('HRadmin/courselist.html')
 #USER
 #display all users
 @app.route("/users")
@@ -340,8 +347,6 @@ def updateprogress(class_id, chapter_id, user_id):
         return jsonify({
             "message": "Trouble registering completion, please try again later or contact an administrator."
         }), 500
-
-@app.route("/<int:chapters")
 
 #ATTENDING THE CLASS FUNCTION:
 #display all classes that user is currently enrolled in
@@ -489,7 +494,7 @@ def prereqmet(course_id, user_id):
 
 #USER SELF ENROLL - enroll user into class 
 @app.route("/learner/<int:course_id>/<int:class_id>/<int:user_id>")
-def enroll(course_id, class_id, user_id):
+def self_enroll(course_id, class_id, user_id):
     if enrollhistory(user_id, course_id):
         if completionhistory(user_id, course_id):
             if openclass(class_id):
