@@ -226,7 +226,7 @@ def hr_index():
 
 @app.route("/HRadmin/Courselist")
 def hr_list():
-    return render_template('HRadmin/courselist.html', courses = Course.query.all())
+    return render_template('HRadmin/courselist.html')
     
 #USER
 #display all users
