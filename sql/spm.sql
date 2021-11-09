@@ -189,7 +189,7 @@ CREATE table IF NOT EXISTS `prerequisites`(
 INSERT INTO `prerequisites` (`prereq_id`, `course_id`, `prereq_course_id`) VALUES
 (1, 2, 1),
 (2, 3, 1),
-(3, 5, 4),
+(3, 5, 4);
 
 -- --------------------------------------------------------
 
