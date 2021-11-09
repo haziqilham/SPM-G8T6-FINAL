@@ -79,12 +79,10 @@ class Class(db.Model):
     trainer_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False) 
     class_name = db.Column(db.String(50), nullable=False)
     capacity = db.Column(db.Integer, nullable=False)
-    start_Date = db.Column(db.Date, nullable=False)
-    end_Date = db.Column(db.Date, nullable=False)
-    start_Time = db.Column(db.Time, nullable=False)
-    end_Time = db.Column(db.Time, nullable=False)
-    start_enrollment = db.Column(db.Date, nullable=False)
-    end_enrollment = db.Column(db.Date, nullable=False)
+    start_DateTime = db.Column(db.DateTime, nullable=False)
+    end_DateTime = db.Column(db.DateTime, nullable=False)
+    start_enrollment = db.Column(db.DateTime, nullable=False)
+    end_enrollment = db.Column(db.DateTime, nullable=False)
 
     def to_dict(self):
         columns = self.__mapper__.column_attrs.keys()
