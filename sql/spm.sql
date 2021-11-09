@@ -669,7 +669,7 @@ INSERT INTO `options` (`options_id`, `question_mcq_id`, `value`, `corrected_valu
 (77, 36, 'A', 0),
 (78, 36, 'B', 0),
 (79, 36, 'C', 0),
-(80, 36, 'D', 1)
+(80, 36, 'D', 1),
 (81, 38, 'A', 0),
 (82, 38, 'B', 0),
 (83, 38, 'C', 0),
