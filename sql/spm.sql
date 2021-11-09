@@ -344,7 +344,7 @@ INSERT INTO `course_progression` (`cc_id`, `user_id`, `course_id`, `class_id`, `
 (11, 18, 2, 4, 3, 'completed', '2021-09-02 00:00:00', 90),
 -- course 3 only user_id= 15,18 can enroll
 (12, 15, 3, 6, 1, 'ongoing', NULL, NULL),
---course 4 class 7 is full, all can enroll
+-- course 4 class 7 is full, all can enroll
 (13, 15, 4, 7, 0, 'enrolled', NULL, NULL),
 (14, 20, 4, 7, 0, 'enrolled', NULL, NULL),
 -- course 5 ended already
