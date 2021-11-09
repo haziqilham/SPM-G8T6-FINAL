@@ -8,7 +8,7 @@ backend:
         - npm install -g @aws-amplify/cli --unsafe-perm=true
         - yarn add https://github.com/pallets/flask-sqlalchemy/
         - yarn install -r requirements.txt 
-          - flask run
+        - flask run
      
 
 frontend: 
