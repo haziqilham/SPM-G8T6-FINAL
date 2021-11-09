@@ -36,7 +36,7 @@ class Course(db.Model):
 
     course_id = db.Column(db.Integer, primary_key=True)
     course_name = db.Column(db.String(50), nullable=False)
-    archive_date = db.Column(db.Date)
+    archive_date = db.Column(db.DateTime)
 
     def __init__(self, course_id, course_name, archive_date):   
         self.course_id = course_id
@@ -201,7 +201,7 @@ class CourseProgression(db.Model):
     class_id = db.Column(db.Integer, db.ForeignKey('class.class_id'), nullable=False)
     chapter_id = db.Column(db.Integer, db.ForeignKey('chapter.chapter_id'))
     status = db.Column(db.String(50), nullable=False)
-    completion_date = db.Column(db.Date)
+    completion_date = db.Column(db.DateTime)
     score = db.Column(db.Integer)
 
     def to_dict(self):
@@ -598,7 +598,7 @@ def passCourse(user_id, quiz_id, totalmarks):
     class_id = chapterinfo.class_id
     #record completion
     usercourse = CourseProgression.query.filter_by(user_id = user_id, class_id = class_id).first()
-    usercourse.completion_date = dt.date.today()
+    usercourse.completion_date = dt.datetime.today()
     usercourse.score = totalmarks
     message = ""
     #record pass or fail
@@ -651,8 +651,7 @@ def completionhistory(user_id, course_id):
 #check if class is open for enrollment
 def openclass(class_id):
     classinfo = Class.query.filter_by(class_id=class_id).first()
-    #if dt.date.today() >= classinfo.start_enrollment or dt.date.today() <= classinfo.end_enrollment:
-    if dt.date.today() >= classinfo.start_enrollment and dt.date.today() <= classinfo.end_enrollment:
+    if dt.datetime.today() >= classinfo.start_enrollment and dt.datetime.today() <= classinfo.end_enrollment:
         return True
     else:
         return False
