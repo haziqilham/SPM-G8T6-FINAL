@@ -9,7 +9,7 @@ frontend:
       commands:
       # - npm install
       # - pip install -r requirements.txt 
-      - sudo apt-get update -y
+     
       - npm install -g @aws-amplify/cli python3-flask-sqlalchemy
       - npm install -g @aws-amplify/cli --unsafe-perm=true
       # - cat requirements.txt | xargs npm install -g       
