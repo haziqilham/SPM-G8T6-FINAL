@@ -579,82 +579,82 @@ INSERT INTO `options` (`options_id`, `question_mcq_id`, `value`, `corrected_valu
 (2, 5, 'B', 0),
 (3, 5, 'C', 1),
 (4, 5, 'D', 0),
-(1, 6, 'A', 0),
-(2, 6, 'B', 0),
-(3, 6, 'C', 1),
-(4, 6, 'D', 0),
-(1, 11, 'A', 0),
-(2, 11, 'B', 1),
-(3, 11, 'C', 0),
-(4, 11, 'D', 0),
-(1, 12, 'A', 0),
-(2, 12, 'B', 0),
-(3, 12, 'C', 0),
-(4, 12, 'D', 1),
-(1, 17, 'A', 1),
-(2, 17, 'B', 0),
-(3, 17, 'C', 0),
-(4, 17, 'D', 0),
-(1, 18, 'A', 0),
-(2, 18, 'B', 0),
-(3, 18, 'C', 1),
-(4, 18, 'D', 0),
-(1, 23, 'A', 0),
-(2, 23, 'B', 0),
-(3, 23, 'C', 1),
-(4, 23, 'D', 0),
-(1, 24, 'A', 0),
-(2, 24, 'B', 1),
-(3, 24, 'C', 0),
-(4, 24, 'D', 0),
-(1, 29, 'A', 0),
-(2, 29, 'B', 0),
-(3, 29, 'C', 0),
-(4, 29, 'D', 1),
-(1, 30, 'A', 0),
-(2, 30, 'B', 0),
-(3, 30, 'C', 0),
-(4, 30, 'D', 1),
-(1, 35, 'A', 1),
-(2, 35, 'B', 0),
-(3, 35, 'C', 0),
-(4, 35, 'D', 0),
-(1, 36, 'A', 1),
-(2, 36, 'B', 0),
-(3, 36, 'C', 0),
-(4, 36, 'D', 0),
-(1, 41, 'A', 0),
-(2, 41, 'B', 0),
-(3, 41, 'C', 1),
-(4, 41, 'D', 0),
-(1, 42, 'A', 0),
-(2, 42, 'B', 0),
-(3, 42, 'C', 1),
-(4, 42, 'D', 0),
-(1, 47, 'A', 1),
-(2, 47, 'B', 0),
-(3, 47, 'C', 0),
-(4, 47, 'D', 0),
-(1, 48, 'A', 0),
-(2, 48, 'B', 1),
-(3, 48, 'C', 0),
-(4, 48, 'D', 0),
-(1, 53, 'A', 0),
-(2, 53, 'B', 1),
-(3, 53, 'C', 0),
-(4, 53, 'D', 0),
-(1, 54, 'A', 0),
-(2, 54, 'B', 0),
-(3, 54, 'C', 1),
-(4, 54, 'D', 0),
-(1, 59, 'A', 0),
-(2, 59, 'B', 1),
-(3, 59, 'C', 0),
-(4, 59, 'D', 0),
-(1, 60, 'A', 0),
-(2, 60, 'B', 0),
-(3, 60, 'C', 0),
-(4, 60, 'D', 1)
+(5, 6, 'A', 0),
+(6, 6, 'B', 0),
+(7, 6, 'C', 1),
+(8, 6, 'D', 0),
+(9, 11, 'A', 0),
+(10, 11, 'B', 1),
+(11, 11, 'C', 0),
+(12, 11, 'D', 0),
+(13, 12, 'A', 0),
+(14, 12, 'B', 0),
+(15, 12, 'C', 0),
+(16, 12, 'D', 1),
+(17, 17, 'A', 1),
+(18, 17, 'B', 0),
+(19, 17, 'C', 0),
+(20, 17, 'D', 0),
+(21, 18, 'A', 0),
+(22, 18, 'B', 0),
+(23, 18, 'C', 1),
+(24, 18, 'D', 0),
+(25, 23, 'A', 0),
+(26, 23, 'B', 0),
+(27, 23, 'C', 1),
+(28, 23, 'D', 0),
+(29, 24, 'A', 0),
+(30, 24, 'B', 1),
+(31, 24, 'C', 0),
+(32, 24, 'D', 0),
+(33, 29, 'A', 0),
+(34, 29, 'B', 0),
+(35, 29, 'C', 0),
+(36, 29, 'D', 1),
+(37, 30, 'A', 0),
+(38, 30, 'B', 0),
+(39, 30, 'C', 0),
+(40, 30, 'D', 1),
+(41, 35, 'A', 1),
+(42, 35, 'B', 0),
+(43, 35, 'C', 0),
+(44, 35, 'D', 0),
+(45, 36, 'A', 1),
+(46, 36, 'B', 0),
+(47, 36, 'C', 0),
+(48, 36, 'D', 0),
+(49, 41, 'A', 0),
+(50, 41, 'B', 0),
+(51, 41, 'C', 1),
+(52, 41, 'D', 0),
+(53, 42, 'A', 0),
+(54, 42, 'B', 0),
+(55, 42, 'C', 1),
+(56, 42, 'D', 0),
+(57, 47, 'A', 1),
+(58, 47, 'B', 0),
+(59, 47, 'C', 0),
+(60, 47, 'D', 0),
+(61, 48, 'A', 0),
+(62, 48, 'B', 1),
+(63, 48, 'C', 0),
+(64, 48, 'D', 0),
+(65, 53, 'A', 0),
+(66, 53, 'B', 1),
+(67, 53, 'C', 0),
+(68, 53, 'D', 0),
+(69, 54, 'A', 0),
+(70, 54, 'B', 0),
+(71, 54, 'C', 1),
+(72, 54, 'D', 0),
+(73, 59, 'A', 0),
+(74, 59, 'B', 1),
+(75, 59, 'C', 0),
+(76, 59, 'D', 0),
+(77, 60, 'A', 0),
+(78, 60, 'B', 0),
+(79, 60, 'C', 0),
+(80, 60, 'D', 1)
 ;
 --
 -- Indexes for dumped tables
@@ -753,49 +753,55 @@ ALTER TABLE `options`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `course`
 --
 ALTER TABLE `course`
-  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `prerequisites`
 --
 ALTER TABLE `prerequisites`
-  MODIFY `prereq_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `prereq_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `class`
 --
 ALTER TABLE `class`
-  MODIFY `class_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `class_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `chapter`
 --
 ALTER TABLE `chapter`
-  MODIFY `chapter_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `chapter_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `course_progression`
 --
 ALTER TABLE `course_progression`
-  MODIFY `cc_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `cc_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `question`
+--
+ALTER TABLE `quiz`
+  MODIFY `quiz_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `question`
 --
 ALTER TABLE `question`
-  MODIFY `question_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `question_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `options`
 --
 ALTER TABLE `options`
-  MODIFY `options_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `options_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
 
 --
