@@ -220,6 +220,7 @@ class CourseProgression(db.Model):
 def index():
     return render_template('index.html')
 
+#HR admin
 @app.route("/HRadmin")
 def hr_index():
     return render_template('HRadmin/courses.html')
@@ -227,7 +228,13 @@ def hr_index():
 @app.route("/HRadmin/Courselist")
 def hr_list():
     return render_template('HRadmin/courselist.html', courses = Course.query.all())
-    
+
+#Learner
+@app.route("/learner")
+def learner_index():
+    return render_template('learner/learnerHome.html')
+
+
 #USER
 #display all users
 @app.route("/users")
