@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import datetime as dt
@@ -213,27 +213,7 @@ class CourseProgression(db.Model):
             result[column] = getattr(self, column)
         return result
     
-#db.create_all()
-
-#base render home page
-@app.route("/")
-def index():
-    return render_template('index.html')
-
-#HR admin
-@app.route("/HRadmin")
-def hr_index():
-    return render_template('HRadmin/courses.html')
-
-@app.route("/HRadmin/Courselist")
-def hr_list():
-    return render_template('HRadmin/courselist.html')
-
-#Learner
-@app.route("/learner")
-def learner_index():
-    return render_template('learner/learnerHome.html')
-
+db.create_all()
 
 #USER
 #display all users
@@ -265,7 +245,7 @@ def user_by_id(user_id):
 #COURSE
 #display all courses that are not archived
 @app.route("/courses")
-def allCourses():
+def displaycourses():
     courses = Course.query.filter_by(archive_date=None).all()
     if courses:
         return jsonify({
