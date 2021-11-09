@@ -45,13 +45,13 @@
     <div>
         <nav class="navbar navbar-dark bg-primary">
             <a class="navbar-brand mx-auto" href="../../index.html">
-        All in One
-      </a>
+                All in One
+            </a>
             <!-- Navigation TO OTHER ACCOUNTS-->
             <div class="btn-group dropstart">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-          Learner
-        </button>
+                    Learner
+                </button>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="./learnerhome.html">Learner Account</a></li>
                     <li><a class="dropdown-item" href="../trainer/trainerHome.html">Trainer Account</a></li>
@@ -78,14 +78,31 @@
     </div>
 
     <div class='container' id='users'>
-        <select v-model="selected">
-        <option v-for="option in options" v-bind:value="option.value">
-          {{ option.text }}
-        </option>
-      </select>
+        <select v-model="selected" v-on:change="getEnrolledCourse">
+            <option v-for="option in options" v-bind:value="option.value">
+                {{ option.text }}
+            </option>
+        </select>
+        <div>
+            <h3 class='my-3'> Courses Enrolled </h3>
+            <ol class="list-group list-group-numbered">
+                <li v-for="course in courses" class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <span class="badge bg-primary rounded-pill">{{ course.course_id}}</span>
+                        <div class="fw-bold">{{ course.course_name }}</div>
+                        <span class="badge bg-warning rounded-pill">{{ course.archive_date}}</span>
+                    </div>
+                    <button type="button" class="btn btn-primary" v-on:click="nextPage(course.course_id)">
+                Manage
+            </button>
+                </li>
+            </ol>
+        </div>
     </div>
 
     <!-- ENROLLED COURSES-->
+
+    <!--
     <div class='container' id='enrolled'>
         <h3 class='my-3'> Courses Enrolled </h3>
         <div class="row row-cols-1 row-cols-md-3 g-4" v-for="course in enrolled">
@@ -122,7 +139,7 @@
             </div>
         </div>
     </div>
-
+    -->
     <!-- COURSES AVAILABLE-->
     <div class='container' id='courses'>
         <h3 class='my-3'> Courses Available </h3>
@@ -135,8 +152,8 @@
                 </div>
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          Enroll
-        </button>
+                    Enroll
+                </button>
             </li>
 
 
@@ -148,8 +165,8 @@
                 </div>
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          Enroll
-        </button>
+                    Enroll
+                </button>
             </li>
 
             <li class="list-group-item d-flex justify-content-between align-items-start">
@@ -161,8 +178,8 @@
                 </div>
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          Enroll
-        </button>
+                    Enroll
+                </button>
             </li>
         </ol>
     </div>
@@ -187,14 +204,14 @@
     </div>
 
     <script>
-        var get_url = "http://127.0.0.1:5000/users"
-        var get_enrolled_url = "http://127.0.0.1:5000/users"
+        var get_url = "http://127.0.0.1:5000/learners";
 
         const vm = new Vue({
             el: '#users',
             data: {
                 selected: '',
-                options: []
+                options: [],
+                courses: {}
             },
             methods: {
                 getCourseList: function() {
@@ -216,7 +233,10 @@
                             }
                         })
                 },
-                getEnrolledCourse: function() {
+                getEnrolledCourse: function(e) {
+                    param = e.target.value;
+                    var get_enrolled_url = "http://127.0.0.1:5000/courses/users/" + param;
+
                     const response =
                         fetch(get_enrolled_url)
                         .then(response => response.json())
@@ -225,7 +245,7 @@
                             if (data.code === 404) {
                                 this.message = data.message
                             } else {
-
+                                this.courses = data.data
                             }
                         })
                 }
