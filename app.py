@@ -240,6 +240,19 @@ def user_by_id(user_id):
             "message": "User not found."
         }), 404
 
+#display all learners
+@app.route("/learners")
+def learners():
+    getLearner = User.query.filter_by(role='Learners').all()
+    if getLearner:
+        return jsonify({
+            "data": [learner.to_dict() for learner in getLearner]
+        }), 200
+    else:
+        return jsonify({
+            "message": "Learners not found."
+        }), 404
+
 #COURSE
 #display all courses that are not archived
 @app.route("/courses")
@@ -268,7 +281,7 @@ def course_by_id(course_id):
         }), 404
 
 #display courses user is enrolled in
-@app.route("/courses/<int:user_id>")
+@app.route("/courses/users/<int:user_id>")
 def course_by_user(user_id):
     userclass = CourseProgression.query.filter_by(user_id=user_id, status="enrolled" or "ongoing").all()
     if userclass:
