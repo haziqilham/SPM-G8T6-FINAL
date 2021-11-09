@@ -28,7 +28,7 @@
 </head>
 
 <body>
-    <div id="main">
+    <div>
         <nav class="navbar navbar-dark bg-primary">
             <a class="navbar-brand" href="../index.html">
         All in One
@@ -57,11 +57,13 @@
         </nav>
     </div>
 
-    <div class='container'>
+    <div id='main' class='container'>
         <h1>Enrol Engineer</h1>
         <h2>Course - Printing Solutions 102</h2>
+        <h2>{{ course }}</h2>
         <hr>
-        <table id="classlist">
+        <!-- 
+            <table id="classlist">
             <tr class="header">
                 <th>Name</th>
                 <th>Student Email</th>
@@ -77,29 +79,47 @@
                 <td>felicia2021@eng.aio.edu.sg</td>
                 <td>Enrolled</td>
             </tr>
+            </table>
+            -->
+        <table id="classTable" class='table table-striped' border='1'>
+            <thead class='thead-light'>
+                <tr>
+                    <th>Id</th>
+                    <th>Class Name</th>
+                    <th>Capacity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in classes">
+                    <td>{{ item.class_id }}</td>
+                    <td>{{ item.class_name }}</td>
+                    <td>{{ item.capacity }}</td>
+                </tr>
+            </tbody>
         </table>
+
         <br>
         <a href="3.3enrollearner.html">
             <button type="button" class="btn btn-primary btn-sm">Enrol Students</button>
         </a>
     </div>
 
-    </div>
-
     <script>
         let url = new URL(window.location.href);
         let param = url.searchParams.get("id");
 
-        var get_url = "http://127.0.0.1:5000/" + param + "/classes"
+        var get_url = "http://127.0.0.1:5000/" + param + "/classes";
+        var get_c_url = "http://127.0.0.1:5000/courses/" + param;
 
         var vm = new Vue({
             el: '#main',
             data: {
-                courses: {},
+                classes: {},
+                course: '',
                 message: '',
             },
             methods: {
-                getCourseList: function() {
+                getClassList: function() {
                     const response =
                         fetch(get_url)
                         .then(response => response.json())
@@ -108,7 +128,20 @@
                             if (data.code === 404) {
                                 this.message = data.message
                             } else {
-                                this.courses = data.data
+                                this.classes = data.data
+                            }
+                        })
+                },
+                getCourse: function() {
+                    const response =
+                        fetch(get_url)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(response);
+                            if (data.code === 404) {
+                                this.message = data.message
+                            } else {
+                                this.course = data.data.course_name
                             }
                         })
                 },
@@ -120,9 +153,8 @@
             },
             created: function() {
                 // on Vue instance created, load the created list
-                console.log(this.$route.query.id)
-
-                this.getCourseList();
+                this.getClassList();
+                this.getCourse();
             }
         });
     </script>
