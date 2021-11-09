@@ -5,12 +5,8 @@ backend:
   
     build:
       commands:
-        - virtualenv sqlalchemy-workspace
-        - cd sqlalchemy-workspace
-        - source bin/activat
-        - pip install -r requirements.txt 
-    
-
+        - npm install -g @aws-amplify/cli --unsafe-perm=true
+   
 
 frontend: 
   phases:
@@ -21,7 +17,7 @@ frontend:
     build:
       commands:
       # - npm install
-      # - pip install -r requirements.txt 
+      - yarn install -r requirements.txt 
      
       
       # - npm install -g @aws-amplify/cli python3-flask-sqlalchemy
