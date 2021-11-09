@@ -6,8 +6,7 @@ frontend:
 
 
     build:
-      commands: 
-      - cd /templates
+      commands:       
       - flask run
        
     
@@ -17,5 +16,6 @@ frontend:
     baseDirectory: /
     files:
       - '**/*'
+      - '/templates'
   cache:
     paths: []
