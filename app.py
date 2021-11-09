@@ -318,9 +318,6 @@ def class_by_id(class_id):
             "message": "Class not found."
         }), 404
 
-#retrieve user in class
-@app.route("/classes/<int:class_id>/users")
-def class_by_id_user(class)
 
 #CHAPTER
 #TRAINER - display all chapters for creation of quiz
