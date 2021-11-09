@@ -3,8 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import datetime as dt
 
-from sqlalchemy.sql.elements import Null
-
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://admin:ilovespm88@spm-database.c3izrtomcbks.us-east-2.rds.amazonaws.com:3306/spm_database'
 
@@ -18,7 +16,7 @@ CORS(app)
 class User(db.Model):
     __tablename__ = 'user'
 
-    user_id = db.Column(db.Integer, primary_key=True, auto_increment=True)
+    user_id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(50), nullable=False)
     name = db.Column(db.String(50), nullable=False)
     designation = db.Column(db.String(50), nullable=False)
@@ -36,7 +34,7 @@ class User(db.Model):
 class Course(db.Model):
     __tablename__ = 'course'
 
-    course_id = db.Column(db.Integer, primary_key=True, auto_increment=True)
+    course_id = db.Column(db.Integer, primary_key=True)
     course_name = db.Column(db.String(50), nullable=False)
     archive_date = db.Column(db.Date)
 
@@ -55,7 +53,7 @@ class Course(db.Model):
 class Prerequisites(db.Model):
     __tablename__ = 'prerequisites'
 
-    prereq_id = db.Column(db.Integer, primary_key=True, auto_increment=True)
+    prereq_id = db.Column(db.Integer, primary_key=True)
     course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), nullable=False)
     prereq_course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), nullable=False)
 
@@ -70,7 +68,7 @@ class Prerequisites(db.Model):
 class Class(db.Model):
     __tablename__ = 'class'
 
-    class_id = db.Column(db.Integer, primary_key=True, auto_increment=True)
+    class_id = db.Column(db.Integer, primary_key=True)
     course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), nullable=False)
     trainer_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False) 
     class_name = db.Column(db.String(50), nullable=False)
@@ -93,7 +91,7 @@ class Class(db.Model):
 class Chapter(db.Model):
     __tablename__ = 'chapter'
 
-    chapter_id = db.Column(db.Integer, primary_key=True, auto_increment=True)
+    chapter_id = db.Column(db.Integer, primary_key=True)
     class_id = db.Column(db.Integer, db.ForeignKey('class.class_id'), nullable=False)
     chapter_name = db.Column(db.String(50), nullable=False)
     order = db.Column(db.Integer, nullable=False)
@@ -110,7 +108,7 @@ class Chapter(db.Model):
 class Quiz(db.Model):
     __tablename__ = 'quiz'
 
-    quiz_id = db.Column(db.Integer, primary_key=True, auto_increment=True)
+    quiz_id = db.Column(db.Integer, primary_key=True)
     chapter_id = db.Column(db.Integer, db.ForeignKey('chapter.chapter_id'), nullable=False)
     duration = db.Column(db.Integer, nullable=False)
     graded = db.Column(db.Boolean, nullable=False)
@@ -126,7 +124,7 @@ class Quiz(db.Model):
 class Question(db.Model):
     __tablename__ = 'question'
 
-    question_id = db.Column(db.Integer, primary_key=True, auto_increment=True)
+    question_id = db.Column(db.Integer, primary_key=True)
     quiz_id = db.Column(db.Integer, db.ForeignKey('quiz.quiz_id'), nullable=False)
     question = db.Column(db.String(250), nullable=False)
     marks = db.Column(db.Integer, nullable=False)
@@ -193,7 +191,7 @@ class Options(db.Model):
 class CourseProgression(db.Model):
     __tablename__ = 'course_progression'
 
-    cc_id = db.Column(db.Integer, primary_key=True, auto_increment=True)
+    cc_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
     course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), nullable=False)    
     class_id = db.Column(db.Integer, db.ForeignKey('class.class_id'), nullable=False)
@@ -223,6 +221,7 @@ def hr_index():
 @app.route("/HRadmin/Courselist")
 def hr_list():
     return render_template('HRadmin/courselist.html')
+    
 #USER
 #display all users
 @app.route("/users")
@@ -775,7 +774,6 @@ def enroll(course_id, class_id, user_id):
         return jsonify({
             "message": "Learner has already enrolled into the course."
         }), 200
-
 
 
 if __name__ == '__main__':
