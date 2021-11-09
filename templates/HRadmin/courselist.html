@@ -16,16 +16,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
     <!-- Latest compiled and minified JavaScript -->
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous">
     </script>
 
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -43,11 +46,11 @@
     <div>
         <nav class="navbar navbar-dark bg-primary">
             <a class="navbar-brand" href="/">
-            All in One
-          </a>
+                All in One
+            </a>
             <span class="navbar-text">
-            Admin Account
-          </span>
+                Admin Account
+            </span>
         </nav>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -81,22 +84,23 @@
                 </div>
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Manage
-        </button>
+                    Manage
+                </button>
             </li>
 
 
             <li class="list-group-item d-flex justify-content-between align-items-start">
                 <div class="ms-2 me-auto">
                     <div class="fw-bold">Printing Solutions 201</div>
-                    This course will teach learners how to be an engineer product knowledge and skills to troubleshoot the different copiers, printers, and printing solutions…<br>
+                    This course will teach learners how to be an engineer product knowledge and skills to troubleshoot
+                    the different copiers, printers, and printing solutions…<br>
                     <span class="badge bg-primary rounded-pill">12 Oct to 9 Nov</span>
                 </div>
                 <!-- Button trigger modal -->
                 <a href="3.2classlist.html">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Manage
-            </button>
+                        Manage
+                    </button>
                 </a>
 
             </li>
@@ -110,8 +114,8 @@
                 </div>
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Manage
-        </button>
+                    Manage
+                </button>
             </li>
         </ol>
     </div>
@@ -129,26 +133,42 @@
             </thead>
             <tbody>
                 <tr v-for="course in courses">
-                    <td><strong>#{{ course.course_id }}</strong></td>
+                    <td><strong>{{ course.course_id }}</strong></td>
                     <td>{{ course.course_name }}</td>
                     <td>{{ course.archive_date }}</td>
                 </tr>
             </tbody>
         </table>
     </div>
+
+
     <script>
+        var get_url = "http://127.0.0.1:5000/courses"
+
         var vm = new Vue({
             el: '#main-container',
             data: {
-                courses: []
+                courses: {},
+                message: '',
             },
-            mounted: function() {
-                axios.get('http://127.0.0.1:5000/courses')
-                    .then(response => {
-                        this.courses = response.data;
-                        coosole.log(this.courses);
-                    })
-                    .catch(error => alert(error));
+            methods: {
+                getCourseList: function () {
+                    const response =
+                        fetch(get_url)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(response);
+                            if (data.code === 404) {
+                                this.message = data.message
+                            } else {
+                                this.courses = data.data
+                            }
+                        })
+                }
+            },
+            created: function () {
+                // on Vue instance created, load the created list
+                this.getCourseList();
             }
         });
     </script>
