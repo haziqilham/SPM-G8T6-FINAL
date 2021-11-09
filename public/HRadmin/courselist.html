@@ -8,7 +8,7 @@
 
     <title>Home</title>
 
-    <link rel="stylesheet" href="/static/assets/adminstlye.css">
+    <link rel="stylesheet" href="../../static/assets/adminstlye.css">
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -16,19 +16,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
     <!-- Latest compiled and minified JavaScript -->
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
-        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous">
     </script>
 
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
-        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -45,7 +42,7 @@
 <body>
     <div>
         <nav class="navbar navbar-dark bg-primary">
-            <a class="navbar-brand" href="/">
+            <a class="navbar-brand" href="../index.html">
                 All in One
             </a>
             <span class="navbar-text">
@@ -75,34 +72,29 @@
     <!--CURRENT COURSES-->
     <div class='container' id='courses'>
         <h3 class='my-3'>Current Courses </h3>
+
         <ol class="list-group list-group-numbered">
+            <!--
             <li class="list-group-item d-flex justify-content-between align-items-start">
                 <div class="ms-2 me-auto">
                     <div class="fw-bold">Fundamentals of Engineering 101</div>
                     This course will teach learners how to be an engineer… <br>
                     <span class="badge bg-primary rounded-pill">12 Oct to 9 Nov</span>
                 </div>
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button type="button" class="btn btn-primary">
                     Manage
                 </button>
             </li>
 
-
             <li class="list-group-item d-flex justify-content-between align-items-start">
                 <div class="ms-2 me-auto">
                     <div class="fw-bold">Printing Solutions 201</div>
-                    This course will teach learners how to be an engineer product knowledge and skills to troubleshoot
-                    the different copiers, printers, and printing solutions…<br>
+                    This course will teach learners how to be an engineer product knowledge and skills to troubleshoot the different copiers, printers, and printing solutions…<br>
                     <span class="badge bg-primary rounded-pill">12 Oct to 9 Nov</span>
                 </div>
-                <!-- Button trigger modal -->
-                <a href="3.2classlist.html">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button type="button" class="btn btn-primary">
                         Manage
-                    </button>
-                </a>
-
+                </button>
             </li>
 
             <li class="list-group-item d-flex justify-content-between align-items-start">
@@ -110,49 +102,70 @@
                     <div class="fw-bold">Course 3</div>
                     This course is about XXX <br>
                     <span class="badge bg-primary rounded-pill">12 Oct to 9 Nov</span>
-
                 </div>
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button type="button" class="btn btn-primary">
                     Manage
                 </button>
             </li>
+        -->
+
+            <li v-for="course in courses" class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                    <span class="badge bg-primary rounded-pill">{{ course.course_id}}</span>
+                    <div class="fw-bold">{{ course.course_name }}</div>
+                    <span class="badge bg-warning rounded-pill">{{ course.archive_date}}</span>
+                </div>
+                <a href="http://127.0.0.1:5000/courses/">click</a>
+                <button type=" button " class="btn btn-primary ">
+                    Manage
+                </button>
+            </li>
+
         </ol>
     </div>
-    <div id="main-container" class="container">
 
-        <h1 class="display-4">View Courses Records</h1>
 
-        <table id="consultationsTable" class='table table-striped' border='1'>
+
+
+
+
+    <!--
+    <div id="main-container " class="container " id='courses'>
+
+        <table id="consultationsTable " class='table table-striped' border='1'>
             <thead class='thead-dark'>
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
                     <th>Date</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="course in courses">
+                <tr v-for="course in courses ">
                     <td><strong>{{ course.course_id }}</strong></td>
                     <td>{{ course.course_name }}</td>
                     <td>{{ course.archive_date }}</td>
+                    <td> <button type="button " class="btn btn-primary " data-bs-toggle="modal " data-bs-target="#exampleModal ">
+                        Manage
+                    </button></td>
                 </tr>
             </tbody>
         </table>
     </div>
-
+    -->
 
     <script>
-        var get_url = "http://127.0.0.1:5000/courses"
+        var get_url = "http://127.0.0.1:5000/courses "
 
         var vm = new Vue({
-            el: '#main-container',
+            el: '#courses',
             data: {
                 courses: {},
                 message: '',
             },
             methods: {
-                getCourseList: function () {
+                getCourseList: function() {
                     const response =
                         fetch(get_url)
                         .then(response => response.json())
@@ -166,9 +179,22 @@
                         })
                 }
             },
-            created: function () {
+            created: function() {
                 // on Vue instance created, load the created list
                 this.getCourseList();
+            }
+        });
+    </script>
+
+    <script>
+        window.addEventListener("click", function(e) {
+            e.preventDefault();
+            var href = e.target.getAttribute("href");
+            console.log(href);
+            if (href) {
+                href = href + "1";
+                console.log(href);
+                location.href = href;
             }
         });
     </script>
