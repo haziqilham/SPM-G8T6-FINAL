@@ -283,21 +283,31 @@ def course_by_id(course_id):
 #display courses user is enrolled in
 @app.route("/courses/users/<int:user_id>")
 def course_by_user(user_id):
-    userclass = CourseProgression.query.filter_by(user_id=user_id, status="enrolled" or "ongoing").all()
-    if userclass:
-        coursedict = []
-        for uclass in userclass:
-            courseinfo = Course.query.filter_by(course_id=uclass.course_id)
-            coursedict.append(courseinfo)
-    
-        return jsonify({
-            "data": [course.to_dict() for course in coursedict]
-        }), 200
+    userclass = CourseProgression.query.filter(user_id=user_id).filter(status = 'ongoing' | 'enrolled').all()
 
+    if userclass:
+        return jsonify({
+            "data": [uclass.to_dict() for uclass in userclass]
+        }), 200
     else:
         return jsonify({
-            "message": "You are not enrolled in any course at the moment."
+            "message": "There are no courses found."
         }), 404
+
+    #if userclass:
+    #    coursedict = []
+    #    for uclass in userclass:
+    #        courseinfo = Course.query.filter_by(course_id=uclass.course_id)
+    #        coursedict.append(courseinfo)
+    
+    #    return jsonify({
+    #        "data": [course.to_dict() for course in coursedict]
+    #    }), 200
+
+    #else:
+    #    return jsonify({
+    #       "message": "You are not enrolled in any course at the moment."
+    #    }), 404
 
 
 #CLASS
