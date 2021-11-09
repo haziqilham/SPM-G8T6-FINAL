@@ -107,7 +107,7 @@
                         <div class="fw-bold">{{ c.course_name }}</div>
                         <span class="badge bg-warning rounded-pill">{{ c.archive_date}}</span>
                     </div>
-                    <button type="button" class="btn btn-primary" v-on:click="nextPage(course.course_id)">
+                    <button type="button" class="btn btn-primary" v-on:click="nextPage(c.course_id)">
                 Enroll
             </button>
                 </li>
@@ -224,7 +224,7 @@
         const vm = new Vue({
             el: '#users',
             data: {
-                selected: '',
+                selected: "",
                 options: [],
                 courses: {},
                 ncourses: {}
@@ -277,6 +277,11 @@
                                 this.ncourses = data.data
                             }
                         })
+                },
+                nextPage: function(id) {
+                    //console.log(this.selected);
+                    //console.log(id);
+                    location.href = './coursePage.html?uid=' + this.selected + '&cid=' + id;
                 }
             },
             created: function() {
