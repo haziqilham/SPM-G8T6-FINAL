@@ -207,7 +207,7 @@ class CourseProgression(db.Model):
             result[column] = getattr(self, column)
         return result
     
-db.create_all()
+#db.create_all()
 
 #base render home page
 @app.route("/")
@@ -278,7 +278,7 @@ def course_by_id(course_id):
 
 #display courses user is enrolled in
 @app.route("/courses/<int:user_id>")
-def class_by_user(user_id):
+def course_by_user(user_id):
     userclass = CourseProgression.query.filter_by(user_id=user_id, status="enrolled" or "ongoing").all()
     if userclass:
         coursedict = []
