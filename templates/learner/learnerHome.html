@@ -38,7 +38,7 @@
   <!-- NAV BAR-->
   <div>
     <nav class="navbar navbar-dark bg-primary">
-      <a class="navbar-brand mx-auto" href="#">
+      <a class="navbar-brand mx-auto" href="../../index.html">
         All in One
       </a>
       <!-- Navigation TO OTHER ACCOUNTS-->
@@ -75,14 +75,13 @@
   <!-- ENROLLED COURSES-->
   <div class='container' id = 'enrolled'>
     <h3 class='my-3'> Courses Enrolled </h3>
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="row row-cols-1 row-cols-md-3 g-4" v-for="course in enrolled">
       <div class="col">
         <div class="card">
           <img src="../../static/assets/printer.jpeg" class="card-img-top center" alt="...">
           <div class="card-body">
-            <h5 class="card-title">Course Name</h5>
-            <p class="card-text">This is a course is about.... printer printer printer. Lorem ipsum with supporting text
-              below as a natural lead-in to additional</p>
+            <h5 class="card-title">#{{ record.id }}</h5>
+            <p class="card-text">{{ record.name }}</p>
             <a class="btn btn-primary" href="./coursePage.html" role="button">Enter Course</a>
           </div>
         </div>
@@ -176,6 +175,23 @@
   </div>
 
   <script>
+    const vm = new Vue({
+      el: '#enrolled',
+      data: {
+        user_id = "",
+        enrolled: []
+      },
+      mounted: function(){
+        axios.get('/courses/' + this.user_id)
+          .then(response => {
+              this.enrolled = response.data.data;
+          })
+          .catch(error => alert(error));
+      }
+    })
+
+
+
     var myModal = document.getElementById('myModal')
     var myInput = document.getElementById('myInput')
 
