@@ -295,6 +295,7 @@ def course_by_user(user_id):
 def classes_by_course(course_id):
     #to implement order by start date
     classes = Class.query.filter_by(course_id=course_id).all()
+
     if classes:
         return jsonify({
             "data": [oneclass.to_dict() for oneclass in classes]
