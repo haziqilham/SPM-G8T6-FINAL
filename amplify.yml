@@ -5,6 +5,9 @@ backend:
   
     build:
       commands:
+        - virtualenv sqlalchemy-workspace
+        - cd sqlalchemy-workspace
+        - source bin/activat
         - pip install -r requirements.txt 
     
 
