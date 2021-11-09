@@ -298,6 +298,29 @@ def course_by_user(user_id):
            "message": "You are not enrolled in any course at the moment."
         }), 404
 
+#display courses user is enrolled in
+@app.route("/not/courses/users/<int:user_id>")
+def not_course_by_user(user_id):
+    courses = Course.query.filter_by(archive_date=None).all()
+    userclass = CourseProgression.query.filter_by(user_id=user_id).filter_by(status = 'ongoing' or 'enrolled').all()
+    if userclass:
+        coursedict = []
+        for uclass in userclass:
+            courseinfo = Course.query.filter_by(course_id=uclass.course_id).first()
+            coursedict.append(courseinfo)
+        
+        finaldict = []
+        for c in courses:
+            if c not in coursedict:
+                finaldict.append(c)
+
+        return jsonify({
+            "data": [final.to_dict() for final in finaldict]
+        }), 200
+    else:
+        return jsonify({
+            "data": [course.to_dict() for course in courses]
+        }), 200
 
 #CLASS
 #display all classes
