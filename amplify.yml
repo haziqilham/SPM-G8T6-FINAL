@@ -46,7 +46,7 @@ frontend:
       
   artifacts:
     # IMPORTANT - Please verify your build output directory
-    baseDirectory: /src/templates
+    baseDirectory: /templates
     files:
       - '**/*'
       # - '/templates'
