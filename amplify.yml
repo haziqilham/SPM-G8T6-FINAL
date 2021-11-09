@@ -31,7 +31,7 @@ frontend:
 
     build:
       commands:
-        cd /templates
+        # cd /templates
       # - npm install
       # - yarn install -r requirements.txt 
      
@@ -46,10 +46,10 @@ frontend:
       
   artifacts:
     # IMPORTANT - Please verify your build output directory
-    baseDirectory: /
+    baseDirectory: /templates 
     files:
       - '**/*'
-      - '/templates'
-      - 'requirements.txt'
+      # - '/templates'
+      # - 'requirements.txt'
   cache:
     paths: []
