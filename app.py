@@ -40,12 +40,18 @@ class Course(db.Model):
     course_name = db.Column(db.String(50), nullable=False)
     archive_date = db.Column(db.Date)
 
+    def __init__(self, course_id, course_name, archive_date):   
+        self.course_id = course_id
+        self.course_name = course_name
+        self.archive_date = archive_date
+
     def to_dict(self):
         columns = self.__mapper__.column_attrs.keys()
         result = {}
         for column in columns:
             result[column] = getattr(self, column)
-        return result    
+        return result
+    
 
 #TO BE DECIDED - replace as app routing? or leave it
     #def archivecourse(self):
@@ -222,7 +228,7 @@ def hr_index():
 
 @app.route("/HRadmin/Courselist")
 def hr_list():
-    return render_template('HRadmin/courselist.html')
+    return render_template('HRadmin/courselist.html', courses = Course.query.all())
 #USER
 #display all users
 @app.route("/users")
