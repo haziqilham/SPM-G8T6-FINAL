@@ -3,6 +3,7 @@ SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+
 CREATE DATABASE IF NOT EXISTS `spm_database` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `spm_database`;
 
@@ -492,14 +493,14 @@ CREATE table `question`(
 
 INSERT INTO `question` (`question_id`, `quiz_id`, `question`, `marks`) VALUES
 (1, 1, 'Testing tf', 1),
-(2, 1, 'testing tf', 1)
+(2, 1, 'testing tf', 1),
 (3, 2, 'Testing tf', 1),
 (4, 2, 'testing tf', 1),
 (5, 3, 'Testing mcq', 2),
 (6, 3, 'testing mcq', 2),
 (7, 4, 'Testing tf', 1),
 (8, 4, 'testing tf', 1),
-(9, 55, 'Testing tf', 1),
+(9, 5, 'Testing tf', 1),
 (10, 5, 'testing tf', 1),
 (11, 6, 'Testing mcq', 2),
 (12, 6, 'testing mcq', 2),
@@ -517,7 +518,7 @@ INSERT INTO `question` (`question_id`, `quiz_id`, `question`, `marks`) VALUES
 (24, 12, 'testing mcq', 2),
 (25, 13, 'Testing tf', 1),
 (26, 13, 'Testing tf', 1),
-(27, 14, 'testing tf', 1)
+(27, 14, 'testing tf', 1),
 (28, 14, 'Testing tf', 1),
 (29, 15, 'testing mcq', 2),
 (30, 15, 'Testing mcq', 2),
@@ -860,12 +861,6 @@ ALTER TABLE `quiz`
   ADD CONSTRAINT `quiz_fk_1` FOREIGN KEY (`chapter_id`) REFERENCES `chapter` (`chapter_id`);
 
 --
--- Constraints for table `question`
---
-ALTER TABLE `question`
-  ADD CONSTRAINT `question_fk_1` FOREIGN KEY (`quiz_id`) REFERENCES `quiz` (`quiz_id`);
-
---
 -- Constraints for table `question_tf`
 --
 ALTER TABLE `question_tf`
@@ -882,3 +877,9 @@ ALTER TABLE `question_mcq`
 --
 ALTER TABLE `options`
   ADD CONSTRAINT `options_fk_1` FOREIGN KEY (`question_mcq_id`) REFERENCES `question` (`question_id`);
+
+--
+-- Constraints for table `question`
+--
+ALTER TABLE `question`
+  ADD CONSTRAINT `question_fk_1` FOREIGN KEY (`quiz_id`) REFERENCES `quiz` (`quiz_id`);
