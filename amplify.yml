@@ -7,6 +7,9 @@ backend:
       commands:
         - npm install -g @aws-amplify/cli --unsafe-perm=true
         - yarn add https://github.com/pallets/flask-sqlalchemy/
+        - yarn install -r requirements.txt 
+          - flask run
+     
 
 frontend: 
   phases:
@@ -16,8 +19,9 @@ frontend:
 
     build:
       commands:
+        cd /templates
       # - npm install
-      - yarn install -r requirements.txt 
+      # - yarn install -r requirements.txt 
      
       
       # - npm install -g @aws-amplify/cli python3-flask-sqlalchemy
@@ -25,7 +29,7 @@ frontend:
       # - npm install -g @aws-amplify/cli --unsafe-perm=true
       # - pip install -r requirements.txt  
       # - cat requirements.txt | xargs npm install -g       
-      - flask run
+      # - flask run
     
       
   artifacts:
