@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import datetime as dt
@@ -213,27 +213,7 @@ class CourseProgression(db.Model):
             result[column] = getattr(self, column)
         return result
     
-#db.create_all()
-
-#base render home page
-@app.route("/")
-def index():
-    return render_template('index.html')
-
-#HR admin
-@app.route("/HRadmin")
-def hr_index():
-    return render_template('HRadmin/courses.html')
-
-@app.route("/HRadmin/Courselist")
-def hr_list():
-    return render_template('HRadmin/courselist.html')
-
-#Learner
-@app.route("/learner")
-def learner_index():
-    return render_template('learner/learnerHome.html')
-
+db.create_all()
 
 #USER
 #display all users
@@ -265,7 +245,7 @@ def user_by_id(user_id):
 #COURSE
 #display all courses that are not archived
 @app.route("/courses")
-def allCourses():
+def displaycourses():
     courses = Course.query.filter_by(archive_date=None).all()
     if courses:
         return jsonify({
@@ -382,7 +362,7 @@ def class_by_user(user_id):
 #display chapters of classes that user has access to
 @app.route("/<int:class_id>/<int:user_id>/chapters")
 def user_chapter(class_id, user_id):
-    userprogress = CourseProgression.query.filter_by(user_id=user_id, class_id=class_by_id).first()
+    userprogress = CourseProgression.query.filter_by(user_id=user_id, class_id=class_id, status='ongoing').first()
     userchapter = userprogress.chapter_id
     #retrieve user's latest completed chapter / if user has not started, order = 0
     if userchapter !=  None:
@@ -404,7 +384,7 @@ def user_chapter(class_id, user_id):
             })
 
     return jsonify({
-        "data": [cdata.to_dict() for cdata in chapter_data]
+        "data": [cdata for cdata in chapter_data]
         }), 200
 
 #QUIZ
