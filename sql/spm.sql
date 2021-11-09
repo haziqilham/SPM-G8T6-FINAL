@@ -216,35 +216,35 @@ CREATE table IF NOT EXISTS `class`(
 --
 
 INSERT INTO `class` (`class_id`, `course_id`, `trainer_id`, `class_name`, `capacity`, `start_DateTime`, `end_DateTime`, `start_enrollment`, `end_enrollment`) VALUES
---course 1
+-- course1
 -- started class
 (1, 1, 2, 'class 1', 20, '2021-08-17 12:00:00','2021-12-23 15:15:00','2021-07-10 00:00:00','2021-08-16 00:00:00'),
 -- enrollment period open
 (2, 1, 3, 'class 2', 20, '2021-12-13 12:00:00','2021-12-23 15:15:00','2021-07-10 00:00:00','2021-12-12 00:00:00'),
---course 2
+-- course 2
 -- started class
 (3, 2, 4, 'class 1', 20, '2021-08-17 12:00:00','2021-12-23 15:15:00','2021-07-10 00:00:00','2021-08-16 00:00:00'),
 -- ended class
 (4, 2, 5, 'class 2', 20, '2021-07-10 12:00:00','2021-09-10 15:15:00','2021-05-10 00:00:00','2021-07-09 00:00:00'),
---course 3
+-- course 3
 -- enrollment period open
 (5, 3, 6, 'class 1', 15, '2021-12-13 12:00:00','2021-12-23 15:15:00','2021-07-10 00:00:00','2021-12-12 00:00:00'),
 -- started class
 (6, 3, 7, 'class 2', 15, '2021-09-17 15:30:00','2021-11-23 18:45:00','2021-07-10 00:00:00','2021-09-15 00:00:00'),
---course 4
+-- course 4
 -- class is full
 (7, 4, 8, 'class 1', 2, '2021-12-13 12:00:00','2021-12-23 15:15:00','2021-07-10 00:00:00','2021-12-12 00:00:00'),
 -- enrollment period open
 (8, 4, 9, 'class 2', 20, '2021-11-29 08:15:00','2021-12-20 11:30:00','2021-09-10 00:00:00','2021-11-28 00:00:00'),
---course 5
+-- course 5
 -- ended class
 (9, 5, 10, 'class 1', 10, '2021-07-10 12:00:00','2021-09-10 15:15:00','2021-05-10 00:00:00','2021-07-09 00:00:00'),
 -- ended class
 (10, 5, 11, 'class 2', 10, '2021-07-10 12:00:00','2021-09-10 15:15:00','2021-05-10 00:00:00','2021-07-09 00:00:00'),
---course 6
+-- course 6
 -- ended class
 (11, 6, 11, 'class 1', 20, '2021-07-10 12:00:00','2021-09-10 15:15:00','2021-05-10 00:00:00','2021-07-09 00:00:00'),
---course 1 
+-- course 1 
 -- ended class
 (12, 1, 5, 'class 2', 20, '2021-07-10 12:00:00','2021-09-10 15:15:00','2021-05-10 00:00:00','2021-07-09 00:00:00');
 
@@ -329,7 +329,7 @@ CREATE table `course_progression`(
 --
 
 INSERT INTO `course_progression` (`cc_id`, `user_id`, `course_id`, `class_id`, `chapter_id`, `status`, `completion_date`, `score`) VALUES
---course 1 prereq for course_id 2, 3
+-- course 1 prereq for course_id 2, 3
 (1, 12, 1, 1, 2, 'ongoing', NULL, NULL),
 (2, 13, 1, 1, 1, 'ongoing', NULL, NULL),
 (3, 14, 1, 12, 3, 'completed', '2021-09-02 00:00:00', 80),
@@ -338,20 +338,20 @@ INSERT INTO `course_progression` (`cc_id`, `user_id`, `course_id`, `class_id`, `
 (6, 17, 1, 12, 3, 'failed', '2021-09-02 00:00:00', 30),
 (7, 18, 1, 12, 3, 'completed', '2021-09-02 00:00:00', 70),
 (8, 19, 1, 12, 3, 'completed', '2021-09-02 00:00:00', 90),
---course 2 prereq for course 3 only user_id= 19 can enroll
+-- course 2 prereq for course 3 only user_id= 19 can enroll
 (9, 14, 2, 3, 0, 'ongoing', NULL, NULL),
 (10, 15, 2, 4, 3, 'completed', '2021-09-02 00:00:00', 80),
 (11, 18, 2, 4, 3, 'completed', '2021-09-02 00:00:00', 90),
---course 3 only user_id= 15,18 can enroll
+-- course 3 only user_id= 15,18 can enroll
 (12, 15, 3, 6, 1, 'ongoing', NULL, NULL),
 --course 4 class 7 is full, all can enroll
 (13, 15, 4, 7, 0, 'enrolled', NULL, NULL),
 (14, 20, 4, 7, 0, 'enrolled', NULL, NULL),
---course 5 ended already
+-- course 5 ended already
 (15, 28, 5, 9, 3, 'completed', '2021-09-02 00:00:00', 80),
 (16, 27, 5, 9, 3, 'completed', '2021-09-02 00:00:00', 90),
 (17, 24, 5, 10, 3, 'completed', '2021-09-02 00:00:00', 80),
---course 6 ended already
+-- course 6 ended already
 (18, 29, 6, 11, 3, 'completed', '2021-09-02 00:00:00', 80),
 (19, 22, 6, 11, 3, 'completed', '2021-09-02 00:00:00', 90),
 (20, 23, 6, 11, 3, 'completed', '2021-09-02 00:00:00', 80);
@@ -375,38 +375,38 @@ CREATE table `quiz`(
 --
 
 INSERT INTO `quiz` (`quiz_id`, `chapter_id`, `duration`, `graded`, `passing_mark`) VALUES
---class 1 started class
+-- class 1 started class
 (1, 1, 10, 0, NULL),
 (2, 2, 20, 0, NULL),
 (3, 3, 30, 1, 50),
---class 2 enrollment period open
+-- class 2 enrollment period open
 (4, 4, 10, 0, NULL),
---class 3 started class
+-- class 3 started class
 (5, 7, 10, 0, NULL),
 (6, 8, 20, 0, NULL),
 (7, 9, 30, 1, 60),
---class 4 ended class
+-- class 4 ended class
 (8, 10, 10, 0, NULL),
 (9, 11, 20, 0, NULL),
 (10, 12, 30, 1, 50),
---class 5 enrollment period open
+-- class 5 enrollment period open
 (11, 13, 10, 0, NULL),
 (12, 14, 20, 0, NULL),
---class 6 started class
+-- class 6 started class
 (13, 16, 10, 0, NULL),
 (14, 17, 20, 0, NULL),
 (15, 18, 30, 1, 50),
---class 7 class is full
+-- class 7 class is full
 (16, 19, 10, 0, NULL),
 (17, 20, 20, 0, NULL),
 (18, 21, 30, 1, 50),
---class 8 enrollment period open
+-- class 8 enrollment period open
 (19, 22, 10, 0, NULL),
---class 9 ended
+-- class 9 ended
 (20, 25, 10, 0, NULL),
 (21, 26, 20, 0, NULL),
 (22, 27, 30, 1, 50),
---class 10 ended
+-- class 10 ended
 (23, 28, 10, 0, NULL),
 (24, 29, 20, 0, NULL),
 (25, 30, 30, 1, 50);
@@ -508,66 +508,66 @@ CREATE table `question`(
 --
 
 INSERT INTO `question` (`question_id`, `quiz_id`, `question`, `marks`) VALUES
---quiz 1
+-- quiz 1
 (1, 1, 'Is it true that sharks have bones?', 10),
 (2, 1, 'Which of the following is correct?', 10),
---quiz 2
+-- quiz 2
 (3, 2, 'Is it true that sharks have bones?', NULL),
 (4, 2, 'Which of the following is correct?', NULL),
---quiz 3
+-- quiz 3
 (5, 3, 'Is it true that sharks have bones?', 30),
 (6, 3, 'Which of the following is correct?', 30),
 (7, 3, 'Which of the following is wrong?', 40),
---quiz 4
+-- quiz 4
 (8, 4, 'Is it true that sharks have bones?', 30),
 (9, 4, 'Which of the following is wrong?', 40),
---quiz 5
+-- quiz 5
 (10, 5, 'Is it true that sharks have bones?', 10),
 (11, 5, 'Which of the following is correct?', 10),
---quiz 6
+-- quiz 6
 (12, 6, 'Is it true that sharks have bones?', NULL),
 (13, 6, 'Which of the following is correct?', NULL),
---quiz 7
+-- quiz 7
 (14, 7, 'Is it true that sharks have bones?', 30),
 (15, 7, 'Which of the following is correct?', 30),
 (16, 7, 'Which of the following is wrong?', 40),
---quiz 8
+-- quiz 8
 (17, 8, 'Is it true that sharks have bones?', 10),
 (18, 8, 'Which of the following is correct?', 10),
---quiz 9
+-- quiz 9
 (19, 9, 'Is it true that sharks have bones?', NULL),
 (20, 9, 'Which of the following is correct?', NULL),
---quiz 10
+-- quiz 10
 (21, 10, 'Is it true that sharks have bones?', 30),
 (22, 10, 'Which of the following is correct?', 30),
 (23, 10, 'Which of the following is wrong?', 40),
---quiz 11
+-- quiz 11
 (24, 11, 'Is it true that sharks have bones?', 10),
 (25, 11, 'Which of the following is correct?', 10),
---quiz 12
+-- quiz 12
 (26, 12, 'Is it true that sharks have bones?', NULL),
 (27, 12, 'Which of the following is correct?', NULL),
---quiz 13
+-- quiz 13
 (28, 13, 'Is it true that sharks have bones?', 10),
 (29, 13, 'Which of the following is correct?', 10),
---quiz 14
+-- quiz 14
 (30, 14, 'Is it true that bananas have mouths?', NULL),
 (31, 14, 'Which of the following is correct?', NULL),
---quiz 15
+-- quiz 15
 (32, 15, 'Is it true that bananas have mouths?', 30),
 (33, 15, 'Which of the following is correct?', 30),
 (34, 15, 'Which of the following is wrong?', 40),
---quiz 16
+-- quiz 16
 (35, 16, 'Is it true that bananas have mouths?', 10),
 (36, 16, 'Which of the following is correct?', 10),
---quiz 17
+-- quiz 17
 (37, 17, 'Is it true that bananas have mouths?', NULL),
 (38, 17, 'Which of the following is correct?', NULL),
---quiz 18
+-- quiz 18
 (39, 18, 'Is it true that bananas have mouths?', 30),
 (40, 18, 'Which of the following is correct?', 30),
 (41, 18, 'Which of the following is wrong?', 40),
---quiz 19
+-- quiz 19
 (42, 19, 'Is it true that bananas have mouths?', NULL),
 (43, 19, 'Which of the following is correct?', NULL);
 
