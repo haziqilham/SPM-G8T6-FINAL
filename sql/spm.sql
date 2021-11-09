@@ -318,7 +318,7 @@ CREATE table `course_progression`(
     `user_id` INT(11) NOT NULL,
     `course_id` INT(11) NOT NULL,
     `class_id` INT(11) NOT NULL,
-    `chapter_id` INT(11) NOT NULL,
+    `chapter_id` INT(11) NULL,
     `status` VARCHAR(50) NOT NULL,
     `completion_date` DATETIME NULL,
     `score` INT NULL
@@ -334,19 +334,19 @@ INSERT INTO `course_progression` (`cc_id`, `user_id`, `course_id`, `class_id`, `
 (2, 13, 1, 1, 1, 'ongoing', NULL, NULL),
 (3, 14, 1, 12, 3, 'completed', '2021-09-02 00:00:00', 80),
 (4, 15, 1, 12, 3, 'completed', '2021-09-02 00:00:00', 80),
-(5, 16, 1, 2, 0, 'enrolled', NULL, NULL),
+(5, 16, 1, 2, NULL, 'enrolled', NULL, NULL),
 (6, 17, 1, 12, 3, 'failed', '2021-09-02 00:00:00', 30),
 (7, 18, 1, 12, 3, 'completed', '2021-09-02 00:00:00', 70),
 (8, 19, 1, 12, 3, 'completed', '2021-09-02 00:00:00', 90),
 -- course 2 prereq for course 3 only user_id= 19 can enroll
-(9, 14, 2, 3, 0, 'ongoing', NULL, NULL),
+(9, 14, 2, 3, NULL, 'ongoing', NULL, NULL),
 (10, 15, 2, 4, 3, 'completed', '2021-09-02 00:00:00', 80),
 (11, 18, 2, 4, 3, 'completed', '2021-09-02 00:00:00', 90),
 -- course 3 only user_id= 15,18 can enroll
 (12, 15, 3, 6, 1, 'ongoing', NULL, NULL),
 -- course 4 class 7 is full, all can enroll
-(13, 15, 4, 7, 0, 'enrolled', NULL, NULL),
-(14, 20, 4, 7, 0, 'enrolled', NULL, NULL),
+(13, 15, 4, 7, NULL, 'enrolled', NULL, NULL),
+(14, 20, 4, 7, NULL, 'enrolled', NULL, NULL),
 -- course 5 ended already
 (15, 28, 5, 9, 3, 'completed', '2021-09-02 00:00:00', 80),
 (16, 27, 5, 9, 3, 'completed', '2021-09-02 00:00:00', 90),
