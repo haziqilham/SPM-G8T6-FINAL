@@ -7,8 +7,9 @@ frontend:
 
     build:
       commands: 
+      - cd /templates
       - flask run
-       - cd /templates
+       
     
       
   artifacts:
