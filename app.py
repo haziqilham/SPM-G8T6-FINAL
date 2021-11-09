@@ -362,7 +362,7 @@ def class_by_user(user_id):
 #display chapters of classes that user has access to
 @app.route("/<int:class_id>/<int:user_id>/chapters")
 def user_chapter(class_id, user_id):
-    userprogress = CourseProgression.query.filter_by(user_id=user_id, class_id=class_by_id).first()
+    userprogress = CourseProgression.query.filter_by(user_id=user_id, class_id=class_id, status='ongoing').first()
     userchapter = userprogress.chapter_id
     #retrieve user's latest completed chapter / if user has not started, order = 0
     if userchapter !=  None:
@@ -384,7 +384,7 @@ def user_chapter(class_id, user_id):
             })
 
     return jsonify({
-        "data": [cdata.to_dict() for cdata in chapter_data]
+        "data": [cdata for cdata in chapter_data]
         }), 200
 
 #QUIZ
