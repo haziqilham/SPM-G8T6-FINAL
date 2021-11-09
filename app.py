@@ -290,11 +290,11 @@ def course_by_user(user_id):
 
 
 #CLASS
-#display all classes from the course
-@app.route("/classes")
-def classes_by_course():
+#display all classes
+@app.route("/<int:course_id>/classes")
+def classes_by_course(course_id):
     #to implement order by start date
-    classes = Class.query.all()
+    classes = Class.query.filter_by(course_id=course_id).all()
     if classes:
         return jsonify({
             "data": [oneclass.to_dict() for oneclass in classes]
@@ -304,6 +304,7 @@ def classes_by_course():
             "message": "This course has no classes yet."
         }), 404
 
+        
 #display class info by class id
 @app.route("/classes/<int:class_id>")
 def class_by_id(class_id):
@@ -317,6 +318,9 @@ def class_by_id(class_id):
             "message": "Class not found."
         }), 404
 
+#retrieve user in class
+@app.route("/classes/<int:class_id>/users")
+def class_by_id_user(class)
 
 #CHAPTER
 #TRAINER - display all chapters for creation of quiz
