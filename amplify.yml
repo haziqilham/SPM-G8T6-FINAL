@@ -9,7 +9,8 @@ frontend:
       commands:
       # - npm install
       # - pip install -r requirements.txt 
-      - cat requirements.txt | xargs npm install -g       
+      - npm install -g @aws-amplify/cli --unsafe-perm=true
+      # - cat requirements.txt | xargs npm install -g       
       - flask run 
     
       
