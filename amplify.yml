@@ -15,7 +15,7 @@ frontend:
       # - yum install python-flask-sqlalchemy
       - npm install -g @aws-amplify/cli --unsafe-perm=true
       # - cat requirements.txt | xargs npm install -g       
-      - flask run @aws-amplify/cli 
+      - flask run
     
       
   artifacts:
