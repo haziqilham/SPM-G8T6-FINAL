@@ -188,6 +188,7 @@
 
     <script>
         var get_url = "http://127.0.0.1:5000/users"
+        var get_enrolled_url = "http://127.0.0.1:5000/users"
 
         const vm = new Vue({
             el: '#users',
@@ -221,6 +222,11 @@
                         .then(response => response.json())
                         .then(data => {
                             console.log(response);
+                            if (data.code === 404) {
+                                this.message = data.message
+                            } else {
+
+                            }
                         })
                 }
             },
