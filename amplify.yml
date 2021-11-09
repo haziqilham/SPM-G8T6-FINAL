@@ -3,13 +3,12 @@ frontend:
   phases:
     # IMPORTANT - Please verify your build commands
 
-    preBuild:
-      commands:
-      - cd /templates
+
 
     build:
       commands: 
       - flask run
+       - cd /templates
     
       
   artifacts:
