@@ -115,19 +115,13 @@
                     <div class="fw-bold">{{ course.course_name }}</div>
                     <span class="badge bg-warning rounded-pill">{{ course.archive_date}}</span>
                 </div>
-                <a href="http://127.0.0.1:5000/courses/">click</a>
-                <button type=" button " class="btn btn-primary ">
+                <button type="button" class="btn btn-primary" v-on:click="nextPage(course.course_id)">
                     Manage
                 </button>
             </li>
 
         </ol>
     </div>
-
-
-
-
-
 
     <!--
     <div id="main-container " class="container " id='courses'>
@@ -156,7 +150,7 @@
     -->
 
     <script>
-        var get_url = "http://127.0.0.1:5000/courses "
+        var get_url = "http://127.0.0.1:5000/courses"
 
         var vm = new Vue({
             el: '#courses',
@@ -177,6 +171,11 @@
                                 this.courses = data.data
                             }
                         })
+                },
+
+                nextPage: function(course_id) {
+                    console.log(course_id);
+                    location.href = './coursedetails.html?id=' + course_id;
                 }
             },
             created: function() {
@@ -186,18 +185,23 @@
         });
     </script>
 
+    <!--
+
     <script>
         window.addEventListener("click", function(e) {
             e.preventDefault();
             var href = e.target.getAttribute("href");
+            var a = document.getElementById("id").value;
             console.log(href);
+            console.log(a);
             if (href) {
                 href = href + "1";
                 console.log(href);
-                location.href = href;
+                //location.href = href;
             }
         });
     </script>
+-->
 </body>
 
 </html>
