@@ -1,0 +1,30 @@
+version: 1
+frontend: 
+  phases:
+    # IMPORTANT - Please verify your build commands
+
+
+
+    build:
+      commands:
+      # - npm install
+      # - pip install -r requirements.txt 
+     
+      
+      # - npm install -g @aws-amplify/cli python3-flask-sqlalchemy
+      # - yum install python-flask-sqlalchemy
+      - npm install -g @aws-amplify/cli --unsafe-perm=true
+      - pip install -r requirements.txt  
+      # - cat requirements.txt | xargs npm install -g       
+      - flask run
+    
+      
+  artifacts:
+    # IMPORTANT - Please verify your build output directory
+    baseDirectory: /
+    files:
+      - '**/*'
+      - '/templates'
+      - 'requirements.txt'
+  cache:
+    paths: []

@@ -22,7 +22,7 @@ CREATE TABLE `administrator` (
 --
 
 INSERT INTO `administrator` (`user_id`) VALUES
-(2);
+(1);
 
 -- --------------------------------------------------------
 
@@ -40,7 +40,16 @@ CREATE TABLE `trainers` (
 --
 
 INSERT INTO `trainers` (`user_id`) VALUES
-(1);
+(2),
+(3),
+(4),
+(5),
+(6),
+(7),
+(8),
+(9),
+(10),
+(11);
 
 -- --------------------------------------------------------
 
@@ -58,7 +67,27 @@ CREATE TABLE `learners` (
 --
 
 INSERT INTO `learners` (`user_id`) VALUES
-(3);
+(12),
+(13),
+(14),
+(15),
+(16),
+(17),
+(18),
+(19),
+(20),
+(21),
+(22),
+(23),
+(24),
+(25),
+(26),
+(27),
+(28),
+(29),
+(30),
+(31)
+;
 
 -- --------------------------------------------------------
 
@@ -81,9 +110,40 @@ CREATE table IF NOT EXISTS `user`(
 --
 
 INSERT INTO `user` (`user_id`, `user_name`, `name`, `designation`, `department`, `role`) VALUES
-(1, 'cuname', 'Claudia', 'Technical boss', 'Tech department', 'Trainers'),
-(2, 'muname', 'Marcus', 'Big Boss', 'HR Department', 'Administrator'),
-(3, 'huname', 'Haziq', 'Learner', 'Engineer', 'Learners');
+-- Adminstrator user
+(1, 'uname1', 'Claudia', 'Claudia', 'HR Department', 'Administrator'),
+-- Trainer users (10)
+(2, 'uname2', 'Ann', 'Ann', 'Tech Department', 'Trainers'),
+(3, 'uname3', 'Ben', 'Ben', 'Tech department', 'Trainers'),
+(4, 'uname4', 'Cindy', 'Cindy', 'Tech Department', 'Trainers'),
+(5, 'uname5', 'Dane', 'Dane', 'Tech department', 'Trainers'),
+(6, 'uname6', 'Eskimo', 'Eskimo', 'Tech Department', 'Trainers'),
+(7, 'uname7', 'Fun', 'Fun', 'Eng department', 'Trainers'),
+(8, 'uname8', 'Gin', 'Gin', 'Eng Department', 'Trainers'),
+(9, 'uname9', 'Henry', 'Henry', 'Eng department', 'Trainers'),
+(10, 'uname10', 'Ipman', 'Ipman', 'Eng Department', 'Trainers'),
+(11, 'uname11', 'Joker', 'Joker', 'Eng department', 'Trainers'),
+-- Learner users (20)
+(12, 'uname12', 'Amy', 'Amy', 'Engineer', 'Learners'),
+(13, 'uname13', 'Betty', 'Betty', 'Engineer', 'Learners'),
+(14, 'uname14', 'Chad', 'Chad', 'Engineer', 'Learners'),
+(15, 'uname15', 'Daniel', 'Daniel', 'Engineer', 'Learners'),
+(16, 'uname16', 'Ethan', 'Ethan', 'Engineer', 'Learners'),
+(17, 'uname17', 'Faris', 'Faris', 'Engineer', 'Learners'),
+(18, 'uname18', 'Gaby', 'Gaby', 'Engineer', 'Learners'),
+(19, 'uname19', 'Haziq', 'Haziq', 'Engineer', 'Learners'),
+(20, 'uname20', 'Immanuel', 'Immanuel', 'Engineer', 'Learners'),
+(21, 'uname21', 'Jessica', 'Jessica', 'Engineer', 'Learners'),
+(22, 'uname22', 'Katy', 'Katy', 'Engineer', 'Learners'),
+(23, 'uname23', 'Lenard', 'Lenard', 'Engineer', 'Learners'),
+(24, 'uname24', 'Mady', 'Mady', 'Engineer', 'Learners'),
+(25, 'uname25', 'Nat', 'Nat', 'Engineer', 'Learners'),
+(26, 'uname26', 'Oscar', 'Oscar', 'Engineer', 'Learners'),
+(27, 'uname27', 'Perry', 'Perry', 'Engineer', 'Learners'),
+(28, 'uname28', 'Queen', 'Queen', 'Engineer', 'Learners'),
+(29, 'uname29', 'Ray', 'Ray', 'Engineer', 'Learners'),
+(30, 'uname30', 'Shar', 'Shar', 'Engineer', 'Learners'),
+(31, 'uname31', 'Tun', 'Tun', 'Engineer', 'Learners');
 
 -- --------------------------------------------------------
 
@@ -105,7 +165,9 @@ CREATE table IF NOT EXISTS `course`(
 INSERT INTO `course` (`course_id`, `course_name`) VALUES
 (1, 'IS111 Programming'),
 (2, 'IS212 SPM'),
-(3, 'CS440 Cybersec');
+(3, 'CS440 Cybersec'),
+(4, 'E101 Engineering'),
+(5, 'E202 Printing Solutions');
 
 -- --------------------------------------------------------
 
@@ -126,7 +188,8 @@ CREATE table IF NOT EXISTS `prerequisites`(
 
 INSERT INTO `prerequisites` (`prereq_id`, `course_id`, `prereq_course_id`) VALUES
 (1, 2, 1),
-(2, 3, 1);
+(2, 3, 1),
+(3, 5, 4),
 
 -- --------------------------------------------------------
 
@@ -154,7 +217,17 @@ CREATE table IF NOT EXISTS `class`(
 --
 
 INSERT INTO `class` (`class_id`, `course_id`, `trainer_id`, `class_name`, `capacity`, `start_Date`, `end_Date`, `start_Time`, `end_Time`, `start_enrollment`, `end_enrollment`) VALUES
-(1, 1, 1, 'class 1', 20, '2021-10-27','2021-10-27','00:00:00','00:00:00','2021-10-27','2021-10-27');
+(1, 1, 2, 'class 1', 20, '2021-08-17','2021-11-23','12:00:00','15:15:00','2021-07-10','2021-09-15'),
+(2, 1, 3, 'class 2', 20, '2021-08-17','2021-11-23','08:15:00','11:30:00','2021-07-10','2021-09-15'),
+(3, 2, 4, 'class 1', 20, '2021-10-17','2021-11-23','08:15:00','11:30:00','2021-07-10','2021-09-15'),
+(4, 2, 5, 'class 2', 20, '2021-10-17','2021-11-23','12:00:00','15:15:00','2021-07-10','2021-09-15'),
+(5, 3, 6, 'class 1', 15, '2021-10-17','2021-11-23','08:15:00','11:30:00','2021-07-10','2021-09-15'),
+(6, 3, 7, 'class 2', 15, '2021-10-17','2021-11-23','15:30:00','18:45:00','2021-07-10','2021-09-15'),
+(7, 4, 8, 'class 1', 20, '2021-10-17','2021-11-23','12:00:00','15:15:00','2021-07-10','2021-09-15'),
+(8, 4, 9, 'class 2', 20, '2021-10-17','2021-11-23','15:30:00','18:45:00','2021-07-10','2021-09-15'),
+(9, 5, 10, 'class 1', 10, '2021-10-17','2021-11-23','08:15:00','11:30:00','2021-07-10','2021-09-15'),
+(10, 5, 11, 'class 2', 10, '2021-10-17','2021-11-23','15:30:00','18:45:00','2021-07-10','2021-09-15')
+;
 
 -- --------------------------------------------------------
 
@@ -179,7 +252,34 @@ CREATE TABLE IF NOT EXISTS `chapter`(
 INSERT INTO `chapter` (`chapter_id`, `class_id`, `chapter_name`, `order`) VALUES
 (1, 1, 'chapter 1', 1),
 (2, 1, 'chapter 2', 2),
-(3, 1, 'chapter 3', 3);
+(3, 1, 'chapter 3', 3),
+(4, 2, 'chapter 1', 1),
+(5, 2, 'chapter 2', 2),
+(6, 2, 'chapter 3', 3),
+(7, 3, 'chapter 1', 1),
+(8, 3, 'chapter 2', 2),
+(9, 3, 'chapter 3', 3),
+(10, 4, 'chapter 1', 1),
+(11, 4, 'chapter 2', 2),
+(12, 4, 'chapter 3', 3),
+(13, 5, 'chapter 1', 1),
+(14, 5, 'chapter 2', 2),
+(15, 5, 'chapter 3', 3),
+(16, 6, 'chapter 1', 1),
+(17, 6, 'chapter 2', 2),
+(18, 6, 'chapter 3', 3),
+(19, 7, 'chapter 1', 1),
+(20, 7, 'chapter 2', 2),
+(21, 7, 'chapter 3', 3),
+(22, 8, 'chapter 1', 1),
+(23, 8, 'chapter 2', 2),
+(24, 8, 'chapter 3', 3),
+(25, 9, 'chapter 1', 1),
+(26, 9, 'chapter 2', 2),
+(27, 9, 'chapter 3', 3),
+(28, 10, 'chapter 1', 1),
+(29, 10, 'chapter 2', 2),
+(30, 10, 'chapter 3', 3);
 
 -- --------------------------------------------------------
 
@@ -204,7 +304,26 @@ CREATE table `course_progression`(
 --
 
 INSERT INTO `course_progression` (`cc_id`, `user_id`, `course_id`, `class_id`, `chapter_id`, `status`) VALUES
-(1, 3, 1, 1, 2, 'ongoing');
+(1, 12, 1, 1, 2, 'ongoing'),
+(2, 13, 1, 1, 2, 'ongoing'),
+(3, 14, 1, 2, 5, 'ongoing'),
+(4, 15, 1, 2, 5, 'ongoing'),
+(5, 16, 2, 3, 8, 'ongoing'),
+(6, 17, 2, 3, 8, 'ongoing'),
+(7, 18, 2, 4, 11, 'ongoing'),
+(8, 19, 2, 4, 11, 'ongoing'),
+(9, 20, 3, 5, 14, 'ongoing'),
+(10, 21, 3, 5, 14, 'ongoing'),
+(11, 22, 3, 6, 17, 'ongoing'),
+(12, 23, 3, 6, 17, 'ongoing'),
+(13, 24, 4, 7, 20, 'ongoing'),
+(14, 25, 4, 7, 20, 'ongoing'),
+(15, 26, 4, 8, 23, 'ongoing'),
+(16, 27, 4, 8, 23, 'ongoing'),
+(17, 28, 5, 9, 26, 'ongoing'),
+(18, 29, 5, 9, 26, 'ongoing'),
+(19, 30, 5, 10, 29, 'ongoing'),
+(20, 31, 5, 10, 29, 'ongoing');
 
 -- --------------------------------------------------------
 
@@ -226,7 +345,36 @@ CREATE table `quiz`(
 --
 
 INSERT INTO `quiz` (`quiz_id`, `chapter_id`, `duration`, `graded`, `passing_mark`) VALUES
-(1, 1, 20, 1, 50);
+(1, 1, 10, 0, 50),
+(2, 2, 20, 0, 50),
+(3, 3, 30, 1, 50),
+(4, 4, 10, 0, 50),
+(5, 5, 20, 0, 50),
+(6, 6, 30, 1, 50),
+(7, 7, 10, 0, 50),
+(8, 8, 20, 0, 50),
+(9, 9, 30, 1, 50),
+(10, 10, 10, 0, 50),
+(11, 11, 20, 0, 50),
+(12, 12, 30, 1, 50),
+(13, 13, 10, 0, 50),
+(14, 14, 20, 0, 50),
+(15, 15, 30, 1, 50),
+(16, 16, 10, 0, 50),
+(17, 17, 20, 0, 50),
+(18, 18, 30, 1, 50),
+(19, 19, 10, 0, 50),
+(20, 20, 20, 0, 50),
+(21, 21, 30, 1, 50),
+(22, 22, 10, 0, 50),
+(23, 23, 20, 0, 50),
+(24, 24, 30, 1, 50),
+(25, 25, 10, 0, 50),
+(26, 26, 20, 0, 50),
+(27, 27, 30, 1, 50),
+(28, 28, 10, 0, 50),
+(29, 29, 20, 0, 50),
+(30, 30, 30, 1, 50);
 
 -- --------------------------------------------------------
 
@@ -245,7 +393,48 @@ CREATE TABLE `question_tf` (
 --
 
 INSERT INTO `question_tf` (`question_tf_id`, `corrected_value`) VALUES
-(1, 1);
+(1, 1),
+(2, 0),
+(3, 0),
+(4, 0),
+(7, 0),
+(8, 1),
+(9, 1),
+(10, 1),
+(13, 1),
+(14, 0),
+(15, 0),
+(16, 1),
+(19, 0),
+(20, 1),
+(21, 0),
+(22, 1),
+(25, 0),
+(26, 1),
+(27, 1),
+(28, 1),
+(31, 0),
+(32, 0),
+(33, 0),
+(34, 1),
+(37, 1),
+(38, 0),
+(39, 1),
+(40, 0),
+(42, 1),
+(43, 0),
+(44, 1),
+(45, 1),
+(48, 1),
+(49, 0),
+(50, 0),
+(51, 0),
+(54, 1),
+(55, 1),
+(56, 1),
+(57, 0),
+(58, 1)
+;
 
 -- --------------------------------------------------------
 
@@ -263,7 +452,27 @@ CREATE TABLE `question_mcq` (
 --
 
 INSERT INTO `question_mcq` (`question_mcq_id`) VALUES
-(2);
+(5),
+(6),
+(11),
+(12),
+(17),
+(18),
+(23),
+(24),
+(29),
+(30),
+(35),
+(36),
+(41),
+(42),
+(47),
+(48),
+(53),
+(54),
+(59),
+(60)
+;
 
 -- --------------------------------------------------------
 
@@ -285,7 +494,66 @@ CREATE table `question`(
 
 INSERT INTO `question` (`question_id`, `quiz_id`, `question`, `marks`) VALUES
 (1, 1, 'Testing tf', 1),
-(2, 1, 'testing mcq', 1);
+(2, 1, 'testing tf', 1)
+(3, 2, 'Testing tf', 1),
+(4, 2, 'testing tf', 1),
+(5, 3, 'Testing mcq', 2),
+(6, 3, 'testing mcq', 2),
+(7, 4, 'Testing tf', 1),
+(8, 4, 'testing tf', 1),
+(9, 55, 'Testing tf', 1),
+(10, 5, 'testing tf', 1),
+(11, 6, 'Testing mcq', 2),
+(12, 6, 'testing mcq', 2),
+(13, 7, 'Testing tf', 1),
+(14, 7, 'testing tf', 1),
+(15, 8, 'Testing tf', 1),
+(16, 8, 'testing tf', 1),
+(17, 9, 'Testing mcq', 2),
+(18, 9, 'testing mcq', 2),
+(19, 10, 'Testing tf', 1),
+(20, 10, 'testing tf', 1),
+(21, 11, 'Testing tf', 1),
+(22, 11, 'testing tf', 1),
+(23, 12, 'Testing mcq', 2),
+(24, 12, 'testing mcq', 2),
+(25, 13, 'Testing tf', 1),
+(26, 13, 'Testing tf', 1),
+(27, 14, 'testing tf', 1)
+(28, 14, 'Testing tf', 1),
+(29, 15, 'testing mcq', 2),
+(30, 15, 'Testing mcq', 2),
+(31, 16, 'testing tf', 1),
+(32, 16, 'Testing tf', 1),
+(33, 17, 'testing tf', 1),
+(34, 17, 'Testing tf', 1),
+(35, 18, 'testing mcq', 2),
+(36, 18, 'Testing mcq', 2),
+(37, 19, 'testing tf', 1),
+(38, 19, 'Testing tf', 1),
+(39, 20, 'testing tf', 1),
+(40, 20, 'Testing tf', 1),
+(41, 21, 'testing mcq', 2),
+(42, 21, 'Testing mcq', 2),
+(43, 22, 'testing tf', 1),
+(44, 22, 'Testing tf', 1),
+(45, 23, 'testing tf', 1),
+(46, 23, 'Testing tf', 1),
+(47, 24, 'testing mcq', 2),
+(48, 24, 'Testing mcq', 2),
+(49, 25, 'testing tf', 1),
+(50, 25, 'Testing tf', 1),
+(51, 26, 'testing tf', 1),
+(52, 26, 'Testing tf', 1),
+(53, 27, 'testing mcq', 2),
+(54, 27, 'Testing mcq', 2),
+(55, 28, 'testing tf', 1),
+(56, 28, 'Testing tf', 1),
+(57, 29, 'testing tf', 1),
+(58, 29, 'Testing tf', 1),
+(59, 30, 'testing mcq', 2),
+(60, 30, 'Testing mcq', 2);
+
 
 -- --------------------------------------------------------
 
@@ -306,11 +574,88 @@ CREATE TABLE `options` (
 --
 
 INSERT INTO `options` (`options_id`, `question_mcq_id`, `value`, `corrected_value`) VALUES
-(1, 2, 'A', 0),
-(2, 2, 'B', 0),
-(3, 2, 'C', 1),
-(4, 2, 'D', 0);
 
+(1, 5, 'A', 0),
+(2, 5, 'B', 0),
+(3, 5, 'C', 1),
+(4, 5, 'D', 0),
+(1, 6, 'A', 0),
+(2, 6, 'B', 0),
+(3, 6, 'C', 1),
+(4, 6, 'D', 0),
+(1, 11, 'A', 0),
+(2, 11, 'B', 1),
+(3, 11, 'C', 0),
+(4, 11, 'D', 0),
+(1, 12, 'A', 0),
+(2, 12, 'B', 0),
+(3, 12, 'C', 0),
+(4, 12, 'D', 1),
+(1, 17, 'A', 1),
+(2, 17, 'B', 0),
+(3, 17, 'C', 0),
+(4, 17, 'D', 0),
+(1, 18, 'A', 0),
+(2, 18, 'B', 0),
+(3, 18, 'C', 1),
+(4, 18, 'D', 0),
+(1, 23, 'A', 0),
+(2, 23, 'B', 0),
+(3, 23, 'C', 1),
+(4, 23, 'D', 0),
+(1, 24, 'A', 0),
+(2, 24, 'B', 1),
+(3, 24, 'C', 0),
+(4, 24, 'D', 0),
+(1, 29, 'A', 0),
+(2, 29, 'B', 0),
+(3, 29, 'C', 0),
+(4, 29, 'D', 1),
+(1, 30, 'A', 0),
+(2, 30, 'B', 0),
+(3, 30, 'C', 0),
+(4, 30, 'D', 1),
+(1, 35, 'A', 1),
+(2, 35, 'B', 0),
+(3, 35, 'C', 0),
+(4, 35, 'D', 0),
+(1, 36, 'A', 1),
+(2, 36, 'B', 0),
+(3, 36, 'C', 0),
+(4, 36, 'D', 0),
+(1, 41, 'A', 0),
+(2, 41, 'B', 0),
+(3, 41, 'C', 1),
+(4, 41, 'D', 0),
+(1, 42, 'A', 0),
+(2, 42, 'B', 0),
+(3, 42, 'C', 1),
+(4, 42, 'D', 0),
+(1, 47, 'A', 1),
+(2, 47, 'B', 0),
+(3, 47, 'C', 0),
+(4, 47, 'D', 0),
+(1, 48, 'A', 0),
+(2, 48, 'B', 1),
+(3, 48, 'C', 0),
+(4, 48, 'D', 0),
+(1, 53, 'A', 0),
+(2, 53, 'B', 1),
+(3, 53, 'C', 0),
+(4, 53, 'D', 0),
+(1, 54, 'A', 0),
+(2, 54, 'B', 0),
+(3, 54, 'C', 1),
+(4, 54, 'D', 0),
+(1, 59, 'A', 0),
+(2, 59, 'B', 1),
+(3, 59, 'C', 0),
+(4, 59, 'D', 0),
+(1, 60, 'A', 0),
+(2, 60, 'B', 0),
+(3, 60, 'C', 0),
+(4, 60, 'D', 1)
+;
 --
 -- Indexes for dumped tables
 --
