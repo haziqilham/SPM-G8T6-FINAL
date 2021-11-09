@@ -10,7 +10,8 @@ frontend:
       # - npm install
       # - pip install -r requirements.txt 
      
-      - npm install -g @aws-amplify/cli python3-flask-sqlalchemy
+      # - npm install -g @aws-amplify/cli python3-flask-sqlalchemy
+      - yum install python-flask-sqlalchemy
       - npm install -g @aws-amplify/cli --unsafe-perm=true
       # - cat requirements.txt | xargs npm install -g       
       - flask run 
