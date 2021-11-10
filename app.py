@@ -646,6 +646,14 @@ def getquestions(quiz_id):
             "message": "There was an error retrieving quiz questions, please contact an administrator."
         }), 404
 
+#submit quiz questions
+@app.route("/quiz/submit", methods=['POST'])
+def submit_quiz():
+    data = request.get_json()
+
+    return jsonify({
+        "message": data
+    }), 500
 
 #create quiz questions
 @app.route("/quiz/createquestions", methods=['POST'])
