@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import datetime as dt
+from sqlalchemy.sql.elements import Null
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://admin:ilovespm88@spm-database.c3izrtomcbks.us-east-2.rds.amazonaws.com:3306/spm_database'
@@ -553,7 +554,7 @@ def create_options():
             "message": "Invalid question details."
         })
     #create question record
-    if data['options'].count() < 3:
+    if len(data['options']) < 3:
         question = Questiontf(
             question_tf_id=data['question_id'],
             corrected_value=data['correct_value']
@@ -639,7 +640,7 @@ def enrollhistory(user_id, course_id):
     progress = CourseProgression.query.filter_by(user_id=user_id, course_id=course_id).all()
     
     #check that user is not currently in progress or enrolled into the course
-    if progress.count() > 0:
+    if len(progress) > 0:
         for i in progress:
             if i.course_id == course_id:
                 if i.status == "ongoing" or i.status == "enrolled":
@@ -652,7 +653,7 @@ def completionhistory(user_id, course_id):
     #check user's existing course progress
     progress = CourseProgression.query.filter_by(user_id=user_id, course_id=course_id).all()
     #check that user has not already completed the course
-    if progress.count() > 0:
+    if len(progress) > 0:
         for i in progress:
             if i.course_id == course_id:
                 if i.status == "completed":
@@ -673,7 +674,7 @@ def checkcapacity(class_id):
     classinfo = Class.query.filter_by(class_id=class_id).first()
     capacity = classinfo.capacity
     enrolled = CourseProgression.query.filter_by(class_id=class_id, status="enrolled").all()
-    if enrolled.count() >= capacity:
+    if len(enrolled) >= capacity:
         return False
     else:
         return True
@@ -682,7 +683,7 @@ def checkcapacity(class_id):
 def courseprereqs(course_id):
     prereqs = Prerequisites.query.filter_by(course_id=course_id).all()
     prereqlist = []
-    if prereqs.count() > 0:
+    if len(prereqs) > 0:
         for i in prereqs:
             prereqlist.append(i.prereq_course_id)
     return prereqlist
@@ -690,7 +691,7 @@ def courseprereqs(course_id):
 def completedcourses(user_id):
     completed = CourseProgression.query.filter_by(user_id=user_id, status="completed").all()
     completedlist = []
-    if completed.count() > 0:
+    if len(completed) > 0:
         for i in completed:
             completedlist.append(i.course_id)
     return completedlist
@@ -721,7 +722,11 @@ def self_enroll(course_id, class_id, user_id):
                         enrollment = CourseProgression(
                             user_id = user_id,
                             course_id = course_id,
-                            class_id = class_id
+                            class_id = class_id,
+                            chapter_id = Null,
+                            status = "enrolled",
+                            completion_date = Null,
+                            score = Null
                         )
                         #commit to DB
                         try:
