@@ -608,10 +608,10 @@ def createTF(qnTf_id, value):
 
 #QUESTION
 #retrieving questions for quiz
-@app.route("/<int:chapter_id>/quiz/questions")
-def getquestions(chapter_id):
-    quizinfo = Quiz.query.filter_by(chapter_id=chapter_id).first()
-    quiz_id = quizinfo.quiz_id
+@app.route("/quiz/<int:quiz_id>/questions")
+def getquestions(quiz_id):
+    #quizinfo = Quiz.query.filter_by(chapter_id=chapter_id).first()
+    #quiz_id = quizinfo.quiz_id
     questions = Question.query.filter_by(quiz_id=quiz_id).all()
     finaldict = []
     options = []
