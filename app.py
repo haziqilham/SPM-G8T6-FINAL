@@ -297,7 +297,8 @@ def course_by_id(course_id):
 #display courses user is enrolled in
 @app.route("/courses/users/<int:user_id>")
 def course_by_user(user_id):
-    userclass = CourseProgression.query.filter_by(user_id=user_id).filter_by(status = 'ongoing' or 'enrolled').all()
+    # userclass = CourseProgression.query.filter_by(user_id=user_id).filter_by(status = 'ongoing' or 'enrolled').all()
+    userclass = CourseProgression.query.filter_by(user_id=user_id).filter(CourseProgression.status.like('%n%'))
     if userclass:
         coursedict = []
         for uclass in userclass:
