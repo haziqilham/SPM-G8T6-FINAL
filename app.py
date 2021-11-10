@@ -341,9 +341,7 @@ def not_course_by_user(user_id):
 #display all classes
 @app.route("/<int:course_id>/classes")
 def classes_by_course(course_id):
-    #to implement order by start date
     classes = Class.query.filter_by(course_id=course_id).all()
-
     if classes:
         return jsonify({
             "data": [oneclass.to_dict() for oneclass in classes]
@@ -352,7 +350,6 @@ def classes_by_course(course_id):
         return jsonify({
             "message": "This course has no classes yet."
         }), 404
-
         
 #display class info by class id
 @app.route("/classes/<int:class_id>")
@@ -366,6 +363,33 @@ def class_by_id(class_id):
         return jsonify({
             "message": "Class not found."
         }), 404
+
+#TRAINER - view classes he/she is teaching
+@app.route("/trainer/classes/<int:trainer_id>")
+def classes_by_trainer(trainer_id):
+    classes = Class.query.filter_by(trainer_id=trainer_id).all()
+    filter_classes = []
+    #coursei = []
+    for oneclass in classes:
+        if dt.datetime.today() >= oneclass.start_enrollment and dt.datetime.today() <= oneclass.end_enrollment:
+            courseinfo = Course.query.filter_by(course_id=oneclass.course_id).first()
+            filter_classes.append({
+                'course_name': courseinfo.course_name,
+                'class_id': oneclass.class_id,
+                'class_name': oneclass.class_name,
+                'start_DateTime': oneclass.start_DateTime,
+                'end_DateTime': oneclass.end_DateTime
+            })
+            #coursei.append(courseinfo)
+    if filter_classes:
+        return jsonify({
+            "data": filter_classes
+        }), 200
+    else:
+        return jsonify({
+             "message": "There are no classes assigned to you yet."
+        }), 404
+    #return jsonify(coursei)
 
 
 #CHAPTER
@@ -424,8 +448,6 @@ def classenrolled(user_id, course_id):
             "message": "You are not enrolled in any class for this course."
         }), 404
 
-
-
 #display chapters of classes that user has access to
 @app.route("/<int:class_id>/<int:user_id>/chapters")
 def user_chapter(class_id, user_id):
@@ -462,7 +484,20 @@ def user_chapter(class_id, user_id):
 #display quiz
 @app.route("/<int:chapter_id>/quiz")
 def getquiz(chapter_id):
-    quizinfo = Quiz.query.filter_by(chapter_id=chapter_id).all()
+    quizinfo = Quiz.query.filter_by(chapter_id=chapter_id).first()
+    if quizinfo:
+        return jsonify({
+            "data": quizinfo.to_dict()
+        }), 200
+    else:
+        return jsonify({
+            "message": "There is no quiz at the moment."
+        }), 404
+
+
+@app.route("/trainer/<int:trainer_id>/quiz")
+def getquizfortrainer(trainer_id):
+    quizinfo = Quiz.query.filter_by(chapter_id=trainer_id).all()
     if quizinfo:
         return jsonify({
             "data": [qinfo.to_dict() for qinfo in quizinfo]
@@ -471,6 +506,8 @@ def getquiz(chapter_id):
         return jsonify({
             "message": "There is no quiz at the moment."
         }), 404
+
+
 
 #create quiz
 @app.route("/createquiz", methods=['POST'])
