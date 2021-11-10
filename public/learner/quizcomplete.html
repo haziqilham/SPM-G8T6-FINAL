@@ -94,7 +94,7 @@
 
     <script>
         let url = new URL(window.location.href);
-        let chid = url.searchParams.get("chid");
+        let complete = url.searchParams.get("complete");
 
         var get_quiz_url = "http://127.0.0.1:5000/" + chid + "/quiz";
         //app.route("/quiz/<int:quiz_id>/questions")

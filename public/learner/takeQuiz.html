@@ -86,19 +86,20 @@
 
     <div id='main' class='container'>
         <h2>Quiz</h2>
+        <h6>Duration:</h6>
         <hr>
         <form>
             <div v-for='(question, index) in questions'>
-                {{index}}
-                <p>{{question.question}}</p>
+                <p>{{index + 1 }}. {{question.question}}</p>
                 <div v-for='option in question.options'>
                     <input class="form-check-input" type="radio" :name="'option' + question.question_id + index" :value="option" v-model.lazy="answers[index].ans ">
                     <label class=" form-check-label" for="flexRadioDefault1 ">
                         {{ option }}
                     </label>
                 </div>
+                <hr>
             </div>
-            <button id="addQuizBtn " class="btn btn-primary " v-on:click="submitForm ">Submit Quiz</button>
+            <button id="addQuizBtn " class="btn btn-primary " v-on:click="submitForm">Submit Quiz</button>
             <p><label id="error " class="text-danger ">{{ error }}</label></p>
         </form>
 
@@ -122,10 +123,11 @@
                 message: ' ',
                 error: '',
                 size: 0,
-                answers: []
+                answers: [],
+                value: ''
             },
             methods: {
-                //get Course details for course name
+                //get questions
                 getQuestions: function() {
                     const response =
                         fetch(get_qns_url)
@@ -156,15 +158,29 @@
                     axios.post('http://127.0.0.1:5000/quiz/submit', {
                             answer: this.answers
                         })
-                        .then(response => {
-                            window.location.replace("./viewQuiz.html ");
+                        //.then(response => response.data.json())
+                        //{
+                        //    window.location.replace("./viewQuiz.html ");
+                        //    return false;
+                        //})
+                        .then(data =>{
+                            this.value = data.data.data
+                            //console.log(data)
+                            //console.log(data.data.data)
+                            sessionStorage.setItem("quizcomplete", this.value)
+                            //console.log(sessionStorage.getItem("quizanswers"))
+                        })
+                        //.catch(error => {
+                            //this.error = error.response.data.message
+                        //});
+                        .then(response =>{
+                            window.location.replace('./quizcomplete.html?complete=' + this.value);
                             return false;
                         })
-                        .catch(error => {
-                            this.error = error.response.data.message
-                        });
-                }
-            },
+                },
+                nextPage: function(value) {
+                    location.href = './quizcomplete.html?complete=' + value;
+                }},
             created: function() {
                 // on Vue instance created, load the created list
                 this.getQuestions();

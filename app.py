@@ -139,19 +139,7 @@ class Question(db.Model):
         result = {}
         for column in columns:
             result[column] = getattr(self, column)
-        return result
-    
-    def computeMarks(self, answer):
-        if answer == True or answer == False:
-            correctans = Questiontf.correctanswer(self.question_id)
-        else:
-            correctans = Questionmcq.correctanswer(self.question_id)
-        
-        if correctans == answer:
-            return self.marks
-        else:
-            return 0
-        
+        return result   
 
 class Questiontf(db.Model):
     __tablename__ = 'question_tf'
@@ -494,10 +482,26 @@ def getquiz(chapter_id):
             "message": "There is no quiz at the moment."
         }), 404
 
+#determine if quiz is graded: return T/F
+def quiz_graded(question_id):
+    questioninfo = Question.query.filter_by(question_id=question_id).first()
+    quiz_id = questioninfo.quiz_id
+    quizinfo = Quiz.query.filter_by(quiz_id=quiz_id).first()
+    graded = quizinfo.graded
+    return graded
 
-@app.route("/trainer/<int:trainer_id>/quiz")
-def getquizfortrainer(trainer_id):
-    quizinfo = Quiz.query.filter_by(chapter_id=trainer_id).all()
+#retrieve passing mark of the quiz
+def quiz_passingmark(question_id):
+    questioninfo = Question.query.filter_by(question_id=question_id).first()
+    quiz_id = questioninfo.quiz_id
+    quizinfo = Quiz.query.filter_by(quiz_id=quiz_id).first()
+    passing_mark = quizinfo.passing_mark
+    return passing_mark
+
+#TRAINER - get quizzes that trainer can create quiz for
+@app.route("/trainer/<int:chapter_id>/quiz")
+def getquizfortrainer(chapter_id):
+    quizinfo = Quiz.query.filter_by(chapter_id=chapter_id).all()
     if quizinfo:
         return jsonify({
             "data": [qinfo.to_dict() for qinfo in quizinfo]
@@ -506,7 +510,6 @@ def getquizfortrainer(trainer_id):
         return jsonify({
             "message": "There is no quiz at the moment."
         }), 404
-
 
 
 #create quiz
@@ -692,16 +695,43 @@ def submit_quiz():
     #    return jsonify({
     #        "message": "Incorrect JSON object provided."
     #    }), 500
+    marks = 0
+    answerarray = data['answer']
+    #get one question id
+    question_id = answerarray[0]['qnID']
+    #check if quiz is graded
+    graded = quiz_graded(question_id)
+    #if quiz is graded, then grade quiz
+    if graded:
+        #get passing mark of the quiz
+        passing_mark = quiz_passingmark(question_id)
+        for answer in answerarray:
+            #mark each question
+            questionmarks = markquestion(answer['ans'], answer['qnID'])
+            marks += questionmarks
+        if marks >= passing_mark:
+            return jsonify({
+                "data": 1
+            }), 200
+        else:
+            return jsonify({
+                "data": 0
+            }), 200
+    else:
+        return jsonify({
+            "data": 2
+        }), 200
 
-    for a in data['answer']:
-        b = retrieveanswer(a['qnID'])
-        if a['ans'] == b:
-            #do smth
-            print(a['ans'])
-            print(b)
-            print("correct")
+#marks each question individually
+def markquestion(answer, question_id):
+    questioninfo = Question.query.filter_by(question_id=question_id).first()
+    questionmarks = questioninfo.marks
+    correctvalue = retrieveanswer(question_id)
+    if correctvalue == answer:
+        return questionmarks
+    else:
+        return 0
 
-#frontend vue for loop marks each question individually
 #retrieves the answer of each question
 def retrieveanswer(question_id):
     #find out if the question is tf or mcq
@@ -793,7 +823,7 @@ def create_options():
 
 
 #check if user passed quiz and record completion
-@app.route("/<int:user_id>/<int:quiz_id>/<int:totalmarks>")
+@app.route("/complete/<int:user_id>/<int:quiz_id>/<int:totalmarks>")
 def passCourse(user_id, quiz_id, totalmarks):
     #query to retrieve passing_mark of quiz
     quizinfo = Quiz.query.filter_by(quiz_id=quiz_id).first()
