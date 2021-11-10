@@ -455,7 +455,7 @@ def getquiz(chapter_id):
 def create_quiz():
     data = request.get_json()
     if not all(key in data.keys() for
-                key in ('chapter_id', 'duration', 'quizType', 'passing', 'qnsTF')):
+                key in ('chapter_id', 'duration', 'quizType', 'passing', 'qnsTF', 'qnsMCQ')):
         return jsonify({
             "message": "Incorrect JSON object provided."
         }), 500
@@ -479,13 +479,67 @@ def create_quiz():
         db.session.commit()
         #    quiz.to_dict()["quiz_id"]
         #return jsonify(quiz.to_dict()), 201
-        if (createQnTF(quiz.to_dict()["quiz_id"], data['qnsTF'])):
+        if (createQnTF(quiz.to_dict()["quiz_id"], data['qnsTF']) and createQnMCQ(quiz.to_dict()["quiz_id"], data['qnsMCQ'])):
             return jsonify(quiz.to_dict()), 201
 
     except Exception:
         return jsonify({
             "message": "Unable to create quiz, please try again later or contact an administrator."
         }), 500
+
+#create MCQ Qn
+def createQnMCQ(quiz_id, mcq):
+    print(len(mcq))
+    for m in mcq:
+        question = Question(
+            quiz_id=quiz_id, 
+            question=m['questions'],
+            marks=m['marks']
+        )
+        print(question)
+        try:
+            db.session.add(question)
+            db.session.commit()
+            createMCQ(question.to_dict()["question_id"])
+            createOptions(question.to_dict()["question_id"], m['options'])
+        except Exception:
+            return jsonify({
+                "message": "Unable to create question, please try again later or contact an administrator."
+            }), 500
+    return True
+
+#put mcq sub class
+def createMCQ(qnTf_id):
+    print(qnTf_id)
+    q = Questionmcq(
+        question_tf_id=qnTf_id
+    )
+    try:
+        db.session.add(q)
+        db.session.commit()
+    except Exception:
+        return jsonify({
+            "message": "Unable to create question, please try again later or contact an administrator."
+        }), 500
+    return True
+
+#create options
+def createOptions(quiz_id, options):
+    for o in options:
+        opt = Options(
+            question_mcq_id=quiz_id,
+            value=o['value'],
+            corrected_value=o['corrected']
+        )
+        print(opt)
+        try:
+            db.session.add(opt)
+            db.session.commit()
+        except Exception:
+            return jsonify({
+                "message": "Unable to create question, please try again later or contact an administrator."
+            }), 500
+    return True
 
 #create TF Qn
 def createQnTF(quiz_id, tf):
