@@ -612,25 +612,30 @@ def getquestions(chapter_id):
     quizinfo = Quiz.query.filter_by(chapter_id=chapter_id).first()
     quiz_id = quizinfo.quiz_id
     questions = Question.query.filter_by(quiz_id=quiz_id).all()
-    finaldict = {}
-    qdict = {}
+    finaldict = []
     options = []
     for question in questions:
         #find out if the question is tf or mcq
         question_tf = Questiontf.query.filter_by(question_tf_id=question.question_id).first()
         if question_tf:
-            qdict[question.question]=[True, False]                
-            finaldict[question.question_id]= qdict
+            options = [True, False]
+            finaldict.append({
+                'question_id': question.question_id,
+                'question': question.question,
+                'options': options
+            })
             options = []
-            qdict = {}
         else:
             question_mcq = Options.query.filter_by(question_mcq_id=question.question_id).all()
             for option in question_mcq:
                 options.append(option.value)
-            qdict[question.question]= options
-            finaldict[question.question_id]= qdict
+            finaldict.append({
+                'question_id': question.question_id,
+                'question': question.question,
+                'options': options
+            })
             options = []
-            qdict = {}
+
     if finaldict:
         return jsonify({
             "data": finaldict
