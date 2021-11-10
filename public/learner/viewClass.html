@@ -23,12 +23,11 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="js/custom.js" type="text/javascript" >$window.onload = function(){
+    <script src="js/custom.js" type="text/javascript">
+        $window.onload = function() {
             sessionStorage.clear();
         }
-    
-        
-        </script>
+    </script>
     <title>Course Page</title>
 
     <style>
@@ -82,18 +81,18 @@
         </nav>
     </div>
 
-    
+
     <div id='main' class='container'>
         <h1>Enrolled Course</h1>
         <h2>User: {{ name }}</h2>
         <h2>Course: {{ course }}</h2>
         <hr>
-        
+
         <div id="classinfo">
-        <h3 id="classid">Class Id: {{ classinfo.class_id }}</h3>
-        <p>Class Name: {{ classinfo.class_name }}</p>
-        <p>Start Datetime: {{ classinfo.start_DateTime }}</p>
-        <p>End Datetime: {{ classinfo.end_DateTime }}</p>
+            <h3 id="classid">Class Id: {{ classinfo.class_id }}</h3>
+            <p>Class Name: {{ classinfo.class_name }}</p>
+            <p>Start Datetime: {{ classinfo.start_DateTime }}</p>
+            <p>End Datetime: {{ classinfo.end_DateTime }}</p>
         </div>
         <hr>
         <table id="classTable" class='table table-striped' border='1'>
@@ -126,6 +125,8 @@
         var get_c_url = "http://127.0.0.1:5000/courses/" + cid;
         // get user by user id
         var get_n_url = "http://127.0.0.1:5000/users/" + uid;
+
+        var get_class_url = "http://127.0.0.1:5000/user/" + uid + "/" + cid + "/class"
 
         var vm = new Vue({
             el: '#main',
@@ -171,11 +172,11 @@
                                 this.uid = data.data.user_id
                             }
                         })
-                    },
+                },
                 // get classinfo of class enrolled by courseid, userid
                 getClassInfo: function() {
                     const response =
-                    fetch("http://127.0.0.1:5000/user/" + uid + "/" + cid + "/class")
+                        fetch(get_class_url)
                         .then(response => response.json())
                         .then(data => {
                             console.log(response);
@@ -185,15 +186,16 @@
                                 this.classinfo = data.data
                                 this.clasid = data.data.class_id
                                 this.tid = data.data.trainer_id
-                                sessionStorage.setItem("classid", data.data.class_id)
-                                console.log(data.data);
+                                this.getChapters();
+                                //sessionStorage.setItem("classid", data.data.class_id)
+                                //console.log(data.data);
                             }
-                        })     
+                        })
                 },
 
                 getChapters: function() {
                     const response =
-                        fetch("http://127.0.0.1:5000/" + sessionStorage.getItem("classid") + "/" + sessionStorage.getItem("userid") + "/chapters")
+                        fetch("http://127.0.0.1:5000/" + this.clasid + "/" + uid + "/chapters") //sessionStorage.getItem("userid") + "/chapters")
                         .then(response => response.json())
                         .then(data => {
                             console.log(response);
@@ -203,7 +205,7 @@
                                 this.chapters = data.data
                             }
                         })
-                    },
+                },
 
                 sessionData: function(chapid) {
                     sessionStorage.setItem("chapid", chapid)
@@ -214,7 +216,6 @@
                 this.getCourse();
                 this.getName();
                 this.getClassInfo();
-                this.getChapters();
             },
         });
     </script>
