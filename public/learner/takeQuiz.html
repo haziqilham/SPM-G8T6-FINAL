@@ -23,13 +23,14 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="js/custom.js" type="text/javascript" >$window.onload = function(){
+    <!--
+    <script src="js/custom.js" type="text/javascript">
+        $window.onload = function() {
             sessionStorage.clear();
         }
-    
-        
-        </script>
-    <title>Course Page</title>
+    </script>
+    -->
+    <title>Quiz Page</title>
 
     <style>
         img.center {
@@ -82,14 +83,14 @@
         </nav>
     </div>
 
-    
+
     <div id='main' class='container'>
         <h2>Quiz</h2>
         <hr>
-        
+
         <template v-for='question in questions'>
         <p>{{question.question}}</p>
-        <div v for='option in options'>
+        <div v-for='option in question.options'>
             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
             <label class="form-check-label" for="flexRadioDefault1">
                 {{ option }}
@@ -97,14 +98,17 @@
         <div>
         </template>
 
-                     <!-- <a href='./viewQuiz.html'><button type="button" class="btn btn-primary" v-on:click="sessionData(chapter.chapter_id)">Start Quiz</button></a>-->
+        <!-- <a href='./viewQuiz.html'><button type="button" class="btn btn-primary" v-on:click="sessionData(chapter.chapter_id)">Start Quiz</button></a>-->
     </div>
 
     <script>
-        console.log(sessionStorage.getItem("quizgrade"))
-        quizid = sessionStorage.getItem("quizid")
+        //console.log(sessionStorage.getItem("quizgrade"))
+        //quizid = sessionStorage.getItem("quizid")
         // get course by course id
-        var get_qns_url = "http://127.0.0.1:5000/" + 16 + "/quiz/questions"
+        let url = new URL(window.location.href);
+        let quizid = url.searchParams.get("quizid");
+
+        var get_qns_url = "http://127.0.0.1:5000/quiz/" + quizid + "/questions"
 
         var vm = new Vue({
             el: '#main',
@@ -127,13 +131,10 @@
                                 this.message = data.message
                             } else {
                                 this.questions = data.data
-                                console.log(data.data)
-                                console.log(data.data.options)
+                                    //console.log(data.data)
+                                    //console.log(data.data.options)
                             }
                         })
-                },
-                sessionData: function(chapid) {
-                    sessionStorage.setItem("chapid", chapid)
                 }
             },
             created: function() {
