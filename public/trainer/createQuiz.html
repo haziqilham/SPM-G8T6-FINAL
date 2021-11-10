@@ -2,181 +2,303 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <!-- Bootstrap libraries -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <!-- Bootstrap libraries -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <!-- Latest compiled and minified CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
-  </script>
+    <!-- Latest compiled and minified JavaScript -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
 
-  <title>Trainer Home</title>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>Create Quiz</title>
 
-  <style>
-    img.center {
-      display: block;
-      margin: 0 auto;
-    }
-
-    .bottom-right {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-    }
-  </style>
+    <style>
+        img.center {
+            display: block;
+            margin: 0 auto;
+        }
+        
+        .bottom-right {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+    </style>
 </head>
 
 <body>
-  <!-- NAV BAR-->
-  <div>
-    <nav class="navbar navbar-dark bg-primary">
-      <a class="navbar-brand mx-auto" href="../../index.html">
+    <!-- NAV BAR-->
+    <div>
+        <nav class="navbar navbar-dark bg-primary">
+            <a class="navbar-brand mx-auto" href="../../index.html">
         All in One
       </a>
-      <!-- Navigation TO OTHER ACCOUNTS-->
-      <div class="btn-group dropstart">
-        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <!-- Navigation TO OTHER ACCOUNTS-->
+            <div class="btn-group dropstart">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
           Trainer
         </button>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="../learner/learnerhome.html">Learner Account</a></li>
-          <li><a class="dropdown-item" href="./trainerHome.html">Trainer Account</a></li>
-          <li><a class="dropdown-item" href="#">Admin Account</a></li>
-        </ul>
-      </div>
-    </nav>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="../learner/learnerhome.html">Learner Account</a></li>
+                    <li><a class="dropdown-item" href="./trainerHome.html">Trainer Account</a></li>
+                    <li><a class="dropdown-item" href="#">Admin Account</a></li>
+                </ul>
+            </div>
+        </nav>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="./trainerHome.html">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="./viewQuiz.html">View Quiz</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="./createQuiz.html">Create Quiz</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  </div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="./trainerHome.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./viewQuiz.html">View Quiz</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./createQuiz.html">Create Quiz</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
 
-
-  <main id="main">
-    <!-- ======= Features Section ======= -->
+    <!--    
+      <main id="main">
+        <-- ======= Features Section ======= 
     <section id="features" class="features">
-      <div class="container">
+        <div class="container">
 
-        <div class="section-title" data-aos="fade-up">
-          <h2>Quiz Creation</h2>
-          <h3>RE101 - HP OfficeJet All-in-One 8010, 8020, Pro 8030, 8020e, 8030e Printers</h3>
+            <div class="section-title" data-aos="fade-up">
+                <h2>Quiz Creation</h2>
+                <h3>RE101 - HP OfficeJet All-in-One 8010, 8020, Pro 8030, 8020e, 8030e Printers</h3>
+            </div>
+
+            <div class="row" data-aos="fade-up" data-aos-delay="200">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-8 col-md-12">
+                    <h3>New Quiz</h3>
+                    <form method="post" id="quizForm">
+                        <-- action="/classes/quizClass.py"
+    <div class="row mb-3">
+        <label for="inputNum" class="col-sm-2 col-form-label">Chapter Number</label>
+        <div class="col-sm-10">
+            <input type="number" class="form-check form-control" id="inputNum">
         </div>
-
-        <div class="row" data-aos="fade-up" data-aos-delay="200">
-          <div class="col-lg-2"></div>
-            <div class="col-lg-8 col-md-12">
-            <h3>New Quiz</h3>
-            <form  method="post" id="quizForm"> <!-- action="/classes/quizClass.py" -->
-              <div class="row mb-3">
-                <label for="inputNum" class="col-sm-2 col-form-label">Lesson Number</label>
-                <div class="col-sm-10">
-                  <input type="number" class="form-check form-control" id="inputNum">
-                </div>
-              </div>
-              <div class="mb-3">
-                <label class="col-sm-2 form-label">Quiz Type</label>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="G">
-                  <label class="form-check-label" for="inlineRadio1">Graded</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="UG">
-                  <label class="form-check-label" for="inlineRadio2">Ungraded</label>
-                </div>
-              </div>
-              <!-- Quiz Duration -->
-              <div class="row mb-3">
-                <label for="inputDur" class="col-sm-2 col-form-label">Quiz Duration</label>
-                <div class="col-sm-10">
-                  <input type="number" class="form-check form-control" id="inputDur">
-                </div>
-              </div>
-              <!-- Passing Criteria -->
-              <div class="row mb-3">
-                <label for="inputPass" class="col-sm-2 col-form-label">Passing Criteria</label>
-                <div class="col-sm-10">
-                  <input type="number" class="form-check form-control" id="inputPass">
-                </div>
-              </div>
-              <!-- Question 1 -->
-              <div class="mb-3">
-                <div class="row mb-3">
-                  <label for="inputQn" class="col-sm-2 col-form-label">Question 1</label>
-                  <div class="col-sm-10">
-                    <textarea class="form-control" id="inputQn" rows="1"></textarea>
-                  </div>
-                </div>
-                <!-- Options -->
-                <div class="row mb-3">
-                  <label class="col-sm-2 col-form-label">Options</label>
-                  <div class="col-sm-10">
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" value="option1">
-                      <input type="text" class="form-control" id="option1" placeholder="True/Option 1">
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" value="option2">
-                      <input type="text" class="form-control" id="option2" placeholder="False/Option 2">
-                    </div>
-                    <button type="button" class="btn btn-primary" style="margin-top: 10px; float: right;" onclick="addOption(this)">Add New Option</button>
-                  </div>
-                </div>
-                <!-- Correct Answer -->
-                <div class="row mb-3">
-                  <label for="correctAns" class="col-sm-2 col-form-label">Correct Answer</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="correctAns">
-                  </div>
-                </div>
-              </div>
-              <!-- Add new question button -->
-              <div class="row mb-3" id="questionBtn">
-                <div class="col-8"></div>
-                <div class="col-4" style="padding-left: 75px;">
-                  <button class="btn icon-box" type="button" onclick="addQuestion()" style="padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 0%;">
-                    Add New Question<i class="ri-add-line" style="color: #000000;"></i></i>
-                  </button>
-                </div>
-              </div><br>
-              <button type="button" class="btn btn-danger">Cancel</button>
-              <button type="button" onclick="create()" class="btn btn-success">Create</button>
-            </form>
-            <p id="test"></p>
-          </div>
-          <div class="col-lg-2"></div>
+    </div>
+    <div class="mb-3">
+        <label class="col-sm-2 form-label">Quiz Type</label>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="G">
+            <label class="form-check-label" for="inlineRadio1">Graded</label>
         </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="UG">
+            <label class="form-check-label" for="inlineRadio2">Ungraded</label>
+        </div>
+    </div>
+    <-- Quiz Duration 
+    <div class="row mb-3">
+        <label for="inputDur" class="col-sm-2 col-form-label">Quiz Duration</label>
+        <div class="col-sm-10">
+            <input type="number" class="form-check form-control" id="inputDur">
+        </div>
+    </div>
+    <-- Passing Criteria 
+    <div class="row mb-3">
+        <label for="inputPass" class="col-sm-2 col-form-label">Passing Criteria</label>
+        <div class="col-sm-10">
+            <input type="number" class="form-check form-control" id="inputPass">
+        </div>
+    </div>
+    <-- Question 1
+    <div class="mb-3">
+        <div class="row mb-3">
+            <label for="inputQn" class="col-sm-2 col-form-label">Question 1</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="inputQn" rows="1"></textarea>
+            </div>
+        </div>
+        <-- Options 
+    <div class="row mb-3">
+        <label class="col-sm-2 col-form-label">Options</label>
+        <div class="col-sm-10">
+            <div class="form-check">
+                <input name="corretAnswer" class="form-check-input" type="radio" value="option1">
+                <input type="text" class="form-control" id="option1" placeholder="True/Option 1">
+            </div>
+            <div class="form-check">
+                <input name="corretAnswer" class="form-check-input" type="radio" value="option2">
+                <input type="text" class="form-control" id="option2" placeholder="False/Option 2">
+            </div>
+            <button type="button" class="btn btn-primary" style="margin-top: 10px; float: right;" onclick="addOption(this)">Add New Option</button>
+        </div>
+    </div>
+    <-- Correct Answer
+                                <div class="row mb-3">
+                                    <label for="correctAns" class="col-sm-2 col-form-label">Correct Answer</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="correctAns">
+                                    </div>
+                                </div>
+                                 
+    </div>
+    <-- Add new question button 
+    <div class="row mb-3" id="questionBtn">
+        <div class="col-8"></div>
+        <div class="col-4" style="padding-left: 75px;">
+            <button class="btn btn-primary" type="button" onclick="addQuestion()">Add New Question<i class="ri-add-line " style="color: #000000; "></i></i></button>
+        </div>
+    </div><br>
+    <button type="button " class="btn btn-danger ">Cancel</button>
+    <button type="button " onclick="create() " class="btn btn-success ">Create</button>
+    </form>
+    <p id="test "></p>
+    </div>
+    <div class="col-lg-2 "></div>
+    </div>
 
-      </div>
-    </section><!-- End Features Section -->
-    
-  </main><!-- End #main -->
+    </div>
+    </section>
+    <-- End Features Section 
 
-  
+    </main>
+    <-- End #main -->
+    <div id="main-container" class="container">
+        <h1 class="display-4">Create a Quiz</h1>
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+        <form>
+            <h2>Select a Chapter</h2>
+            <div v-for="(value, index) in chapters" class="form-check">
+                <input class="form-check-input" type="radio" name="chapter" v-bind:id="value.chapter_id" v-bind:value="value.chapter_id" v-model="chapter_id">
+                <label class="form-check-label" v-bind:for="value.chapter_id">
+                  <strong>{{ value.chapter_id }}</strong> {{ value.chapter_name }}
+                </label>
+            </div>
 
-  <script src="./createQuiz.js" type="text/javascript"></script>
+            <h2>Quiz Type</h2>
+            <div class="form-group">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="quizType" id="quizType-true" value="1" v-model="quizType">
+                    <label class="form-check-label" for="quizType">Graded</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="quizType" id="quizType-false" value="0" v-model="quizType">
+                    <label class="form-check-label" for="quizType">Ungraded</label>
+                </div>
+            </div>
 
+            <h2>Quiz Duration</h2>
+
+            <div class="form-group">
+                <input type="number" class="form-control" name="duration" id="duration" v-model="duration">
+            </div>
+
+            <h2>Passing Criteria</h2>
+
+            <div class="form-group">
+                <input type="number" class="form-control" name="passing" id="passing" v-model="passing">
+            </div>
+
+            <button class="btn btn-primary" @click="addTF">Add another TF questions</button>
+            <div class="previous" v-for="(qTF, counter) in questionsTF" v-bind:key="counter">
+                <span @click="deleteTF(counter)">x</span>
+                <h2>Questions {{counter+1}}.</h2>
+                <div class="form-group">
+                    <input type="text" class="form-control" v-model.lazy="qTF.questions" required>
+                </div>
+                <h2>Quiz Type</h2>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" :name="'qnsTF' + Number(counter+1)" value="1" v-model.lazy="qTF.value">
+                        <label class="form-check-label" for="qnTF">True</label>
+                    </div>
+                    <div class="form-check form-check-inline ">
+                        <input class="form-check-input" type="radio" :name="'qnsTF' + Number(counter+1)" value="0" v-model.lazy="qTF.value">
+                        <label class="form-check-label" for="qnTF">False</label>
+                    </div>
+                </div>
+                <h2>Marks</h2>
+                <div class="form-group ">
+                    <input type="number " class="form-control " v-model.lazy="qTF.marks " required>
+                </div>
+            </div>
+
+
+            <button id="addQuizBtn " class="btn btn-primary " v-on:click="submitForm ">Create Quiz</button>
+            <p><label id="error " class="text-danger ">{{ error }}</label></p>
+        </form>
+    </div>
+
+    <!--<a href="# " class="back-to-top d-flex align-items-center justify-content-center "><i class="bi bi-arrow-up-short "></i></a>-->
+
+    <script src="./createQuiz.js " type="text/javascript "></script>
+
+    <script>
+        const vm = new Vue({
+            el: '#main-container',
+            data: {
+                chapters: [],
+                quizType: '',
+                chapter_id: 0,
+                passing: '',
+                duration: '',
+                error: '',
+                questionsTF: [{
+                    questions: '',
+                    value: '',
+                    marks: ''
+                }]
+            },
+            methods: {
+                submitForm: function() {
+                    event.preventDefault();
+                    axios.post('http://127.0.0.1:5000/createquiz', {
+                            chapter_id: this.chapter_id,
+                            quizType: Number(this.quizType),
+                            passing: Number(this.passing),
+                            duration: Number(this.duration),
+                            qnsTF: this.questionsTF
+                        })
+                        .then(response => {
+                            window.location.replace("./viewQuiz.html ");
+                            return false;
+                        })
+                        .catch(error => {
+                            this.error = error.response.data.message
+                        });
+                },
+                addTF() {
+                    this.questionsTF.push({
+                        questions: '',
+                        value: '',
+                        marks: ''
+                    })
+                },
+                deleteTF(counter) {
+                    this.questionsTF.splice(counter, 1);
+                }
+            },
+            mounted: function() {
+                axios.get('http://127.0.0.1:5000/2/chapters')
+                    .then(response => {
+                        this.chapters = response.data.data;
+                    })
+                    .catch(error => alert(error));
+            }
+        });
+    </script>
 </body>
 
 </html>
