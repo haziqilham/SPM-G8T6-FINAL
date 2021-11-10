@@ -98,6 +98,7 @@
         <table id="classTable" class='table table-striped' border='1'>
             <thead class='thead-light'>
                 <tr>
+                    <th>id</th>
                     <th id="chapterorder">Chapter</th>
                     <th>Chapter Name</th>
                     <th>Chapter Material</th>
@@ -106,10 +107,14 @@
             </thead>
             <tbody>
                 <tr v-for="chapter in chapters">
+                    <td>{{ chapter.chapter_id }}</td>
                     <td>{{ chapter.order }}</td>
                     <td>{{ chapter.chapter_name }}</td>
                     <td>{{ chapter.chapter_materials }}</td>
+                    <!--
                     <td> <a href='./viewQuiz.html'><button type="button" class="btn btn-primary" v-on:click="sessionData(chapter.chapter_id)">Start Quiz</button></a></td>
+                    -->
+                    <td><button type="button" class="btn btn-primary" v-on:click="nextPage(chapter.chapter_id)">Start Quiz</button></td>
                 </tr>
             </tbody>
         </table>
@@ -205,6 +210,11 @@
                                 this.chapters = data.data
                             }
                         })
+                },
+                nextPage: function(id) {
+                    //console.log(this.selected);
+                    //console.log(id);
+                    location.href = './viewQuiz.html?chid=' + id;
                 },
 
                 sessionData: function(chapid) {
