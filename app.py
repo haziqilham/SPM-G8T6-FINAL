@@ -254,6 +254,19 @@ def learners():
             "message": "Learners not found."
         }), 404
 
+#display all learners
+@app.route("/trainers")
+def trainers():
+    getTrainer = User.query.filter_by(role='Trainers').all()
+    if getTrainer:
+        return jsonify({
+            "data": [trainer.to_dict() for trainer in getTrainer]
+        }), 200
+    else:
+        return jsonify({
+            "message": "Trainers not found."
+        }), 404
+
 #COURSE
 #display all courses that are not archived
 @app.route("/courses")
@@ -427,10 +440,10 @@ def user_chapter(class_id, user_id):
 #display quiz
 @app.route("/<int:chapter_id>/quiz")
 def getquiz(chapter_id):
-    quizinfo = Quiz.query.filter_by(chapter_id=chapter_id).first()
+    quizinfo = Quiz.query.filter_by(chapter_id=chapter_id).all()
     if quizinfo:
         return jsonify({
-            "data": quizinfo.to_dict()
+            "data": [qinfo.to_dict() for qinfo in quizinfo]
         }), 200
     else:
         return jsonify({
@@ -442,32 +455,74 @@ def getquiz(chapter_id):
 def create_quiz():
     data = request.get_json()
     if not all(key in data.keys() for
-                key in ('chapter_id', 'duration', 'graded')):
+                key in ('chapter_id', 'duration', 'quizType', 'passing', 'qnsTF')):
         return jsonify({
             "message": "Incorrect JSON object provided."
         }), 500
+
     #validate chapter
     chapter = Chapter.query.filter_by(chapter_id=data['chapter_id']).first()
     if not chapter:
         return jsonify({
             "message": "Chapter does not exist."
-        })
+        }), 500
     #create quiz record
     quiz = Quiz(
         chapter_id=data['chapter_id'], 
         duration=data['duration'],
-        graded=data['graded']
+        graded=data['quizType'],
+        passing_mark=data['passing']
     )
     #commit to db
     try:
         db.session.add(quiz)
         db.session.commit()
-        return jsonify(quiz.to_dict()), 201
+        #    quiz.to_dict()["quiz_id"]
+        #return jsonify(quiz.to_dict()), 201
+        if (createQnTF(quiz.to_dict()["quiz_id"], data['qnsTF'])):
+            return jsonify(quiz.to_dict()), 201
+
     except Exception:
         return jsonify({
             "message": "Unable to create quiz, please try again later or contact an administrator."
         }), 500
 
+#create TF Qn
+def createQnTF(quiz_id, tf):
+    for t in tf:
+        question = Question(
+            quiz_id=quiz_id, 
+            question=t['questions'],
+            marks=t['marks']
+        )
+        print(question)
+        try:
+            db.session.add(question)
+            db.session.commit()
+            createTF(question.to_dict()["question_id"], t['value'])
+            #return jsonify(question.to_dict()), 201
+        except Exception:
+            return jsonify({
+                "message": "Unable to create question, please try again later or contact an administrator."
+            }), 500
+    return True
+
+#put TF answer
+def createTF(qnTf_id, value):
+    print(value)
+    q = Questiontf(
+        question_tf_id=qnTf_id,
+        corrected_value=int(value)
+    )
+    try:
+        db.session.add(q)
+        db.session.commit()
+        #return jsonify(q.to_dict()), 201
+        return True
+    except Exception:
+        return jsonify({
+            "message": "Unable to create question, please try again later or contact an administrator."
+        }), 500
 
 #QUESTION
 #retrieving questions for quiz
