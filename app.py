@@ -650,10 +650,33 @@ def getquestions(quiz_id):
 @app.route("/quiz/submit", methods=['POST'])
 def submit_quiz():
     data = request.get_json()
+    #if not all(key in data.keys() for
+    #        key in ('answer')):
+    #    return jsonify({
+    #        "message": "Incorrect JSON object provided."
+    #    }), 500
 
-    return jsonify({
-        "message": data
-    }), 500
+    for a in data['answer']:
+        b = retrieveanswer(a['qnID'])
+        if a['ans'] == b:
+            #do smth
+            print(a['ans'])
+            print(b)
+            print("correct")
+
+#frontend vue for loop marks each question individually
+#retrieves the answer of each question
+def retrieveanswer(question_id):
+    #find out if the question is tf or mcq
+    question_tf = Questiontf.query.filter_by(question_tf_id=question_id).first()
+    if question_tf:
+        question_tf = Questiontf.query.filter_by(question_tf_id=question_id).first()
+        answer = question_tf.corrected_value
+    else:
+        question_mcq = Options.query.filter_by(question_mcq_id=question_id, corrected_value = True).first()
+        answer = question_mcq.value
+
+    return answer
 
 #create quiz questions
 @app.route("/quiz/createquestions", methods=['POST'])
@@ -731,24 +754,6 @@ def create_options():
             "message": "Unable to create question options, please try again later or contact an administrator."
         }), 500
 
-    
-#GRADE QUIZ
-#frontend vue for loop marks each question individually
-#retrieves the answer of each question
-@app.route("/quiz/<int:question_id>")
-def retrieveanswer(question_id):
-    #find out if the question is tf or mcq
-    question_tf = Questiontf.query.filter_by(question_tf_id=question_id).first()
-    if question_tf:
-        question_tf = Questiontf.query.filter_by(question_tf_id=question_id).first()
-        answer = question_tf.corrected_value
-    else:
-        question_mcq = Options.query.filter_by(question_mcq_id=question_id, correct_value = True).first()
-        answer = question_mcq.value
-
-    return jsonify({
-        "data": answer
-    }), 200
 
 #check if user passed quiz and record completion
 @app.route("/<int:user_id>/<int:quiz_id>/<int:totalmarks>")
