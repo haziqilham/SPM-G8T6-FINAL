@@ -78,32 +78,35 @@
     </div>
     <div id="main" class='container'>
         <div id="quizinfo">
-        <h3>Chapter Id: {{ quizinfo.chapter_id }}</h3>
-        <p>Quiz Id: {{ quizinfo.quiz_id }}</p>
-        <p>Duration: {{ quizinfo.duration }}</p>
-        <p>Graded: {{ quizinfo.graded }}</p>
+            <h3>Chapter Id: {{ quizinfo.chapter_id }}</h3>
+            <p>Quiz Id: {{ quizinfo.quiz_id }}</p>
+            <p>Duration: {{ quizinfo.duration }}</p>
+            <p>Graded: {{ quizinfo.graded }}</p>
         </div>
         <hr>
-    
-
-    <button type="button" class="btn btn-primary" v-on:click="sessionData(quizinfo.quiz_id, quizinfo.graded); nextPage(quizinfo.quiz_id)">Start Quiz</button>
+        <button type="button" class="btn btn-primary" v-on:click="nextPage(quizinfo.quiz_id)">
+            Start Quiz
+        </button>
+        <!--
+        <button type="button" class="btn btn-primary" v-on:click="sessionData(quizinfo.quiz_id, quizinfo.graded); nextPage(quizinfo.quiz_id)">Start Quiz</button>
+        -->
     </div>
-  </div>
 
     <script>
         //let url = new URL(window.location.href);
         //let uid = url.searchParams.get("chapid");
-        chapid = sessionStorage.getItem("chapid")
-        console.log(chapid)
-        var get_quiz_url = "http://127.0.0.1:5000/" + chapid + "/quiz";
+        //chapid = sessionStorage.getItem("chapid")
 
+        let url = new URL(window.location.href);
+        let chid = url.searchParams.get("chid");
+
+        var get_quiz_url = "http://127.0.0.1:5000/" + chid + "/quiz";
+        //app.route("/quiz/<int:quiz_id>/questions")
         var vm = new Vue({
             el: '#main',
-            data() {
-                return {
-                    quizinfo: {},
-                    message: '',
-                };
+            data: {
+                quizinfo: {},
+                message: ''
             },
             methods: {
                 //get quiz details for quiz
@@ -116,15 +119,15 @@
                             if (data.code === 404) {
                                 this.message = data.message
                             } else {
-                                this.quizinfo = data.data
-                                console.log(data.data)
-                                console.log(this.quizinfo)
+                                this.quizinfo = data.data[0]
+                                    //console.log(data.data)
+                                    //console.log(this.quizinfo)
                             }
                         })
                 },
-                sessionData: function(quizid, quizgrade){
-                  quizid = sessionStorage.setItem("quizid", quizid)
-                  quizgrade = sessionStorage.setItem("quizgrade", quizgrade)
+                sessionData: function(quizid, quizgrade) {
+                    quizid = sessionStorage.setItem("quizid", quizid)
+                    quizgrade = sessionStorage.setItem("quizgrade", quizgrade)
                 },
 
                 nextPage: function(quizid) {
@@ -134,7 +137,7 @@
             created: function() {
                 // on Vue instance created, load the created list
                 this.getQuiz();
-            }          
+            }
         });
     </script>
 </body>
