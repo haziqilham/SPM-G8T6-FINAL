@@ -299,7 +299,7 @@ def course_by_user(user_id):
            "message": "You are not enrolled in any course at the moment."
         }), 404
 
-#display courses user is enrolled in
+#display courses user is not enrolled in
 @app.route("/not/courses/users/<int:user_id>")
 def not_course_by_user(user_id):
     courses = Course.query.filter_by(archive_date=None).all()
@@ -723,10 +723,10 @@ def self_enroll(course_id, class_id, user_id):
                             user_id = user_id,
                             course_id = course_id,
                             class_id = class_id,
-                            chapter_id = Null,
+                            chapter_id = None,
                             status = "enrolled",
-                            completion_date = Null,
-                            score = Null
+                            completion_date = None,
+                            score = None
                         )
                         #commit to DB
                         try:
@@ -760,6 +760,12 @@ def self_enroll(course_id, class_id, user_id):
             "message": "You are already enrolled into the course."
         }), 200
 
+#datetime today
+@app.route("/datetimetoday")
+def datetime():
+    return dt.datetime.today()
+
+
 
 #HR ENROLL ENGINEER - enroll user into class
 @app.route("/admin/<int:course_id>/<int:class_id>/<int:user_id>")
@@ -773,7 +779,11 @@ def enroll(course_id, class_id, user_id):
                         enrollment = CourseProgression(
                             user_id = user_id,
                             course_id = course_id,
-                            class_id = class_id
+                            class_id = class_id,
+                            chapter_id = None,
+                            status = "enrolled",
+                            completion_date = None,
+                            score = None
                         )
                         #commit to DB
                         try:
