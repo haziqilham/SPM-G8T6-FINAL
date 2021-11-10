@@ -4,8 +4,9 @@ from flask_cors import CORS
 import datetime as dt
 from sqlalchemy.sql.elements import Null
 
-app = Flask(__name__)
-
+# app = Flask(__name__)
+application = Flask(__name__)
+app = application
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://admin:ilovespm88@spm-database.c3izrtomcbks.us-east-2.rds.amazonaws.com:3306/spm_database'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
