@@ -214,11 +214,12 @@
             <button class="btn btn-primary" @click="addTF">Add another TF questions</button>
             <div class="previous" v-for="(qTF, counter) in questionsTF" v-bind:key="counter">
                 <span @click="deleteTF(counter)">x</span>
-                <h2>Questions {{counter+1}}.</h2>
+                <!--<h2>Questions {{counter+1}}.</h2> -->
+                <h2>Questions</h2>
                 <div class="form-group">
                     <input type="text" class="form-control" v-model.lazy="qTF.questions" required>
                 </div>
-                <h2>Quiz Type</h2>
+                <h2>Answer</h2>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" :name="'qnsTF' + Number(counter+1)" value="1" v-model.lazy="qTF.value">
@@ -230,14 +231,38 @@
                     </div>
                 </div>
                 <h2>Marks</h2>
-                <div class="form-group ">
-                    <input type="number " class="form-control " v-model.lazy="qTF.marks " required>
+                <div class="form-group">
+                    <input type="number" class="form-control" v-model.lazy="qTF.marks" required>
                 </div>
             </div>
 
 
-            <button id="addQuizBtn " class="btn btn-primary " v-on:click="submitForm ">Create Quiz</button>
-            <p><label id="error " class="text-danger ">{{ error }}</label></p>
+            <button class="btn btn-primary" @click="addMCQ">Add MCQ questions</button>
+            <div class="previous" v-for="(qMCQ, counter2) in questionsMCQ" v-bind:key="counter2">
+                <span @click="deleteMCQ(counter2)">x</span>
+                <!--<h2>Questions {{counter+1}}.</h2> -->
+                <h2>Questions</h2>
+                <div class="form-group">
+                    <input type="text" class="form-control" v-model.lazy="qMCQ.questions" required>
+                </div>
+                <h2>Answer</h2>
+                <button class="btn btn-primary" @click="addOptions(counter2)">Add options</button>
+                <div v-for="(o, counter3) in qMCQ.options" v-bind:key="counter3">
+                    <span @click="deleteOptions(counter2,counter3)">x</span>
+                    <div class="form-group form-check-inline">
+                        <input type="text" class="form-control" v-model.lazy="o.value" required>
+                        <input class="form-check-input" type="radio" :name="'qnsMCQop' + Number(counter2+1)" value="1" v-model.lazy="o.corrected">
+                        <label class="form-check-label">Correct Answer</label>
+                    </div>
+                </div>
+                <h2>Marks</h2>
+                <div class="form-group">
+                    <input type="number" class="form-control" v-model.lazy="qMCQ.marks" required>
+                </div>
+            </div>
+
+            <button id="addQuizBtn" class="btn btn-primary" v-on:click="submitForm">Create Quiz</button>
+            <p><label id="error" class="text-danger ">{{ error }}</label></p>
         </form>
     </div>
 
@@ -259,6 +284,15 @@
                     questions: '',
                     value: '',
                     marks: ''
+                }],
+                questionsMCQ: [{
+                    questions: '',
+                    value: '',
+                    marks: '',
+                    options: [{
+                        value: '',
+                        corrected: ''
+                    }]
                 }]
             },
             methods: {
@@ -269,7 +303,8 @@
                             quizType: Number(this.quizType),
                             passing: Number(this.passing),
                             duration: Number(this.duration),
-                            qnsTF: this.questionsTF
+                            qnsTF: this.questionsTF,
+                            qnsMCQ: this.questionsMCQ
                         })
                         .then(response => {
                             window.location.replace("./viewQuiz.html ");
@@ -288,6 +323,29 @@
                 },
                 deleteTF(counter) {
                     this.questionsTF.splice(counter, 1);
+                },
+                deleteMCQ(counter) {
+                    this.questionsMCQ.splice(counter, 1);
+                },
+                deleteOptions(x, counter) {
+                    this.questionsMCQ[x].options.splice(counter, 1);
+                },
+                addMCQ() {
+                    this.questionsMCQ.push({
+                        questions: '',
+                        value: '',
+                        marks: '',
+                        options: [{
+                            value: '',
+                            corrected: ''
+                        }]
+                    })
+                },
+                addOptions(y) {
+                    this.questionsMCQ[y].options.push({
+                        value: '',
+                        corrected: ''
+                    })
                 }
             },
             mounted: function() {
