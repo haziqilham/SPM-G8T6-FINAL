@@ -23,7 +23,9 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
+    <script>
+    $window.location.reload();
+    sessionStorage.clear();</script>
     <title>Learner Home</title>
 
     <style>
@@ -44,7 +46,7 @@
     <!-- NAV BAR-->
     <div>
         <nav class="navbar navbar-dark bg-primary">
-            <a class="navbar-brand mx-auto" href="../../index.html">
+            <a class="navbar-brand mx-auto" href="../index.html">
                 All in One
             </a>
             <!-- Navigation TO OTHER ACCOUNTS-->
@@ -66,12 +68,12 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="./learnerhome.html">Home</a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" href="#">Enrolled</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="./takeQuiz.html">Courses</a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </nav>
@@ -92,8 +94,8 @@
                         <div class="fw-bold">{{ course.course_name }}</div>
                         <span class="badge bg-warning rounded-pill">{{ course.archive_date}}</span>
                     </div>
-                    <button type="button" class="btn btn-primary" v-on:click="nextPage(course.course_id)">
-                Manage
+                    <button type="button" class="btn btn-primary" v-on:click="sessionData(course.course_id); viewclass(course.course_id)">
+                View
             </button>
                 </li>
             </ol>
@@ -107,7 +109,7 @@
                         <div class="fw-bold">{{ c.course_name }}</div>
                         <span class="badge bg-warning rounded-pill">{{ c.archive_date}}</span>
                     </div>
-                    <button type="button" class="btn btn-primary" v-on:click="nextPage(c.course_id)">
+                    <button type="button" class="btn btn-primary" v-on:click="sessionData(c.course_id); nextPage(c.course_id)">
                 Enroll
             </button>
                 </li>
@@ -175,16 +177,28 @@
                             }
                         })
                 },
+                sessionData: function(id){
+                    sessionStorage.setItem("userid", this.selected)
+                },
+
                 nextPage: function(id) {
                     //console.log(this.selected);
                     //console.log(id);
                     location.href = './coursePage.html?uid=' + this.selected + '&cid=' + id;
+                    
+                },
+                viewclass: function(id){
+                    location.href = './viewClass.html?uid=' + this.selected + '&cid=' + id;
+                    
+
                 }
             },
             created: function() {
                 // on Vue instance created, load the created list
-                this.getCourseList();
-            }
+                this.getCourseList();              
+            },
+
+
         })
     </script>
 </body>

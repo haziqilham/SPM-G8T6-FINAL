@@ -84,7 +84,9 @@
 
     
     <div id='main' class='container'>
-        <h2>Quiz</h2>
+        <h1>Enrolled Course</h1>
+        <h2>User: {{ name }}</h2>
+        <h2>Course: {{ course }}</h2>
         <hr>
         
         <div id="classinfo">
@@ -115,45 +117,104 @@
     </div>
 
     <script>
-        console.log(sessionStorage.getItem("quizgrade"))
-        quizid = sessionStorage.getItem("quizid")
+        let url = new URL(window.location.href);
+        let uid = url.searchParams.get("uid");
+        let cid = url.searchParams.get("cid");
+        //let clasid = document.getElementById(classid).innerHTML
+
         // get course by course id
-        var get_qns_url = "http://127.0.0.1:5000/" + quizid + "/quiz/questions"
+        var get_c_url = "http://127.0.0.1:5000/courses/" + cid;
+        // get user by user id
+        var get_n_url = "http://127.0.0.1:5000/users/" + uid;
 
         var vm = new Vue({
             el: '#main',
             data() {
                 return {
-                    questionid: {},
-                    question: {},
-                    options: [],
+                    classinfo: {},
                     message: '',
+                    course: '',
+                    name: '',
+                    tname: '',
+                    tid: 0,
+                    uid: 0,
+                    clasid: 0,
+                    chapters: {}
                 };
             },
             methods: {
                 //get Course details for course name
-                getQuestions: function() {
+                getCourse: function() {
                     const response =
-                        fetch(get_qns_url)
+                        fetch(get_c_url)
                         .then(response => response.json())
                         .then(data => {
                             console.log(response);
                             if (data.code === 404) {
                                 this.message = data.message
                             } else {
-                                this.questionid = data.data
-                                this.question = data.data.question
-                                this.options = data.data.question.options
+                                this.course = data.data.course_name
                             }
                         })
                 },
+                //get user info for user's name
+                getName: function() {
+                    const response =
+                        fetch(get_n_url)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(response);
+                            if (data.code === 404) {
+                                this.message = data.message
+                            } else {
+                                this.name = data.data.name
+                                this.uid = data.data.user_id
+                            }
+                        })
+                    },
+                // get classinfo of class enrolled by courseid, userid
+                getClassInfo: function() {
+                    const response =
+                    fetch("http://127.0.0.1:5000/user/" + uid + "/" + cid + "/class")
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(response);
+                            if (data.code === 404) {
+                                this.message = data.message
+                            } else {
+                                this.classinfo = data.data
+                                this.clasid = data.data.class_id
+                                this.tid = data.data.trainer_id
+                                sessionStorage.setItem("classid", data.data.class_id)
+                                console.log(data.data);
+                            }
+                        })     
+                },
+
+                getChapters: function() {
+                    const response =
+                        fetch("http://127.0.0.1:5000/" + sessionStorage.getItem("classid") + "/" + sessionStorage.getItem("userid") + "/chapters")
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(response);
+                            if (data.code === 404) {
+                                this.message = data.message
+                            } else {
+                                this.chapters = data.data
+                            }
+                        })
+                    },
+
                 sessionData: function(chapid) {
                     sessionStorage.setItem("chapid", chapid)
                 }
             },
             created: function() {
                 // on Vue instance created, load the created list
-                this.getQuestions();
+                this.getCourse();
+                this.getName();
+                this.getClassInfo();
+                this.getChapters();
             },
         });
     </script>

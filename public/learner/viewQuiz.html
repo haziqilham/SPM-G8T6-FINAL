@@ -23,12 +23,7 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="js/custom.js" type="text/javascript" >$window.onload = function(){
-            sessionStorage.clear();
-        }
-    
-        
-        </script>
+
     <title>Course Page</title>
 
     <style>
@@ -81,80 +76,65 @@
             </div>
         </nav>
     </div>
-
-    
-    <div id='main' class='container'>
-        <h2>Quiz</h2>
-        <hr>
-        
-        <div id="classinfo">
-        <h3 id="classid">Class Id: {{ classinfo.class_id }}</h3>
-        <p>Class Name: {{ classinfo.class_name }}</p>
-        <p>Start Datetime: {{ classinfo.start_DateTime }}</p>
-        <p>End Datetime: {{ classinfo.end_DateTime }}</p>
+    <div id="main" class='container'>
+        <div id="quizinfo">
+        <h3>Chapter Id: {{ quizinfo.chapter_id }}</h3>
+        <p>Quiz Id: {{ quizinfo.quiz_id }}</p>
+        <p>Duration: {{ quizinfo.duration }}</p>
+        <p>Graded: {{ quizinfo.graded }}</p>
         </div>
         <hr>
-        <table id="classTable" class='table table-striped' border='1'>
-            <thead class='thead-light'>
-                <tr>
-                    <th id="chapterorder">Chapter</th>
-                    <th>Chapter Name</th>
-                    <th>Chapter Material</th>
-                    <th>Quiz</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="chapter in chapters">
-                    <td>{{ chapter.order }}</td>
-                    <td>{{ chapter.chapter_name }}</td>
-                    <td>{{ chapter.chapter_materials }}</td>
-                    <td> <a href='./viewQuiz.html'><button type="button" class="btn btn-primary" v-on:click="sessionData(chapter.chapter_id)">Start Quiz</button></a></td>
-                </tr>
-            </tbody>
-        </table>
+    
+
+    <button type="button" class="btn btn-primary" v-on:click="sessionData(quizinfo.quiz_id, quizinfo.graded); nextPage(quizinfo.quiz_id)">Start Quiz</button>
     </div>
+  </div>
 
     <script>
-        console.log(sessionStorage.getItem("quizgrade"))
-        quizid = sessionStorage.getItem("quizid")
-        // get course by course id
-        var get_qns_url = "http://127.0.0.1:5000/" + quizid + "/quiz/questions"
+        //let url = new URL(window.location.href);
+        //let uid = url.searchParams.get("chapid");
+        chapid = sessionStorage.getItem("chapid")
+        console.log(chapid)
+        var get_quiz_url = "http://127.0.0.1:5000/" + chapid + "/quiz";
 
         var vm = new Vue({
             el: '#main',
             data() {
                 return {
-                    questionid: {},
-                    question: {},
-                    options: [],
+                    quizinfo: {},
                     message: '',
                 };
             },
             methods: {
-                //get Course details for course name
-                getQuestions: function() {
+                //get quiz details for quiz
+                getQuiz: function() {
                     const response =
-                        fetch(get_qns_url)
+                        fetch(get_quiz_url)
                         .then(response => response.json())
                         .then(data => {
                             console.log(response);
                             if (data.code === 404) {
                                 this.message = data.message
                             } else {
-                                this.questionid = data.data
-                                this.question = data.data.question
-                                this.options = data.data.question.options
+                                this.quizinfo = data.data
+                                console.log(data.data)
+                                console.log(this.quizinfo)
                             }
                         })
                 },
-                sessionData: function(chapid) {
-                    sessionStorage.setItem("chapid", chapid)
+                sessionData: function(quizid, quizgrade){
+                  quizid = sessionStorage.setItem("quizid", quizid)
+                  quizgrade = sessionStorage.setItem("quizgrade", quizgrade)
+                },
+
+                nextPage: function(quizid) {
+                    location.href = './takeQuiz.html?quizid=' + quizid;
                 }
             },
             created: function() {
                 // on Vue instance created, load the created list
-                this.getQuestions();
-            },
+                this.getQuiz();
+            }          
         });
     </script>
 </body>

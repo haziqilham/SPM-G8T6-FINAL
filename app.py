@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import datetime as dt
-from sqlalchemy.sql.elements import Null
 
 app = Flask(__name__)
 
@@ -397,9 +396,9 @@ def updateprogress(class_id, chapter_id, user_id):
 
 #ATTENDING THE CLASS FUNCTION:
 #display all classes that user is currently enrolled in
-@app.route("/classes/<int:user_id>")
+@app.route("/user/classes/<int:user_id>")
 def class_by_user(user_id):
-    userclass = CourseProgression.query.filter_by(user_id=user_id, status="enrolled" or "ongoing").all()
+    userclass = CourseProgression.query.filter_by(user_id=user_id, status='ongoing' ).all()
     if userclass:
         return jsonify({
             "data": [uclass.to_dict() for uclass in userclass]
@@ -408,6 +407,23 @@ def class_by_user(user_id):
         return jsonify({
             "message": "You are not enrolled in any class at the moment."
         }), 404
+
+#display the class of the course that the user is enrolled in
+@app.route("/user/<int:user_id>/<int:course_id>/class")
+def classenrolled(user_id, course_id):
+    userclass = CourseProgression.query.filter_by(user_id=user_id, course_id=course_id).filter_by(status = 'ongoing' or 'enrolled').first()
+    class_id = userclass.class_id
+    classinfo = Class.query.filter_by(class_id=class_id).first()
+    if classinfo:
+        return jsonify({
+            "data": classinfo.to_dict()
+        }), 200
+    else:
+        return jsonify({
+            "message": "You are not enrolled in any class for this course."
+        }), 404
+
+
 
 #display chapters of classes that user has access to
 @app.route("/<int:class_id>/<int:user_id>/chapters")
@@ -432,10 +448,14 @@ def user_chapter(class_id, user_id):
                 'order': chapter.order,
                 'chapter_materials':chapter.chapter_materials
             })
-
-    return jsonify({
-        "data": [cdata for cdata in chapter_data]
-        }), 200
+    if chapter_data:
+        return jsonify({
+            "data": [cdata for cdata in chapter_data]
+            }), 200
+    else:
+        return jsonify({
+            "message": "The class has not started yet."
+        }), 404
 
 #QUIZ
 #display quiz
@@ -607,13 +627,13 @@ def getquestions(chapter_id):
             question_mcq = Options.query.filter_by(question_mcq_id=question.question_id).all()
             for option in question_mcq:
                 options.append(option.value)
-                qdict[question.question]= options
-                finaldict[question.question_id]= qdict
-                options = []
-                qdict = {}
+            qdict[question.question]= options
+            finaldict[question.question_id]= qdict
+            options = []
+            qdict = {}
     if finaldict:
         return jsonify({
-            "data": finaldict.to_dict()
+            "data": finaldict
         }), 200
     else:
         return jsonify({
