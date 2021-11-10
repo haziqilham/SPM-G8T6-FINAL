@@ -24,14 +24,15 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-    <title>Trainer Home</title>
+
+    <title>Trainer View Chapters</title>
 
     <style>
         img.center {
             display: block;
             margin: 0 auto;
         }
-        
+
         .bottom-right {
             position: absolute;
             bottom: 0;
@@ -45,13 +46,14 @@
     <div>
         <nav class="navbar navbar-dark bg-primary">
             <a class="navbar-brand mx-auto" href="../../index.html">
-        All in One
-      </a>
+                All in One
+            </a>
             <!-- Navigation TO OTHER ACCOUNTS-->
             <div class="btn-group dropstart">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-          Trainer
-        </button>
+                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    Trainer
+                </button>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="../learner/learnerhome.html">Learner Account</a></li>
                     <li><a class="dropdown-item" href="./trainerHome.html">Trainer Account</a></li>
@@ -71,103 +73,79 @@
         </nav>
     </div>
 
+    <div id="app" class="container">
+        <p>
+            <h3>Class Chapters</h3>
+        </p>
 
-    <div class='container' id='trainers'>
-        <select v-model="selected" v-on:change="getTrainerClass">
-          <option v-for="option in options" v-bind:value="option.value">
-              {{ option.text }}
-          </option>
-        </select>
-        <hr>
-        <table id="classTable" class='table table-striped' border='1'>
-            <thead class='thead-light'>
+        <table class="table table-striped mt-4">
+            <thead>
                 <tr>
-                    <th>Course Name</th>
-                    <th>Class Name</th>
-                    <th>Start DateTime</th>
-                    <th>End DateTime</th>
-                    <th>Action</th>
+                    <th>Chapter Order</th>
+                    <th>Chapter Id</th>
+                    <th>Chapter Name</th>
+                    <th>Chapter Materials</th>
+                    <th>Chapter Quiz</th>
+                </tr>
+                <tr v-for="chapter in chapters">
+                    <td>{{ chapter.order }}</td>
+                    <td>{{ chapter.chapter_id }}</td>
+                    <td>{{ chapter.chapter_name }}</td>
+                    <td>{{ chapter.chapter_materials }}    <button type="button" class="btn btn-primary">Edit</button>
+                    </td>
+                    <td><button type="button" class="btn btn-primary" v-on:click="nextPage(chapter.chapter_id)">Edit Quiz</button></td>
                 </tr>
             </thead>
-            <tbody>
-                <tr v-for="item in classes">
-                    <td>{{ item.course_name }}</td>
-                    <td>{{ item.class_name }}</td>
-                    <td>{{ item.start_DateTime }}</td>
-                    <td>{{ item.end_DateTime }}</td>
-                    <td> <button type="button" class="btn btn-primary" v-on:click="nextPage(item.class_id)">View Chapters</button></td>
-                </tr>
-            </tbody>
         </table>
+    </div> 
+    </div> 
 
-        <div class='container d-flex justify-content-center'>
-            <p id='error'>{{ error }}</p>
-        </div>
     </div>
-
-
     <script>
-        var get_url = "http://127.0.0.1:5000/trainers";
+        let url = new URL(window.location.href);
+        let tid = url.searchParams.get("tid");
+        let clid = url.searchParams.get("clid");
 
-        const vm = new Vue({
-            el: '#trainers',
+        var get_chapter_url = "http://127.0.0.1:5000/" + clid + "/chapters";
+
+        var app = new Vue({
+            el: "#app",
             data: {
-                selected: "",
-                options: [],
-                classes: {},
+                chapters: {},
                 message: '',
                 error: ''
             },
             methods: {
-                getTrainerList: function() {
+                getChapters: function () {
+                    // on Vue instance created, load the book list
                     const response =
-                        fetch(get_url)
+                        fetch(get_chapter_url)
                         .then(response => response.json())
                         .then(data => {
                             console.log(response);
                             if (data.code === 404) {
-                                this.message = data.message
+                                this.message = data.message;
                             } else {
-                                for (d in data.data) {
-                                    this.options.push({
-                                        text: data.data[d].name,
-                                        value: data.data[d].user_id
-                                    })
-                                }
-                                //this.options = data.data
-                            }
-                        })
-                },
-                getTrainerClass: function(e) {
-                    param = e.target.value;
-                    var get_classes_url = "http://127.0.0.1:5000/trainer/classes/" + param;
-
-                    const response =
-                        fetch(get_classes_url)
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log(response);
-                            if (data.code === 404) {
-                                this.message = data.message
-                            } else {
-                                this.classes = data.data
+                                this.chapters = data.data;
                             }
                         })
                         .catch(error => {
-                            this.error = error.response.data.message
+                            console.log(this.message + error);
+
                         });
                 },
                 nextPage: function(id) {
                     //console.log(this.selected);
                     //console.log(id);
-                    location.href = './viewChapters.html?tid=' + this.selected + '&clid=' + id;
+                    location.href = './checkQuiz.html?chapid=' + id;
                 }
             },
-            created: function() {
+            created: function(){
                 // on Vue instance created, load the created list
-                this.getTrainerList();
+                this.getChapters();
             }
         })
+
     </script>
 </body>
 
