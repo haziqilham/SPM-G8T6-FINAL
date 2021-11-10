@@ -87,23 +87,27 @@
     <div id='main' class='container'>
         <h2>Quiz</h2>
         <hr>
+        <form>
+            <div v-for='(question, index) in questions'>
+                {{index}}
+                <p>{{question.question}}</p>
+                <div v-for='option in question.options'>
+                    <input class="form-check-input" type="radio" :name="'option' + question.question_id + index" :value="option" v-model.lazy="answers[index].ans ">
+                    <label class=" form-check-label" for="flexRadioDefault1 ">
+                        {{ option }}
+                    </label>
+                </div>
+            </div>
+            <button id="addQuizBtn " class="btn btn-primary " v-on:click="submitForm ">Submit Quiz</button>
+            <p><label id="error " class="text-danger ">{{ error }}</label></p>
+        </form>
 
-        <template v-for='question in questions'>
-        <p>{{question.question}}</p>
-        <div v-for='option in question.options'>
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-            <label class="form-check-label" for="flexRadioDefault1">
-                {{ option }}
-            </label>
-        <div>
-        </template>
-
-        <!-- <a href='./viewQuiz.html'><button type="button" class="btn btn-primary" v-on:click="sessionData(chapter.chapter_id)">Start Quiz</button></a>-->
+        <!-- <a href='./viewQuiz.html '><button type="button " class="btn btn-primary " v-on:click="sessionData(chapter.chapter_id) ">Start Quiz</button></a>-->
     </div>
 
     <script>
-        //console.log(sessionStorage.getItem("quizgrade"))
-        //quizid = sessionStorage.getItem("quizid")
+        //console.log(sessionStorage.getItem("quizgrade "))
+        //quizid = sessionStorage.getItem("quizid ")
         // get course by course id
         let url = new URL(window.location.href);
         let quizid = url.searchParams.get("quizid");
@@ -111,13 +115,14 @@
         var get_qns_url = "http://127.0.0.1:5000/quiz/" + quizid + "/questions"
 
         var vm = new Vue({
-            el: '#main',
-            data() {
-                return {
-                    questions: {},
-                    options: [],
-                    message: '',
-                };
+            el: '#main ',
+            data: {
+                questions: {},
+                options: [],
+                message: ' ',
+                error: '',
+                size: 0,
+                answers: []
             },
             methods: {
                 //get Course details for course name
@@ -131,10 +136,33 @@
                                 this.message = data.message
                             } else {
                                 this.questions = data.data
-                                    //console.log(data.data)
-                                    //console.log(data.data.options)
+                                this.size = this.questions.length
+                                for (let i = 0; i < this.size; i++) {
+                                    this.answers.push({
+                                        qnID: this.questions[i].question_id,
+                                        ans: ''
+                                    })
+                                }
+                                //console.log(this.answers)
+                                //console.log(this.answers.length)
+                                //console.log(data.data)
+                                //console.log(data.data.options)
                             }
                         })
+                },
+                submitForm: function() {
+                    event.preventDefault();
+                    //console.log(this.answers)
+                    axios.post('http://127.0.0.1:5000/quiz/submit', {
+                            answer: this.answers
+                        })
+                        .then(response => {
+                            window.location.replace("./viewQuiz.html ");
+                            return false;
+                        })
+                        .catch(error => {
+                            this.error = error.response.data.message
+                        });
                 }
             },
             created: function() {
@@ -144,5 +172,7 @@
         });
     </script>
 </body>
+
+</html>
 
 </html>
