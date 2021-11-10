@@ -354,7 +354,10 @@ INSERT INTO `course_progression` (`cc_id`, `user_id`, `course_id`, `class_id`, `
 -- course 6 ended already
 (18, 29, 6, 11, 33, 'completed', '2021-09-02 00:00:00', 80),
 (19, 22, 6, 11, 33, 'completed', '2021-09-02 00:00:00', 90),
-(20, 23, 6, 11, 33, 'completed', '2021-09-02 00:00:00', 80);
+(20, 23, 6, 11, 33, 'completed', '2021-09-02 00:00:00', 80),
+-- course 1 
+(21, 30, 1, 1, 2, 'ongoing', NULL, NULL);
+(22, 31, 1, 1, 2, 'ongoing', NULL, NULL);
 -- --------------------------------------------------------
 
 --

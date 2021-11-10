@@ -63,131 +63,26 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="./trainerHome.html">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./viewQuiz.html">View Quiz</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./createQuiz.html">Create Quiz</a>
-                    </li>
                 </ul>
             </div>
         </nav>
     </div>
 
-    <!--    
-      <main id="main">
-        <-- ======= Features Section ======= 
-    <section id="features" class="features">
-        <div class="container">
-
-            <div class="section-title" data-aos="fade-up">
-                <h2>Quiz Creation</h2>
-                <h3>RE101 - HP OfficeJet All-in-One 8010, 8020, Pro 8030, 8020e, 8030e Printers</h3>
-            </div>
-
-            <div class="row" data-aos="fade-up" data-aos-delay="200">
-                <div class="col-lg-2"></div>
-                <div class="col-lg-8 col-md-12">
-                    <h3>New Quiz</h3>
-                    <form method="post" id="quizForm">
-                        <-- action="/classes/quizClass.py"
-    <div class="row mb-3">
-        <label for="inputNum" class="col-sm-2 col-form-label">Chapter Number</label>
-        <div class="col-sm-10">
-            <input type="number" class="form-check form-control" id="inputNum">
-        </div>
-    </div>
-    <div class="mb-3">
-        <label class="col-sm-2 form-label">Quiz Type</label>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="G">
-            <label class="form-check-label" for="inlineRadio1">Graded</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="UG">
-            <label class="form-check-label" for="inlineRadio2">Ungraded</label>
-        </div>
-    </div>
-    <-- Quiz Duration 
-    <div class="row mb-3">
-        <label for="inputDur" class="col-sm-2 col-form-label">Quiz Duration</label>
-        <div class="col-sm-10">
-            <input type="number" class="form-check form-control" id="inputDur">
-        </div>
-    </div>
-    <-- Passing Criteria 
-    <div class="row mb-3">
-        <label for="inputPass" class="col-sm-2 col-form-label">Passing Criteria</label>
-        <div class="col-sm-10">
-            <input type="number" class="form-check form-control" id="inputPass">
-        </div>
-    </div>
-    <-- Question 1
-    <div class="mb-3">
-        <div class="row mb-3">
-            <label for="inputQn" class="col-sm-2 col-form-label">Question 1</label>
-            <div class="col-sm-10">
-                <textarea class="form-control" id="inputQn" rows="1"></textarea>
-            </div>
-        </div>
-        <-- Options 
-    <div class="row mb-3">
-        <label class="col-sm-2 col-form-label">Options</label>
-        <div class="col-sm-10">
-            <div class="form-check">
-                <input name="corretAnswer" class="form-check-input" type="radio" value="option1">
-                <input type="text" class="form-control" id="option1" placeholder="True/Option 1">
-            </div>
-            <div class="form-check">
-                <input name="corretAnswer" class="form-check-input" type="radio" value="option2">
-                <input type="text" class="form-control" id="option2" placeholder="False/Option 2">
-            </div>
-            <button type="button" class="btn btn-primary" style="margin-top: 10px; float: right;" onclick="addOption(this)">Add New Option</button>
-        </div>
-    </div>
-    <-- Correct Answer
-                                <div class="row mb-3">
-                                    <label for="correctAns" class="col-sm-2 col-form-label">Correct Answer</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="correctAns">
-                                    </div>
-                                </div>
-                                 
-    </div>
-    <-- Add new question button 
-    <div class="row mb-3" id="questionBtn">
-        <div class="col-8"></div>
-        <div class="col-4" style="padding-left: 75px;">
-            <button class="btn btn-primary" type="button" onclick="addQuestion()">Add New Question<i class="ri-add-line " style="color: #000000; "></i></i></button>
-        </div>
-    </div><br>
-    <button type="button " class="btn btn-danger ">Cancel</button>
-    <button type="button " onclick="create() " class="btn btn-success ">Create</button>
-    </form>
-    <p id="test "></p>
-    </div>
-    <div class="col-lg-2 "></div>
-    </div>
-
-    </div>
-    </section>
-    <-- End Features Section 
-
-    </main>
-    <-- End #main -->
     <div id="main-container" class="container">
-        <h1 class="display-4">Create a Quiz</h1>
+        <h1>Create Quiz</h1>
+        <hr>
 
         <form>
-            <h2>Select a Chapter</h2>
+            <!-- <h2>Select a Chapter</h2>
             <div v-for="(value, index) in chapters" class="form-check">
                 <input class="form-check-input" type="radio" name="chapter" v-bind:id="value.chapter_id" v-bind:value="value.chapter_id" v-model="chapter_id">
                 <label class="form-check-label" v-bind:for="value.chapter_id">
                   <strong>{{ value.chapter_id }}</strong> {{ value.chapter_name }}
                 </label>
-            </div>
+            </div>-->
 
-            <h2>Quiz Type</h2>
+            <h3>Quiz Type:</h3>
+            
             <div class="form-group">
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="quizType" id="quizType-true" value="1" v-model="quizType">
@@ -198,28 +93,27 @@
                     <label class="form-check-label" for="quizType">Ungraded</label>
                 </div>
             </div>
-
-            <h2>Quiz Duration</h2>
+            
+            <h4>Quiz Duration</h4>
 
             <div class="form-group">
                 <input type="number" class="form-control" name="duration" id="duration" v-model="duration">
             </div>
-
-            <h2>Passing Criteria</h2>
+           
+            <h4>Passing Criteria</h4>
 
             <div class="form-group">
                 <input type="number" class="form-control" name="passing" id="passing" v-model="passing">
             </div>
-
-            <button class="btn btn-primary" @click="addTF">Add another TF questions</button>
+            <br>
+            <hr>
             <div class="previous" v-for="(qTF, counter) in questionsTF" v-bind:key="counter">
-                <span @click="deleteTF(counter)">x</span>
                 <!--<h2>Questions {{counter+1}}.</h2> -->
-                <h2>Questions</h2>
+                <h5>Question</h5>
                 <div class="form-group">
                     <input type="text" class="form-control" v-model.lazy="qTF.questions" required>
                 </div>
-                <h2>Answer</h2>
+                <h6>Answer:</h6>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" :name="'qnsTF' + Number(counter+1)" value="1" v-model.lazy="qTF.value">
@@ -230,36 +124,51 @@
                         <label class="form-check-label" for="qnTF">False</label>
                     </div>
                 </div>
-                <h2>Marks</h2>
+                <h6>Question Marks</h6>
                 <div class="form-group">
                     <input type="number" class="form-control" v-model.lazy="qTF.marks" required>
                 </div>
+                <span class="btn btn-secondary" @click="deleteTF(counter)">Delete Question</span>
+                <hr>
             </div>
-
-
-            <button class="btn btn-primary" @click="addMCQ">Add MCQ questions</button>
+            <button class="btn btn-primary" @click="addTF">Add True/False question</button>
+            <br>
+            <br>
+            <br>
+            <hr>
+            
+            
             <div class="previous" v-for="(qMCQ, counter2) in questionsMCQ" v-bind:key="counter2">
-                <span @click="deleteMCQ(counter2)">x</span>
+                
                 <!--<h2>Questions {{counter+1}}.</h2> -->
-                <h2>Questions</h2>
+                <h5>Question</h5>
                 <div class="form-group">
                     <input type="text" class="form-control" v-model.lazy="qMCQ.questions" required>
                 </div>
-                <h2>Answer</h2>
-                <button class="btn btn-primary" @click="addOptions(counter2)">Add options</button>
+                <h6>Answer - select the correct answer:</h6>
                 <div v-for="(o, counter3) in qMCQ.options" v-bind:key="counter3">
-                    <span @click="deleteOptions(counter2,counter3)">x</span>
                     <div class="form-group form-check-inline">
-                        <input type="text" class="form-control" v-model.lazy="o.value" required>
+                        <!-- <label class="form-check-label">Answer</label> -->
                         <input class="form-check-input" type="radio" :name="'qnsMCQop' + Number(counter2+1)" value="1" v-model.lazy="o.corrected">
-                        <label class="form-check-label">Correct Answer</label>
+                        <input type="text" class="form-control" v-model.lazy="o.value" required>
                     </div>
+                    <span class="btn btn-light" @click="deleteOptions(counter2,counter3)">delete option</span>
                 </div>
-                <h2>Marks</h2>
+                <button class="btn btn-info" @click="addOptions(counter2)">Add option</button>
+                <br>
+                <br>
+                <h6>Question Marks</h6>
                 <div class="form-group">
                     <input type="number" class="form-control" v-model.lazy="qMCQ.marks" required>
                 </div>
+                <span class="btn btn-secondary" @click="deleteMCQ(counter2)">Delete Question</span>
+                <hr>
             </div>
+            <button class="btn btn-primary" @click="addMCQ">Add Mcq question</button>
+            <br>
+            <br>
+            <br>
+            <hr>
 
             <button id="addQuizBtn" class="btn btn-primary" v-on:click="submitForm">Create Quiz</button>
             <p><label id="error" class="text-danger ">{{ error }}</label></p>
@@ -271,12 +180,14 @@
     <script src="./createQuiz.js " type="text/javascript "></script>
 
     <script>
+        let url = new URL(window.location.href);
+        let chapid = url.searchParams.get("chapid");
+
         const vm = new Vue({
             el: '#main-container',
             data: {
                 chapters: [],
                 quizType: '',
-                chapter_id: 0,
                 passing: '',
                 duration: '',
                 error: '',
@@ -299,7 +210,7 @@
                 submitForm: function() {
                     event.preventDefault();
                     axios.post('http://127.0.0.1:5000/createquiz', {
-                            chapter_id: this.chapter_id,
+                            chapter_id: chapid,
                             quizType: Number(this.quizType),
                             passing: Number(this.passing),
                             duration: Number(this.duration),
@@ -307,7 +218,7 @@
                             qnsMCQ: this.questionsMCQ
                         })
                         .then(response => {
-                            window.location.replace("./viewQuiz.html ");
+                            window.location.replace("./checkQuiz.html?chapid=" + chapid);
                             return false;
                         })
                         .catch(error => {
@@ -348,13 +259,13 @@
                     })
                 }
             },
-            mounted: function() {
-                axios.get('http://127.0.0.1:5000/2/chapters')
-                    .then(response => {
-                        this.chapters = response.data.data;
-                    })
-                    .catch(error => alert(error));
-            }
+            //mounted: function() {
+                //axios.get('http://127.0.0.1:5000/2/chapters')
+                    //.then(response => {
+                        //this.chapters = response.data.data;
+                    //})
+                    //.catch(error => alert(error));
+            //}
         });
     </script>
 </body>
