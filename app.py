@@ -513,24 +513,30 @@ def createQnMCQ(quiz_id, mcq):
 def createMCQ(qnTf_id):
     print(qnTf_id)
     q = Questionmcq(
-        question_tf_id=qnTf_id
+        question_mcq_id=qnTf_id
     )
     try:
         db.session.add(q)
         db.session.commit()
+        return True
     except Exception:
         return jsonify({
             "message": "Unable to create question, please try again later or contact an administrator."
         }), 500
-    return True
+
 
 #create options
 def createOptions(quiz_id, options):
     for o in options:
+        print(o)
+        a=1
+        if o['corrected'] == '':
+            a=0
+
         opt = Options(
             question_mcq_id=quiz_id,
             value=o['value'],
-            corrected_value=o['corrected']
+            corrected_value=a
         )
         print(opt)
         try:
