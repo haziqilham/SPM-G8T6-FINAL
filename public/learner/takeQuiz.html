@@ -87,45 +87,30 @@
         <h2>Quiz</h2>
         <hr>
         
-        <div id="classinfo">
-        <h3 id="classid">Class Id: {{ classinfo.class_id }}</h3>
-        <p>Class Name: {{ classinfo.class_name }}</p>
-        <p>Start Datetime: {{ classinfo.start_DateTime }}</p>
-        <p>End Datetime: {{ classinfo.end_DateTime }}</p>
-        </div>
-        <hr>
-        <table id="classTable" class='table table-striped' border='1'>
-            <thead class='thead-light'>
-                <tr>
-                    <th id="chapterorder">Chapter</th>
-                    <th>Chapter Name</th>
-                    <th>Chapter Material</th>
-                    <th>Quiz</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="chapter in chapters">
-                    <td>{{ chapter.order }}</td>
-                    <td>{{ chapter.chapter_name }}</td>
-                    <td>{{ chapter.chapter_materials }}</td>
-                    <td> <a href='./viewQuiz.html'><button type="button" class="btn btn-primary" v-on:click="sessionData(chapter.chapter_id)">Start Quiz</button></a></td>
-                </tr>
-            </tbody>
-        </table>
+        <template v-for='question in questions'>
+        <p>{{question.question}}</p>
+        <div v for='option in options'>
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+            <label class="form-check-label" for="flexRadioDefault1">
+                {{ option }}
+            </label>
+        <div>
+        </template>
+
+                     <!-- <a href='./viewQuiz.html'><button type="button" class="btn btn-primary" v-on:click="sessionData(chapter.chapter_id)">Start Quiz</button></a>-->
     </div>
 
     <script>
         console.log(sessionStorage.getItem("quizgrade"))
         quizid = sessionStorage.getItem("quizid")
         // get course by course id
-        var get_qns_url = "http://127.0.0.1:5000/" + quizid + "/quiz/questions"
+        var get_qns_url = "http://127.0.0.1:5000/" + 16 + "/quiz/questions"
 
         var vm = new Vue({
             el: '#main',
             data() {
                 return {
-                    questionid: {},
-                    question: {},
+                    questions: {},
                     options: [],
                     message: '',
                 };
@@ -141,9 +126,9 @@
                             if (data.code === 404) {
                                 this.message = data.message
                             } else {
-                                this.questionid = data.data
-                                this.question = data.data.question
-                                this.options = data.data.question.options
+                                this.questions = data.data
+                                console.log(data.data)
+                                console.log(data.data.options)
                             }
                         })
                 },
