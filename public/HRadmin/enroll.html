@@ -77,7 +77,7 @@
         <h2>User: {{ name }}</h2>
         <h2>Course: {{ course }}</h2>
         <hr>
-        
+        <h5>{{ enrollresult }}</h5>
         <table id="classTable" class='table table-striped' border='1'>
             <thead class='thead-light'>
                 <tr>
@@ -92,7 +92,7 @@
                     <td>{{ item.class_id }}</td>
                     <td>{{ item.class_name }}</td>
                     <td>{{ item.capacity }}</td>
-                    <td> <button type="button" class="btn btn-primary" v-on:click="nextPage(item.class_id)">Enroll</button></td>
+                    <td> <button type="button" class="btn btn-primary" v-on:click="enroll(item.class_id)">Enroll</button></td>
                 </tr>
             </tbody>
         </table>
@@ -114,7 +114,8 @@
                     classes: {},
                     message: '',
                     course: '',
-                    name: ''
+                    name: '',
+                    enrollresult: ''
                 };
             },
             methods: {
@@ -157,7 +158,19 @@
                             }
                         })
                 },
-
+                enroll: function(ccid) {
+                    const response =
+                        fetch("http://127.0.0.1:5000/admin/" + cid + "/" + ccid + "/" + uid)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(response);
+                            if (data.code === 500) {
+                                this.enrollresult = data.message
+                            } else {
+                                this.enrollresult = data.message
+                            }
+                        })
+                },
                 nextPage: function(ccid) {
                     location.href = "http://127.0.0.1:5000/admin/" + cid + "/" + ccid + "/" + uid
                 }
