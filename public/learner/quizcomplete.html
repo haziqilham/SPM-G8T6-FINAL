@@ -44,7 +44,7 @@
     <!-- NAV BAR-->
     <div>
         <nav class="navbar navbar-dark bg-primary">
-            <a class="navbar-brand mx-auto" href="../../index.html">
+            <a class="navbar-brand mx-auto" href="../index.html">
         All in One
       </a>
             <!-- Navigation TO OTHER ACCOUNTS-->
@@ -66,23 +66,25 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="./learnerhome.html">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Enrolled</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./takeQuiz.html">Courses</a>
-                    </li>
                 </ul>
             </div>
         </nav>
     </div>
     <div id="main" class='container'>
+    
+        
         <div id="quizinfo">
             <h3>Chapter Id: {{ quizinfo.chapter_id }}</h3>
+            <hr>
+            <h5>{{ completeresult }}</h5>
+            <hr>
             <p>Quiz Id: {{ quizinfo.quiz_id }}</p>
             <p>Duration: {{ quizinfo.duration }}</p>
             <p>Graded: {{ quizinfo.graded }}</p>
         </div>
+
+        
+
         <hr>
         <button type="button" class="btn btn-primary" v-on:click="nextPage()">
             Complete Chapter
@@ -105,11 +107,16 @@
         //app.route("/quiz/<int:quiz_id>/questions")
 
         var eurl = "http://127.0.0.1:5000/" + clasid + "/" + chid + "/" + uid
+        //app.route("/complete/<int:user_id>/<int:quiz_id>/<totalmarks>")
+        var curl = "http://127.0.0.1:5000/complete/" + uid + "/" + quizid + "/" + complete;
+
+
         var vm = new Vue({
             el: '#main',
             data: {
                 quizinfo: {},
-                message: ''
+                message: '',
+                completeresult: ''
             },
             methods: {
                 //get quiz details for quiz
@@ -128,11 +135,16 @@
                             }
                         })
                 },
-                sessionData: function(quizid, quizgrade) {
-                    quizid = sessionStorage.setItem("quizid", quizid)
-                    quizgrade = sessionStorage.setItem("quizgrade", quizgrade)
+                getCompletionResult: function() {
+                    const response =
+                        fetch(curl)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(response);
+                            console.log(data.message);
+                            this.completeresult = data.message  
+                        })
                 },
-
                 nextPage: function() {
                     const response =
                         fetch(eurl)
@@ -153,6 +165,7 @@
             created: function() {
                 // on Vue instance created, load the created list
                 this.getQuiz();
+                this.getCompletionResult();
             }
         });
     </script>
