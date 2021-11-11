@@ -97,13 +97,9 @@
             <p><label id="error " class="text-danger ">{{ error }}</label></p>
         </form>
 
-        <!-- <a href='./viewQuiz.html '><button type="button " class="btn btn-primary " v-on:click="sessionData(chapter.chapter_id) ">Start Quiz</button></a>-->
     </div>
 
     <script>
-        //console.log(sessionStorage.getItem("quizgrade "))
-        //quizid = sessionStorage.getItem("quizid ")
-        // get course by course id
         let url = new URL(window.location.href);
 
         let quizid = url.searchParams.get("quizid");
@@ -158,29 +154,19 @@
                     axios.post('https://wm8nbztmu4.execute-api.us-east-2.amazonaws.com/quiz/submit', {
                             answer: this.answers
                         })
-                        //.then(response => response.data.json())
-                        //{
-                        //    window.location.replace("./viewQuiz.html ");
-                        //    return false;
-                        //})
+
                         .then(data => {
                             this.value = data.data.data
                                 //console.log(data.data)
                                 //console.log(data.data.data)
-                            sessionStorage.setItem("quizcomplete", this.value)
-                                //console.log(sessionStorage.getItem("quizanswers"))
+                            //sessionStorage.setItem("quizcomplete", this.value)
+
                         })
-                        //.catch(error => {
-                        //this.error = error.response.data.message
-                        //});
                         .then(response => {
                             window.location.replace('./quizcomplete.html?complete=' + this.value + '&chid=' + chid + '&uid=' + uid + '&courid=' + cid + '&clasid=' + clasid + '&quizid=' + quizid);
                             return false;
                         })
                 },
-                nextPage: function(value) {
-                    location.href = './quizcomplete.html?complete=' + value;
-                }
             },
             created: function() {
                 // on Vue instance created, load the created list
