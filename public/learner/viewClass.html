@@ -23,7 +23,11 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
+    <script src="js/custom.js" type="text/javascript">
+        $window.onload = function() {
+            sessionStorage.clear();
+        }
+    </script>
     <title>Course Page</title>
 
     <style>
@@ -77,28 +81,40 @@
         </nav>
     </div>
 
-    
+
     <div id='main' class='container'>
-        <h1>Enrol Course</h1>
+        <h1>Enrolled Course</h1>
         <h2>User: {{ name }}</h2>
         <h2>Course: {{ course }}</h2>
         <hr>
-        
+
+        <div id="classinfo">
+            <h3 id="classid">Class Id: {{ classinfo.class_id }}</h3>
+            <p>Class Name: {{ classinfo.class_name }}</p>
+            <p>Start Datetime: {{ classinfo.start_DateTime }}</p>
+            <p>End Datetime: {{ classinfo.end_DateTime }}</p>
+        </div>
+        <hr>
         <table id="classTable" class='table table-striped' border='1'>
             <thead class='thead-light'>
                 <tr>
-                    <th>Id</th>
-                    <th>Class Name</th>
-                    <th>Capacity</th>
-                    <th>Action</th>
+                    <th>id</th>
+                    <th id="chapterorder">Chapter</th>
+                    <th>Chapter Name</th>
+                    <th>Chapter Material</th>
+                    <th>Quiz</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="item in classes">
-                    <td>{{ item.class_id }}</td>
-                    <td>{{ item.class_name }}</td>
-                    <td>{{ item.capacity }}</td>
-                    <td> <button type="button" class="btn btn-primary" v-on:click="nextPage(item.class_id)">Enroll</button></td>
+                <tr v-for="chapter in chapters">
+                    <td>{{ chapter.chapter_id }}</td>
+                    <td>{{ chapter.order }}</td>
+                    <td>{{ chapter.chapter_name }}</td>
+                    <td>{{ chapter.chapter_materials }}</td>
+                    <!--
+                    <td> <a href='./viewQuiz.html'><button type="button" class="btn btn-primary" v-on:click="sessionData(chapter.chapter_id)">Start Quiz</button></a></td>
+                    -->
+                    <td><button type="button" class="btn btn-primary" v-on:click="nextPage(chapter.chapter_id)">Start Quiz</button></td>
                 </tr>
             </tbody>
         </table>
@@ -108,35 +124,32 @@
         let url = new URL(window.location.href);
         let uid = url.searchParams.get("uid");
         let cid = url.searchParams.get("cid");
+        //let clasid = document.getElementById(classid).innerHTML
 
-        var get_url = "http://127.0.0.1:5000/" + cid + "/classes";
+        // get course by course id
         var get_c_url = "http://127.0.0.1:5000/courses/" + cid;
+        // get user by user id
         var get_n_url = "http://127.0.0.1:5000/users/" + uid;
+
+        var get_class_url = "http://127.0.0.1:5000/user/" + uid + "/" + cid + "/class"
 
         var vm = new Vue({
             el: '#main',
             data() {
                 return {
-                    classes: {},
+                    classinfo: {},
                     message: '',
                     course: '',
-                    name: ''
+                    name: '',
+                    tname: '',
+                    tid: 0,
+                    uid: 0,
+                    clasid: 0,
+                    chapters: {}
                 };
             },
             methods: {
-                getClassList: function() {
-                    const response =
-                        fetch(get_url)
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log(response);
-                            if (data.code === 404) {
-                                this.message = data.message
-                            } else {
-                                this.classes = data.data
-                            }
-                        })
-                },
+                //get Course details for course name
                 getCourse: function() {
                     const response =
                         fetch(get_c_url)
@@ -150,6 +163,7 @@
                             }
                         })
                 },
+                //get user info for user's name
                 getName: function() {
                     const response =
                         fetch(get_n_url)
@@ -160,21 +174,59 @@
                                 this.message = data.message
                             } else {
                                 this.name = data.data.name
+                                this.uid = data.data.user_id
+                            }
+                        })
+                },
+                // get classinfo of class enrolled by courseid, userid
+                getClassInfo: function() {
+                    const response =
+                        fetch(get_class_url)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(response);
+                            if (data.code === 404) {
+                                this.message = data.message
+                            } else {
+                                this.classinfo = data.data
+                                this.clasid = data.data.class_id
+                                this.tid = data.data.trainer_id
+                                this.getChapters();
+                                //sessionStorage.setItem("classid", data.data.class_id)
+                                //console.log(data.data);
                             }
                         })
                 },
 
-                nextPage: function(ccid) {
-                    location.href = "http://127.0.0.1:5000/learner/" + cid + "/" + ccid + "/" + uid
+                getChapters: function() {
+                    const response =
+                        fetch("http://127.0.0.1:5000/" + this.clasid + "/" + uid + "/chapters") //sessionStorage.getItem("userid") + "/chapters")
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(response);
+                            if (data.code === 404) {
+                                this.message = data.message
+                            } else {
+                                this.chapters = data.data
+                            }
+                        })
+                },
+                nextPage: function(id) {
+                    //console.log(this.selected);
+                    //console.log(id);
+                    location.href = './viewQuiz.html?chid=' + id;
                 },
 
+                sessionData: function(chapid) {
+                    sessionStorage.setItem("chapid", chapid)
+                }
             },
             created: function() {
                 // on Vue instance created, load the created list
-                this.getClassList();
                 this.getCourse();
                 this.getName();
-            }
+                this.getClassInfo();
+            },
         });
     </script>
 </body>

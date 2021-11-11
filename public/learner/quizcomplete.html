@@ -76,104 +76,63 @@
             </div>
         </nav>
     </div>
-
-    
-    <div id='main' class='container'>
-        <h1>Enrol Course</h1>
-        <h2>User: {{ name }}</h2>
-        <h2>Course: {{ course }}</h2>
+    <div id="main" class='container'>
+        <div id="quizinfo">
+            <h3>Chapter Id: {{ quizinfo.chapter_id }}</h3>
+            <p>Quiz Id: {{ quizinfo.quiz_id }}</p>
+            <p>Duration: {{ quizinfo.duration }}</p>
+            <p>Graded: {{ quizinfo.graded }}</p>
+        </div>
         <hr>
-        
-        <table id="classTable" class='table table-striped' border='1'>
-            <thead class='thead-light'>
-                <tr>
-                    <th>Id</th>
-                    <th>Class Name</th>
-                    <th>Capacity</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="item in classes">
-                    <td>{{ item.class_id }}</td>
-                    <td>{{ item.class_name }}</td>
-                    <td>{{ item.capacity }}</td>
-                    <td> <button type="button" class="btn btn-primary" v-on:click="nextPage(item.class_id)">Enroll</button></td>
-                </tr>
-            </tbody>
-        </table>
+        <button type="button" class="btn btn-primary" v-on:click="nextPage(quizinfo.quiz_id)">
+            Start Quiz
+        </button>
+        <!--
+        <button type="button" class="btn btn-primary" v-on:click="sessionData(quizinfo.quiz_id, quizinfo.graded); nextPage(quizinfo.quiz_id)">Start Quiz</button>
+        -->
     </div>
 
     <script>
         let url = new URL(window.location.href);
-        let uid = url.searchParams.get("uid");
-        let cid = url.searchParams.get("cid");
+        let complete = url.searchParams.get("complete");
 
-        var get_url = "http://127.0.0.1:5000/" + cid + "/classes";
-        var get_c_url = "http://127.0.0.1:5000/courses/" + cid;
-        var get_n_url = "http://127.0.0.1:5000/users/" + uid;
-
+        var get_quiz_url = "http://127.0.0.1:5000/" + chid + "/quiz";
+        //app.route("/quiz/<int:quiz_id>/questions")
         var vm = new Vue({
             el: '#main',
-            data() {
-                return {
-                    classes: {},
-                    message: '',
-                    course: '',
-                    name: ''
-                };
+            data: {
+                quizinfo: {},
+                message: ''
             },
             methods: {
-                getClassList: function() {
+                //get quiz details for quiz
+                getQuiz: function() {
                     const response =
-                        fetch(get_url)
+                        fetch(get_quiz_url)
                         .then(response => response.json())
                         .then(data => {
                             console.log(response);
                             if (data.code === 404) {
                                 this.message = data.message
                             } else {
-                                this.classes = data.data
+                                this.quizinfo = data.data
+                                    //console.log(data.data)
+                                    //console.log(this.quizinfo)
                             }
                         })
                 },
-                getCourse: function() {
-                    const response =
-                        fetch(get_c_url)
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log(response);
-                            if (data.code === 404) {
-                                this.message = data.message
-                            } else {
-                                this.course = data.data.course_name
-                            }
-                        })
-                },
-                getName: function() {
-                    const response =
-                        fetch(get_n_url)
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log(response);
-                            if (data.code === 404) {
-                                this.message = data.message
-                            } else {
-                                this.name = data.data.name
-                            }
-                        })
+                sessionData: function(quizid, quizgrade) {
+                    quizid = sessionStorage.setItem("quizid", quizid)
+                    quizgrade = sessionStorage.setItem("quizgrade", quizgrade)
                 },
 
-                nextPage: function(ccid) {
-                    location.href = "http://127.0.0.1:5000/learner/" + cid + "/" + ccid + "/" + uid
-                },
-
+                nextPage: function(quizid) {
+                    location.href = './takeQuiz.html?quizid=' + quizid;
+                }
             },
             created: function() {
                 // on Vue instance created, load the created list
-                this.getClassList();
-                this.getCourse();
-                this.getName();
+                this.getQuiz();
             }
         });
     </script>

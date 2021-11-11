@@ -1,4 +1,3 @@
-
 var optionCount = 3;
 var questionCount = 2;
 
@@ -7,14 +6,14 @@ function addOption(current) {
     var length = optionElement.childNodes.length;
     var newNode = document.createElement("div");
     newNode.classList.add("form-check");
-
-    var newOption = `<input class="form-check-input" type="radio" value="option${optionCount}">
-                    <input type="text" class="form-control" id="option${optionCount}" placeholder="Option ${optionCount}" style="display: inline; width: 625px;">
-                    <button class="btn btn-secondary" type="button"><i> Del </i></button>
+    newNode.setAttribute("id", "addOpt" + optionCount);
+    var newOption = `<input name="corretAnswer" class="form-check-input" type="radio" value="option${optionCount}">
+                    <input type="text" class="form-control" id="option${optionCount}" placeholder="Option ${optionCount}">
+                    <button id="${optionCount}" class="btn btn-secondary" type="button" onClick="deleteBtn(this.id)"><i>Delete</i></button>
                     `;
     newNode.innerHTML = newOption;
 
-    console.log(optionElement.parentNode.parentNode.childNodes);
+    //console.log(optionElement.parentNode.parentNode.childNodes);
     optionElement.insertBefore(newNode, optionElement.childNodes[length - 2]);
 
     optionCount++;
@@ -45,12 +44,13 @@ function addQuestion() {
                         <button type="button" class="btn btn-primary" style="margin-top: 10px; float: right;" onclick="addOption(this)">Add New Option</button>
                       </div>
                     </div>
-                    <!-- Correct Answer -->
+                    <!-- Correct Answer
                     <div class="row mb-3">
                       <label for="correctAns" class="col-sm-2 col-form-label">Correct Answer</label>
                       <div class="col-sm-10">
                         <input type="text" class="form-control" id="correctAns">
                       </div>
+                      -->
                     </div>`;
     newNode.innerHTML = newQuestion;
 
@@ -74,15 +74,15 @@ function create() {
     console.log(formArr[1].checked, formArr[2].checked);
 
     if (formArr[1].checked) {
-      quizType = "G"
-    } 
+        quizType = "G"
+    }
     // formArr["inputQn"].forEach(qns => {
     //     questions.push(qns.value);
     // });
     // formArr["correctAns"].forEach(ans => {
     //     answers.push(ans.value);
     // });
-    const quiz_data = {lessonID, quizType, quizDuration, passingCriteria }
+    const quiz_data = { lessonID, quizType, quizDuration, passingCriteria }
     console.log(quiz_data);
     // $.ajax({
     //   type: "POST",
@@ -95,23 +95,25 @@ function create() {
     //   } 
     // });
     fetch('http://localhost:5014/quiz-create', {
-      method: 'POST', // or 'PUT'
-      // mode: 'cors',
-      // credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(quiz_data),
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Success:', data);
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
+            method: 'POST', // or 'PUT'
+            // mode: 'cors',
+            // credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(quiz_data),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
 }
 
-function deleteBtn(ele) {
-    var parent = ele.parentNode;
+function deleteBtn(id) {
+    var a = "addOpt" + id;
+    console.log(a);
+    document.getElementById(a).remove();
 }

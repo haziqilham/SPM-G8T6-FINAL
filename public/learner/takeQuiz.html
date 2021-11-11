@@ -2,76 +2,193 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <!-- Bootstrap libraries -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <!-- Bootstrap libraries -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
-  <!-- Latest compiled and minified JavaScript -->
-  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
-    integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous">
-  </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous">
+    </script>
 
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
-    integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous">
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!--
+    <script src="js/custom.js" type="text/javascript">
+        $window.onload = function() {
+            sessionStorage.clear();
+        }
+    </script>
+    -->
+    <title>Quiz Page</title>
 
-  <title>Take Quiz</title>
+    <style>
+        img.center {
+            display: block;
+            margin: 0 auto;
+        }
+        
+        .bottom-right {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+    </style>
 </head>
 
 <body>
-  <div>
-    <nav class="navbar navbar-dark bg-primary">
-      <a class="navbar-brand" href="#">
+    <!-- NAV BAR-->
+    <div>
+        <nav class="navbar navbar-dark bg-primary">
+            <a class="navbar-brand mx-auto" href="../../index.html">
         All in One
       </a>
-      <span class="navbar-text">
-        Learner Account
-      </span>
-    </nav>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="#">Home </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Courses</a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Quiz<span class="sr-only">(current)</span></a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  </div>
+            <!-- Navigation TO OTHER ACCOUNTS-->
+            <div class="btn-group dropstart">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          Learner
+        </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="./learnerhome.html">Learner Account</a></li>
+                    <li><a class="dropdown-item" href="../trainer/trainerHome.html">Trainer Account</a></li>
+                    <li><a class="dropdown-item" href="../HRadmin/classlist.html">Admin Account</a></li>
+                </ul>
+            </div>
+        </nav>
 
-  <div class='container'>
-    <h1>Quiz on Printers</h1>
-    <div class="quiz-container">
-
-      <div id="quiz"></div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="./learnerhome.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Enrolled</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./takeQuiz.html">Courses</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
     </div>
-    <button type="button" class="btn btn-primary" id="previous">Previous Question</button>
-    <button type="button" class="btn btn-primary" id="next">Next Question</button>
-    <button type="button" class="btn btn-primary" id="submit">Submit Quiz</button>
-    <div id="results"></div>
-  </div>
 
 
-  <script src="script.js"></script>
+    <div id='main' class='container'>
+        <h2>Quiz</h2>
+        <h6>Duration:</h6>
+        <hr>
+        <form>
+            <div v-for='(question, index) in questions'>
+                <p>{{index + 1 }}. {{question.question}}</p>
+                <div v-for='option in question.options'>
+                    <input class="form-check-input" type="radio" :name="'option' + question.question_id + index" :value="option" v-model.lazy="answers[index].ans ">
+                    <label class=" form-check-label" for="flexRadioDefault1 ">
+                        {{ option }}
+                    </label>
+                </div>
+                <hr>
+            </div>
+            <button id="addQuizBtn " class="btn btn-primary " v-on:click="submitForm">Submit Quiz</button>
+            <p><label id="error " class="text-danger ">{{ error }}</label></p>
+        </form>
 
+        <!-- <a href='./viewQuiz.html '><button type="button " class="btn btn-primary " v-on:click="sessionData(chapter.chapter_id) ">Start Quiz</button></a>-->
+    </div>
+
+    <script>
+        //console.log(sessionStorage.getItem("quizgrade "))
+        //quizid = sessionStorage.getItem("quizid ")
+        // get course by course id
+        let url = new URL(window.location.href);
+        let quizid = url.searchParams.get("quizid");
+
+        var get_qns_url = "http://127.0.0.1:5000/quiz/" + quizid + "/questions"
+
+        var vm = new Vue({
+            el: '#main ',
+            data: {
+                questions: {},
+                options: [],
+                message: ' ',
+                error: '',
+                size: 0,
+                answers: [],
+                value: ''
+            },
+            methods: {
+                //get questions
+                getQuestions: function() {
+                    const response =
+                        fetch(get_qns_url)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(response);
+                            if (data.code === 404) {
+                                this.message = data.message
+                            } else {
+                                this.questions = data.data
+                                this.size = this.questions.length
+                                for (let i = 0; i < this.size; i++) {
+                                    this.answers.push({
+                                        qnID: this.questions[i].question_id,
+                                        ans: ''
+                                    })
+                                }
+                                //console.log(this.answers)
+                                //console.log(this.answers.length)
+                                //console.log(data.data)
+                                //console.log(data.data.options)
+                            }
+                        })
+                },
+                submitForm: function() {
+                    event.preventDefault();
+                    //console.log(this.answers)
+                    axios.post('http://127.0.0.1:5000/quiz/submit', {
+                            answer: this.answers
+                        })
+                        //.then(response => response.data.json())
+                        //{
+                        //    window.location.replace("./viewQuiz.html ");
+                        //    return false;
+                        //})
+                        .then(data =>{
+                            this.value = data.data.data
+                            //console.log(data)
+                            //console.log(data.data.data)
+                            sessionStorage.setItem("quizcomplete", this.value)
+                            //console.log(sessionStorage.getItem("quizanswers"))
+                        })
+                        //.catch(error => {
+                            //this.error = error.response.data.message
+                        //});
+                        .then(response =>{
+                            window.location.replace('./quizcomplete.html?complete=' + this.value);
+                            return false;
+                        })
+                },
+                nextPage: function(value) {
+                    location.href = './quizcomplete.html?complete=' + value;
+                }},
+            created: function() {
+                // on Vue instance created, load the created list
+                this.getQuestions();
+            },
+        });
+    </script>
 </body>
+
+</html>
 
 </html>

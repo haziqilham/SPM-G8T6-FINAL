@@ -2,204 +2,205 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <!-- Bootstrap libraries -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <!-- Bootstrap libraries -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <!-- Latest compiled and minified CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
-  </script>
+    <!-- Latest compiled and minified JavaScript -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous">
+    </script>
 
-  <title>Learner Home</title>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+    $window.location.reload();
+    sessionStorage.clear();</script>
+    <title>Learner Home</title>
 
-  <style>
-    img.center {
-      display: block;
-      margin: 0 auto;
-    }
-
-    .bottom-right {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-    }
-  </style>
+    <style>
+        img.center {
+            display: block;
+            margin: 0 auto;
+        }
+        
+        .bottom-right {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+    </style>
 </head>
 
 <body>
-  <!-- NAV BAR-->
-  <div>
-    <nav class="navbar navbar-dark bg-primary">
-      <a class="navbar-brand mx-auto" href="../../index.html">
-        All in One
-      </a>
-      <!-- Navigation TO OTHER ACCOUNTS-->
-      <div class="btn-group dropstart">
-        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-          Learner
-        </button>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="./learnerhome.html">Learner Account</a></li>
-          <li><a class="dropdown-item" href="../trainer/trainerHome.html">Trainer Account</a></li>
-          <li><a class="dropdown-item" href="../HRadmin/classlist.html">Admin Account</a></li>
-        </ul>
-      </div>
-    </nav>
+    <!-- NAV BAR-->
+    <div>
+        <nav class="navbar navbar-dark bg-primary">
+            <a class="navbar-brand mx-auto" href="../index.html">
+                All in One
+            </a>
+            <!-- Navigation TO OTHER ACCOUNTS-->
+            <div class="btn-group dropstart">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    Learner
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="./learnerhome.html">Learner Account</a></li>
+                    <li><a class="dropdown-item" href="../trainer/trainerHome.html">Trainer Account</a></li>
+                    <li><a class="dropdown-item" href="../HRadmin/classlist.html">Admin Account</a></li>
+                </ul>
+            </div>
+        </nav>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="./learnerhome.html">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Enrolled</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="./takeQuiz.html">Courses</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  </div>
-
-
-  <!-- ENROLLED COURSES-->
-  <div class='container' id = 'enrolled'>
-    <h3 class='my-3'> Courses Enrolled </h3>
-    <div class="row row-cols-1 row-cols-md-3 g-4" v-for="course in enrolled">
-      <div class="col">
-        <div class="card">
-          <img src="../../static/assets/printer.jpeg" class="card-img-top center" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">#{{ record.id }}</h5>
-            <p class="card-text">{{ record.name }}</p>
-            <a class="btn btn-primary" href="./coursePage.html" role="button">Enter Course</a>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img src="../../static/assets/printer.jpeg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
-              content. This content is a little bit longer.</p>
-            <a class="btn btn-primary" href="./coursePage.html" role="button">Enter Course</a>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img src="../../static/assets/printer.jpeg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
-              content.</p>
-            <a class="btn btn-primary" href="./coursePage.html" role="button">Enter Course</a>
-          </div>
-        </div>
-      </div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="./learnerhome.html">Home</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="#">Enrolled</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./takeQuiz.html">Courses</a>
+                    </li> -->
+                </ul>
+            </div>
+        </nav>
     </div>
-  </div>
 
-  <!-- COURSES AVAILABLE-->
-  <div class='container' id = 'courses'>
-    <h3 class='my-3'> Courses Available </h3>
-    <ol class="list-group list-group-numbered">
-      <li class="list-group-item d-flex justify-content-between align-items-start">
-        <div class="ms-2 me-auto">
-          <div class="fw-bold">Course 1</div>
-          This course is about XXX <br>
-          <span class="badge bg-primary rounded-pill">12 Oct to 9 Nov</span>
+    <div class='container' id='users'>
+        <select v-model="selected" v-on:change="getEnrolledCourse">
+            <option v-for="option in options" v-bind:value="option.value">
+                {{ option.text }}
+            </option>
+        </select>
+        <div>
+            <h3 class='my-3'> Courses Enrolled </h3>
+            <ol class="list-group list-group-numbered">
+                <li v-for="course in courses" class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <span class="badge bg-primary rounded-pill">{{ course.course_id}}</span>
+                        <div class="fw-bold">{{ course.course_name }}</div>
+                        <span class="badge bg-warning rounded-pill">{{ course.archive_date}}</span>
+                    </div>
+                    <button type="button" class="btn btn-primary" v-on:click="sessionData(course.course_id); viewclass(course.course_id)">
+                View
+            </button>
+                </li>
+            </ol>
         </div>
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          Enroll
-        </button>
-      </li>
-
-
-      <li class="list-group-item d-flex justify-content-between align-items-start">
-        <div class="ms-2 me-auto">
-          <div class="fw-bold">Course 2</div>
-          This course is about XXX <br>
-          <span class="badge bg-primary rounded-pill">12 Oct to 9 Nov</span>
+        <div>
+            <h3 class='my-3'> Courses Available </h3>
+            <ol class="list-group list-group-numbered">
+                <li v-for="c in ncourses" class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <span class="badge bg-primary rounded-pill">{{ c.course_id}}</span>
+                        <div class="fw-bold">{{ c.course_name }}</div>
+                        <span class="badge bg-warning rounded-pill">{{ c.archive_date}}</span>
+                    </div>
+                    <button type="button" class="btn btn-primary" v-on:click="sessionData(c.course_id); nextPage(c.course_id)">
+                Enroll
+            </button>
+                </li>
+            </ol>
         </div>
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          Enroll
-        </button>
-      </li>
-
-      <li class="list-group-item d-flex justify-content-between align-items-start">
-        <div class="ms-2 me-auto">
-          <div class="fw-bold">Course 3</div>
-          This course is about XXX <br>
-          <span class="badge bg-primary rounded-pill">12 Oct to 9 Nov</span>
-
-        </div>
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          Enroll
-        </button>
-      </li>
-    </ol>
-  </div>
-
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Successfully enrolled!</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          ...
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
     </div>
-  </div>
 
-  <script>
-    const vm = new Vue({
-      el: '#enrolled',
-      data: {
-        user_id = "",
-        enrolled: []
-      },
-      mounted: function(){
-        axios.get('/courses/' + this.user_id)
-          .then(response => {
-              this.enrolled = response.data.data;
-          })
-          .catch(error => alert(error));
-      }
-    })
+    <script>
+        var get_url = "http://127.0.0.1:5000/learners";
+
+        const vm = new Vue({
+            el: '#users',
+            data: {
+                selected: "",
+                options: [],
+                courses: {},
+                ncourses: {}
+            },
+            methods: {
+                getCourseList: function() {
+                    const response =
+                        fetch(get_url)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(response);
+                            if (data.code === 404) {
+                                this.message = data.message
+                            } else {
+                                for (d in data.data) {
+                                    this.options.push({
+                                        text: data.data[d].name,
+                                        value: data.data[d].user_id
+                                    })
+                                }
+                                //this.options = data.data
+                            }
+                        })
+                },
+                getEnrolledCourse: function(e) {
+                    param = e.target.value;
+                    var get_enrolled_url = "http://127.0.0.1:5000/courses/users/" + param;
+                    var get_not_enrolled_url = "http://127.0.0.1:5000/not/courses/users/" + param;
+
+                    const response =
+                        fetch(get_enrolled_url)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(response);
+                            if (data.code === 404) {
+                                this.message = data.message
+                            } else {
+                                this.courses = data.data
+                            }
+                        })
+
+                    const response2 =
+                        fetch(get_not_enrolled_url)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(response);
+                            if (data.code === 404) {
+                                this.message = data.message
+                            } else {
+                                this.ncourses = data.data
+                            }
+                        })
+                },
+                sessionData: function(id){
+                    sessionStorage.setItem("userid", this.selected)
+                },
+
+                nextPage: function(id) {
+                    //console.log(this.selected);
+                    //console.log(id);
+                    location.href = './coursePage.html?uid=' + this.selected + '&cid=' + id;
+                    
+                },
+                viewclass: function(id){
+                    location.href = './viewClass.html?uid=' + this.selected + '&cid=' + id;
+                    
+
+                }
+            },
+            created: function() {
+                // on Vue instance created, load the created list
+                this.getCourseList();              
+            },
 
 
-
-    var myModal = document.getElementById('myModal')
-    var myInput = document.getElementById('myInput')
-
-    myModal.addEventListener('shown.bs.modal', function () {
-      myInput.focus()
-    })
-  </script>
-
+        })
+    </script>
 </body>
 
 </html>
