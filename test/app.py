@@ -48,12 +48,6 @@ class Course(db.Model):
             result[column] = getattr(self, column)
         return result
     
-
-#TO BE DECIDED - replace as app routing? or leave it
-    #def archivecourse(self):
-        #self.archive_date = dt.date.today()
-
-
 class Prerequisites(db.Model):
     __tablename__ = 'prerequisites'
 
@@ -282,7 +276,6 @@ def course_by_id(course_id):
 #display courses user is enrolled in
 @app.route("/courses/users/<int:user_id>")
 def course_by_user(user_id):
-    # userclass = CourseProgression.query.filter_by(user_id=user_id).filter_by(status = 'ongoing' or 'enrolled').all()
     userclass = CourseProgression.query.filter_by(user_id=user_id).filter(CourseProgression.status.like('%n%'))
     if userclass:
         coursedict = []
@@ -354,7 +347,6 @@ def class_by_id(class_id):
 def classes_by_trainer(trainer_id):
     classes = Class.query.filter_by(trainer_id=trainer_id).all()
     filter_classes = []
-    #coursei = []
     for oneclass in classes:
         if dt.datetime.today() >= oneclass.start_enrollment and dt.datetime.today() <= oneclass.end_enrollment:
             courseinfo = Course.query.filter_by(course_id=oneclass.course_id).first()
@@ -365,7 +357,6 @@ def classes_by_trainer(trainer_id):
                 'start_DateTime': oneclass.start_DateTime,
                 'end_DateTime': oneclass.end_DateTime
             })
-            #coursei.append(courseinfo)
     if filter_classes:
         return jsonify({
             "data": filter_classes
@@ -374,7 +365,6 @@ def classes_by_trainer(trainer_id):
         return jsonify({
              "message": "There are no classes assigned to you yet."
         }), 404
-    #return jsonify(coursei)
 
 
 #CHAPTER
@@ -539,8 +529,6 @@ def create_quiz():
     try:
         db.session.add(quiz)
         db.session.commit()
-        #    quiz.to_dict()["quiz_id"]
-        #return jsonify(quiz.to_dict()), 201
         if (createQnTF(quiz.to_dict()["quiz_id"], data['qnsTF']) and createQnMCQ(quiz.to_dict()["quiz_id"], data['qnsMCQ'])):
             return jsonify(quiz.to_dict()), 201
 
@@ -650,8 +638,6 @@ def createTF(qnTf_id, value):
 #retrieving questions for quiz
 @app.route("/quiz/<int:quiz_id>/questions")
 def getquestions(quiz_id):
-    #quizinfo = Quiz.query.filter_by(chapter_id=chapter_id).first()
-    #quiz_id = quizinfo.quiz_id
     questions = Question.query.filter_by(quiz_id=quiz_id).all()
     finaldict = []
     options = []
@@ -690,11 +676,6 @@ def getquestions(quiz_id):
 @app.route("/quiz/submit", methods=['POST'])
 def submit_quiz():
     data = request.get_json()
-    #if not all(key in data.keys() for
-    #        key in ('answer')):
-    #    return jsonify({
-    #        "message": "Incorrect JSON object provided."
-    #    }), 500
     marks = 0
     answerarray = data['answer']
     #get one question id
