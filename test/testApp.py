@@ -42,20 +42,18 @@ class TestPrerequisites(unittest.TestCase):
 class TestClass(unittest.TestCase):
     def test_to_dict(self):
         class1 = Class(course_id = 1, trainer_id = 2, class_name='G1', capacity = 20, 
-                        start_Date = '2021-10-27', end_Date = '2021-10-30', start_Time = '12:00:00', end_Time = '14:00:00',
-                        start_enrollment = '2021-09-20', end_enrollment = '2021-09-30')
+                        start_DateTime = '2021-10-27 12:00:00', end_DateTime = '2021-10-30 14:00:00',
+                        start_enrollment = '2021-09-20 00:00:00', end_enrollment = '2021-09-30 00:00:00')
         self.assertEqual(class1.to_dict(),{
             'class_id':None,
             'course_id':1,
             'trainer_id':2,
             'class_name':'G1',
             'capacity':20,
-            'start_Date':'2021-10-27',
-            'end_Date':'2021-10-30',
-            'start_Time':'12:00:00',
-            'end_Time':'14:00:00',
-            'start_enrollment':'2021-09-20',
-            'end_enrollment':'2021-09-30'}
+            'start_DateTime':'2021-10-27 12:00:00',
+            'end_DateTime':'2021-10-30 14:00:00',
+            'start_enrollment':'2021-09-20 00:00:00',
+            'end_enrollment':'2021-09-30 00:00:00'}
         )
 
 class TestChapter(unittest.TestCase):
