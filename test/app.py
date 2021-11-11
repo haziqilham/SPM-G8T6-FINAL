@@ -838,6 +838,15 @@ def getquestions(quiz_id):
             })
             options = []
 
+    if finaldict:
+        return jsonify({
+            "data": finaldict
+        }), 200
+    else:
+        return jsonify({
+            "message": "There was an error retrieving quiz questions, please contact an administrator."
+        }), 404
+
 # submit quiz and return total marks
 @app.route("/quiz/submit", methods=['POST'])
 def submit_quiz():
