@@ -302,7 +302,7 @@ def course_by_user(user_id):
 @app.route("/not/courses/users/<int:user_id>")
 def not_course_by_user(user_id):
     courses = Course.query.filter_by(archive_date=None).all()
-    userclass = CourseProgression.query.filter_by(user_id=user_id).filter_by(status = 'ongoing' or 'enrolled').all()
+    userclass = CourseProgression.query.filter_by(user_id=user_id).filter(CourseProgression.status.like('%n%')).all()
     if userclass:
         coursedict = []
         for uclass in userclass:
