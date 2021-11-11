@@ -112,7 +112,7 @@
         let uid = url.searchParams.get("uid");
         let clasid = url.searchParams.get("clasid");
 
-        var get_qns_url = "http://18.223.94.188:5000/quiz/" + quizid + "/questions"
+        var get_qns_url = "https://wm8nbztmu4.execute-api.us-east-2.amazonaws.com/quiz/" + quizid + "/questions"
 
         var vm = new Vue({
             el: '#main ',
@@ -155,7 +155,7 @@
                     event.preventDefault();
                     //console.log(this.answers)
                     console.log(quizid)
-                    axios.post('http://18.223.94.188:5000/quiz/submit', {
+                    axios.post('https://wm8nbztmu4.execute-api.us-east-2.amazonaws.com/quiz/submit', {
                             answer: this.answers
                         })
                         //.then(response => response.data.json())

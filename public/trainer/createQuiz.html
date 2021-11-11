@@ -209,7 +209,7 @@
             methods: {
                 submitForm: function() {
                     event.preventDefault();
-                    axios.post('http://18.223.94.188:5000/createquiz', {
+                    axios.post('https://wm8nbztmu4.execute-api.us-east-2.amazonaws.com/createquiz', {
                             chapter_id: chapid,
                             quizType: Number(this.quizType),
                             passing: Number(this.passing),
@@ -260,7 +260,7 @@
                 }
             },
             //mounted: function() {
-                //axios.get('http://18.223.94.188:5000/2/chapters')
+                //axios.get('https://wm8nbztmu4.execute-api.us-east-2.amazonaws.com/2/chapters')
                     //.then(response => {
                         //this.chapters = response.data.data;
                     //})

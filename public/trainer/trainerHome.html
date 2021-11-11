@@ -107,7 +107,7 @@
 
 
     <script>
-        var get_url = "http://18.223.94.188:5000/trainers";
+        var get_url = "https://wm8nbztmu4.execute-api.us-east-2.amazonaws.com/trainers";
 
         const vm = new Vue({
             el: '#trainers',
@@ -140,7 +140,7 @@
                 },
                 getTrainerClass: function(e) {
                     param = e.target.value;
-                    var get_classes_url = "http://18.223.94.188:5000/trainer/classes/" + param;
+                    var get_classes_url = "https://wm8nbztmu4.execute-api.us-east-2.amazonaws.com/trainer/classes/" + param;
 
                     const response =
                         fetch(get_classes_url)

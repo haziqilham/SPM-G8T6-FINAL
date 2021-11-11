@@ -103,9 +103,9 @@
         let uid = url.searchParams.get("uid");
         let cid = url.searchParams.get("cid");
 
-        var get_url = "http://18.223.94.188:5000/" + cid + "/classes";
-        var get_c_url = "http://18.223.94.188:5000/courses/" + cid;
-        var get_n_url = "http://18.223.94.188:5000/users/" + uid;
+        var get_url = "https://wm8nbztmu4.execute-api.us-east-2.amazonaws.com/" + cid + "/classes";
+        var get_c_url = "https://wm8nbztmu4.execute-api.us-east-2.amazonaws.com/courses/" + cid;
+        var get_n_url = "https://wm8nbztmu4.execute-api.us-east-2.amazonaws.com/users/" + uid;
 
         var vm = new Vue({
             el: '#main',
@@ -160,7 +160,7 @@
                 },
                 enroll: function(ccid) {
                     const response =
-                        fetch("http://18.223.94.188:5000/learner/" + cid + "/" + ccid + "/" + uid)
+                        fetch("https://wm8nbztmu4.execute-api.us-east-2.amazonaws.com/learner/" + cid + "/" + ccid + "/" + uid)
                         .then(response => response.json())
                         .then(data => {
                             console.log(response);
@@ -174,7 +174,7 @@
 
 
                 nextPage: function(ccid) {
-                    location.href = "http://18.223.94.188:5000/learner/" + cid + "/" + ccid + "/" + uid
+                    location.href = "https://wm8nbztmu4.execute-api.us-east-2.amazonaws.com/learner/" + cid + "/" + ccid + "/" + uid
                 },
 
             },

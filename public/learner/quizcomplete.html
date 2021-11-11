@@ -103,12 +103,12 @@
         let clasid = url.searchParams.get("clasid");
         let quizid = url.searchParams.get("quizid");
 
-        var get_quiz_url = "http://18.223.94.188:5000/" + chid + "/quiz";
+        var get_quiz_url = "https://wm8nbztmu4.execute-api.us-east-2.amazonaws.com/" + chid + "/quiz";
         //app.route("/quiz/<int:quiz_id>/questions")
 
-        var eurl = "http://18.223.94.188:5000/" + clasid + "/" + chid + "/" + uid
+        var eurl = "https://wm8nbztmu4.execute-api.us-east-2.amazonaws.com/" + clasid + "/" + chid + "/" + uid
         //app.route("/complete/<int:user_id>/<int:quiz_id>/<totalmarks>")
-        var curl = "http://18.223.94.188:5000/complete/" + uid + "/" + quizid + "/" + complete;
+        var curl = "https://wm8nbztmu4.execute-api.us-east-2.amazonaws.com/complete/" + uid + "/" + quizid + "/" + complete;
 
 
         var vm = new Vue({
