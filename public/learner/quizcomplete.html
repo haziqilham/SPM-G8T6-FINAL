@@ -71,8 +71,8 @@
         </nav>
     </div>
     <div id="main" class='container'>
-    
-        
+
+
         <div id="quizinfo">
             <h3>Chapter Id: {{ quizinfo.chapter_id }}</h3>
             <hr>
@@ -83,7 +83,7 @@
             <p>Graded: {{ quizinfo.graded }}</p>
         </div>
 
-        
+
 
         <hr>
         <button type="button" class="btn btn-primary" v-on:click="nextPage()">
@@ -103,7 +103,7 @@
         var get_quiz_url = "https://wm8nbztmu4.execute-api.us-east-2.amazonaws.com/" + chid + "/quiz";
         //app.route("/quiz/<int:quiz_id>/questions")
 
-        var eurl = "https://wm8nbztmu4.execute-api.us-east-2.amazonaws.com/complete/" + clasid + "/" + chid + "/" + uid
+        var eurl = "https://wm8nbztmu4.execute-api.us-east-2.amazonaws.com/a/complete/" + clasid + "/" + chid + "/" + uid;
         //app.route("/complete/<int:user_id>/<int:quiz_id>/<totalmarks>")
         var curl = "https://wm8nbztmu4.execute-api.us-east-2.amazonaws.com/complete/" + uid + "/" + quizid + "/" + complete;
 
@@ -139,7 +139,7 @@
                         .then(data => {
                             console.log(response);
                             console.log(data.message);
-                            this.completeresult = data.message  
+                            this.completeresult = data.message
                         })
                 },
                 nextPage: function() {
