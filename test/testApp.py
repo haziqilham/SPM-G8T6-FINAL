@@ -1,6 +1,9 @@
 import unittest
 from app import Options, User, Course, Prerequisites, Class, Chapter, Quiz, Question, Questiontf, Questionmcq, CourseProgression
 
+# --------------------------------------------------------------------------------------------------------------
+# Person-in-charge: Jun Hong
+
 class TestUser(unittest.TestCase):
     def test_to_dict(self):
         user1 = User(user_name='marcus', name='marcus', designation='engineer', 
@@ -13,7 +16,8 @@ class TestUser(unittest.TestCase):
             'department':'engineering',
             'role':'learner'}
         )
-
+# --------------------------------------------------------------------------------------------------------------
+# Person-in-charge: Marcus
 
 class TestCourse(unittest.TestCase):
     def test_to_dict(self):
@@ -24,7 +28,6 @@ class TestCourse(unittest.TestCase):
             'archive_date': None}
         )
 
-
 class TestPrerequisites(unittest.TestCase):
     def test_to_dict(self):
         prereq1 = Prerequisites(course_id = 1, prereq_course_id = 2)
@@ -33,6 +36,9 @@ class TestPrerequisites(unittest.TestCase):
             'course_id':1,
             'prereq_course_id':2}
         )
+# --------------------------------------------------------------------------------------------------------------
+# CLASS - Class
+# Person-in-charge: Haziq
 
 class TestClass(unittest.TestCase):
     def test_to_dict(self):
@@ -50,6 +56,9 @@ class TestClass(unittest.TestCase):
             'start_enrollment':'2021-09-20 00:00:00',
             'end_enrollment':'2021-09-30 00:00:00'}
         )
+# --------------------------------------------------------------------------------------------------------------
+# CLASS - Chapter
+# Person-in-charge: Claudia
 
 class TestChapter(unittest.TestCase):
     def test_to_dict(self):
@@ -61,6 +70,9 @@ class TestChapter(unittest.TestCase):
             'order':1,
             'chapter_materials':'Engineering Gear'}
         )
+# --------------------------------------------------------------------------------------------------------------
+# CLASS - Quiz
+# Person-in-charge: Xinyi
 
 class TestQuiz(unittest.TestCase):
     def test_to_dict(self):
@@ -107,6 +119,10 @@ class TestOptions(unittest.TestCase):
             'value':'Goggles',
             'corrected_value':False}
         )
+# --------------------------------------------------------------------------------------------------------------
+# CLASS - CourseProgression
+# Person-in-charge: Xinyi
+
 
 class TestCourseProgression(unittest.TestCase):
     def test_to_dict(self):
@@ -122,7 +138,7 @@ class TestCourseProgression(unittest.TestCase):
             'completion_date':None,
             'score':None}
         )
-
+# --------------------------------------------------------------------------------------------------------------
 
 if __name__ == "__main__":
     unittest.main()

@@ -5,8 +5,10 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import datetime as dt
 
-# BASE connectors
-# --------------------------------------------------------------------------------------------------------------
+
+#################################################################################################################
+# BASE connectors start
+
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://admin:ilovespm88@spm-database.c3izrtomcbks.us-east-2.rds.amazonaws.com:3306/spm_database'
@@ -16,10 +18,15 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_size': 100,
                                            'pool_recycle': 280}
 db = SQLAlchemy(app)
 CORS(app)
-# ---------------------------------------------------------------------------------------------------------------
 
+# BASE connectors end
+#################################################################################################################
+
+
+#################################################################################################################
 # CLASS initialisation section start
-# ---------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------
+
 # CLASS - User
 # Person-in-charge: Jun Hong
 
@@ -39,7 +46,7 @@ class User(db.Model):
         for column in columns:
             result[column] = getattr(self, column)
         return result
-# --------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------------
 # CLASS - Course
 # Person-in-charge: Marcus
 
@@ -70,13 +77,12 @@ class Prerequisites(db.Model):
         for column in columns:
             result[column] = getattr(self, column)
         return result
-# --------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------------
 # CLASS - Class
 # Person-in-charge: Haziq
 
 class Class(db.Model):
     __tablename__ = 'class'
-
     class_id = db.Column(db.Integer, primary_key=True)
     course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), nullable=False)
     trainer_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
@@ -93,7 +99,7 @@ class Class(db.Model):
         for column in columns:
             result[column] = getattr(self, column)
         return result
-# --------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------------
 # CLASS - Chapter
 # Person-in-charge: Claudia
 
@@ -112,7 +118,7 @@ class Chapter(db.Model):
         for column in columns:
             result[column] = getattr(self, column)
         return result
-# --------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------------
 # CLASS - Quiz
 # Person-in-charge: Xinyi
 
@@ -186,7 +192,7 @@ class Options(db.Model):
         for column in columns:
             result[column] = getattr(self, column)
         return result
-# --------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------------
 # CLASS - CourseProgression
 # Person-in-charge: Xinyi
 
@@ -208,25 +214,20 @@ class CourseProgression(db.Model):
         for column in columns:
             result[column] = getattr(self, column)
         return result
-# --------------------------------------------------------
-db.create_all()
 # ---------------------------------------------------------------------------------------------------------------
+db.create_all()
+# --------------------------------------------------------------------------------------------------------------
 # CLASS initialisation section end
+#################################################################################################################
 
 
-# USER
-# display all users
-@app.route("/users")
-def allUsers():
-    users = User.query.all()
-    if users:
-        return jsonify({
-            "data": [user.to_dict() for user in users]
-        }), 200
-    else:
-        return jsonify({
-            "message": "There are no users found."
-        }), 404
+#################################################################################################################
+# APPLICATION ROUTINGS section start
+# --------------------------------------------------------------------------------------------------------------
+
+# BASE ROUTES section start
+# --------------------------------------------------------------------------------------------------------------
+# BASE ROUTES - User start
 
 # display user by user_id
 @app.route("/users/<int:user_id>")
@@ -254,7 +255,7 @@ def learners():
             "message": "Learners not found."
         }), 404
 
-# display all learners
+# display all trainers
 @app.route("/trainers")
 def trainers():
     getTrainer = User.query.filter_by(role='Trainers').all()
@@ -267,19 +268,9 @@ def trainers():
             "message": "Trainers not found."
         }), 404
 
-# COURSE
-# display all courses that are not archived
-@app.route("/courses")
-def displaycourses():
-    courses = Course.query.filter_by(archive_date=None).all()
-    if courses:
-        return jsonify({
-            "data": [course.to_dict() for course in courses]
-        }), 200
-    else:
-        return jsonify({
-            "message": "There are no courses found."
-        }), 404
+# BASE ROUTES - User end
+# --------------------------------------------------------------------------------------------------------------
+# BASE ROUTES - Course start
 
 # display course by course_id
 @app.route("/courses/<int:course_id>")
@@ -336,8 +327,11 @@ def not_course_by_user(user_id):
             "data": [course.to_dict() for course in courses]
         }), 200
 
-# CLASS
-# display all classes
+# BASE ROUTES - Course end
+# --------------------------------------------------------------------------------------------------------------
+# BASE ROUTES - Class start
+
+# display all classes of the course
 @app.route("/<int:course_id>/classes")
 def classes_by_course(course_id):
     classes = Class.query.filter_by(course_id=course_id).all()
@@ -350,20 +344,7 @@ def classes_by_course(course_id):
             "message": "This course has no classes yet."
         }), 404
 
-# display class info by class id
-@app.route("/classes/<int:class_id>")
-def class_by_id(class_id):
-    getclass = Class.query.filter_by(class_id=class_id).first()
-    if getclass:
-        return jsonify({
-            "data": getclass.to_dict()
-        }), 200
-    else:
-        return jsonify({
-            "message": "Class not found."
-        }), 404
-
-# TRAINER - view classes he/she is teaching
+# trainer - view classes trainer is teaching
 @app.route("/trainer/classes/<int:trainer_id>")
 def classes_by_trainer(trainer_id):
     classes = Class.query.filter_by(trainer_id=trainer_id).all()
@@ -387,9 +368,26 @@ def classes_by_trainer(trainer_id):
             "message": "There are no classes assigned to you yet."
         }), 404
 
+# display the class of the course that the user is enrolled in
+@app.route("/user/<int:user_id>/<int:course_id>/class")
+def classenrolled(user_id, course_id):
+    userclass = CourseProgression.query.filter_by(user_id=user_id, course_id=course_id).filter(CourseProgression.status.like('%n%')).first()
+    class_id = userclass.class_id
+    classinfo = Class.query.filter_by(class_id=class_id).first()
+    if classinfo:
+        return jsonify({
+            "data": classinfo.to_dict()
+        }), 200
+    else:
+        return jsonify({
+            "message": "You are not enrolled in any class for this course."
+        }), 404
 
-# CHAPTER
-# TRAINER - display all chapters for creation of quiz
+# BASE ROUTES - Class end
+# --------------------------------------------------------------------------------------------------------------
+# BASE ROUTES - Chapter start
+
+# trainer - display all chapters for creation of quiz
 @app.route("/<int:class_id>/chapters")
 def chapters_by_class(class_id):
     # order by order
@@ -401,50 +399,6 @@ def chapters_by_class(class_id):
     else:
         return jsonify({
             "message": "This class has no chapters yet."
-        }), 404
-
-# update chapter progress for user when user clicks 'complete chapter' button
-@app.route("/<int:class_id>/<int:chapter_id>/<int:user_id>")
-def updateprogress(class_id, chapter_id, user_id):
-    currentprogress = CourseProgression.query.filter_by(user_id=user_id, class_id=class_id).first()
-    currentprogress.chapter_id = chapter_id
-    try:
-        db.session.commit()
-        return jsonify({
-            "message": "Ok"
-        }), 500
-    except Exception:
-        return jsonify({
-            "message": "Trouble registering completion, please try again later or contact an administrator."
-        }), 500
-
-# ATTENDING THE CLASS FUNCTION:
-# display all classes that user is currently enrolled in
-@app.route("/user/classes/<int:user_id>")
-def class_by_user(user_id):
-    userclass = CourseProgression.query.filter_by(user_id=user_id, status='ongoing').all()
-    if userclass:
-        return jsonify({
-            "data": [uclass.to_dict() for uclass in userclass]
-        }), 200
-    else:
-        return jsonify({
-            "message": "You are not enrolled in any class at the moment."
-        }), 404
-
-# display the class of the course that the user is enrolled in
-@app.route("/user/<int:user_id>/<int:course_id>/class")
-def classenrolled(user_id, course_id):
-    userclass = CourseProgression.query.filter_by(user_id=user_id, course_id=course_id).filter_by(status = 'ongoing' or 'enrolled').first()
-    class_id = userclass.class_id
-    classinfo = Class.query.filter_by(class_id=class_id).first()
-    if classinfo:
-        return jsonify({
-            "data": classinfo.to_dict()
-        }), 200
-    else:
-        return jsonify({
-            "message": "You are not enrolled in any class for this course."
         }), 404
 
 # display chapters of classes that user has access to
@@ -479,8 +433,26 @@ def user_chapter(class_id, user_id):
             "message": "The class has not started yet."
         }), 404
 
-# QUIZ
-# display quiz
+# update chapter progress for user when user clicks 'complete chapter' button
+@app.route("/complete/<int:class_id>/<int:chapter_id>/<int:user_id>")
+def updateprogress(class_id, chapter_id, user_id):
+    currentprogress = CourseProgression.query.filter_by(user_id=user_id, class_id=class_id).first()
+    currentprogress.chapter_id = chapter_id
+    try:
+        db.session.commit()
+        return jsonify({
+            "message": "Ok"
+        }), 500
+    except Exception:
+        return jsonify({
+            "message": "Trouble registering completion, please try again later or contact an administrator."
+        }), 500
+
+# BASE ROUTES - Chapter end
+# --------------------------------------------------------------------------------------------------------------
+# BASE ROUTES - Quiz start
+
+# display quiz of the chapter
 @app.route("/<int:chapter_id>/quiz")
 def getquiz(chapter_id):
     quizinfo = Quiz.query.filter_by(chapter_id=chapter_id).first()
@@ -493,23 +465,7 @@ def getquiz(chapter_id):
             "message": "There is no quiz at the moment."
         }), 404
 
-# determine if quiz is graded: return T/F
-def quiz_graded(question_id):
-    questioninfo = Question.query.filter_by(question_id=question_id).first()
-    quiz_id = questioninfo.quiz_id
-    quizinfo = Quiz.query.filter_by(quiz_id=quiz_id).first()
-    graded = quizinfo.graded
-    return graded
-
-# retrieve passing mark of the quiz
-def quiz_passingmark(question_id):
-    questioninfo = Question.query.filter_by(question_id=question_id).first()
-    quiz_id = questioninfo.quiz_id
-    quizinfo = Quiz.query.filter_by(quiz_id=quiz_id).first()
-    passing_mark = quizinfo.passing_mark
-    return passing_mark
-
-# TRAINER - get quizzes that trainer can create quiz for
+# trainer - get quizzes that trainer can create quiz for
 @app.route("/trainer/<int:chapter_id>/quiz")
 def getquizfortrainer(chapter_id):
     quizinfo = Quiz.query.filter_by(chapter_id=chapter_id).all()
@@ -522,418 +478,14 @@ def getquizfortrainer(chapter_id):
             "message": "There is no quiz at the moment."
         }), 404
 
+# BASE ROUTES - Quiz end
+# --------------------------------------------------------------------------------------------------------------
+# BASE ROUTES section end
+# --------------------------------------------------------------------------------------------------------------
 
-# create quiz
-@app.route("/createquiz", methods=['POST'])
-def create_quiz():
-    data = request.get_json()
-    if not all(key in data.keys() for
-                key in ('chapter_id', 'duration', 'quizType', 'passing', 'qnsTF', 'qnsMCQ')):
-        return jsonify({
-            "message": "Incorrect JSON object provided."
-        }), 500
+# CORE FEATURE - Enrollment start
 
-    # validate chapter
-    chapter = Chapter.query.filter_by(chapter_id=data['chapter_id']).first()
-    if not chapter:
-        return jsonify({
-            "message": "Chapter does not exist."
-        }), 500
-    # create quiz record
-    quiz = Quiz(
-        chapter_id=data['chapter_id'],
-        duration=data['duration'],
-        graded=data['quizType'],
-        passing_mark=data['passing']
-    )
-    # commit to db
-    try:
-        db.session.add(quiz)
-        db.session.commit()
-        if (createQnTF(quiz.to_dict()["quiz_id"], data['qnsTF']) and createQnMCQ(quiz.to_dict()["quiz_id"], data['qnsMCQ'])):
-            return jsonify(quiz.to_dict()), 201
-
-    except Exception:
-        return jsonify({
-            "message": "Unable to create quiz, please try again later or contact an administrator."
-        }), 500
-
-# create MCQ Qn
-def createQnMCQ(quiz_id, mcq):
-    print(len(mcq))
-    for m in mcq:
-        question = Question(
-            quiz_id=quiz_id,
-            question=m['questions'],
-            marks=m['marks']
-        )
-        print(question)
-        try:
-            db.session.add(question)
-            db.session.commit()
-            createMCQ(question.to_dict()["question_id"])
-            createOptions(question.to_dict()["question_id"], m['options'])
-        except Exception:
-            return jsonify({
-                "message": "Unable to create question, please try again later or contact an administrator."
-            }), 500
-    return True
-
-# put mcq sub class
-def createMCQ(qnTf_id):
-    print(qnTf_id)
-    q = Questionmcq(
-        question_mcq_id=qnTf_id
-    )
-    try:
-        db.session.add(q)
-        db.session.commit()
-        return True
-    except Exception:
-        return jsonify({
-            "message": "Unable to create question, please try again later or contact an administrator."
-        }), 500
-
-
-# create options
-def createOptions(quiz_id, options):
-    for o in options:
-        a = 1
-        if o['corrected'] == '':
-            a = 0
-
-        opt = Options(
-            question_mcq_id=quiz_id,
-            value=o['value'],
-            corrected_value=a
-        )
-        try:
-            db.session.add(opt)
-            db.session.commit()
-        except Exception:
-            return jsonify({
-                "message": "Unable to create question, please try again later or contact an administrator."
-            }), 500
-    return True
-
-# create TF Qn
-def createQnTF(quiz_id, tf):
-    for t in tf:
-        question = Question(
-            quiz_id=quiz_id,
-            question=t['questions'],
-            marks=t['marks']
-        )
-        print(question)
-        try:
-            db.session.add(question)
-            db.session.commit()
-            createTF(question.to_dict()["question_id"], t['value'])
-        except Exception:
-            return jsonify({
-                "message": "Unable to create question, please try again later or contact an administrator."
-            }), 500
-    return True
-
-# put TF answer
-def createTF(qnTf_id, value):
-    print(value)
-    q = Questiontf(
-        question_tf_id=qnTf_id,
-        corrected_value=int(value)
-    )
-    try:
-        db.session.add(q)
-        db.session.commit()
-        # return jsonify(q.to_dict()), 201
-        return True
-    except Exception:
-        return jsonify({
-            "message": "Unable to create question, please try again later or contact an administrator."
-        }), 500
-
-# QUESTION
-# retrieving questions for quiz
-@app.route("/quiz/<int:quiz_id>/questions")
-def getquestions(quiz_id):
-    questions = Question.query.filter_by(quiz_id=quiz_id).all()
-    finaldict = []
-    options = []
-    for question in questions:
-        # find out if the question is tf or mcq
-        question_tf = Questiontf.query.filter_by(question_tf_id=question.question_id).first()
-        if question_tf:
-            options = [True, False]
-            finaldict.append({
-                'question_id': question.question_id,
-                'question': question.question,
-                'options': options
-            })
-            options = []
-        else:
-            question_mcq = Options.query.filter_by(question_mcq_id=question.question_id).all()
-            for option in question_mcq:
-                options.append(option.value)
-            finaldict.append({
-                'question_id': question.question_id,
-                'question': question.question,
-                'options': options
-            })
-            options = []
-
-    if finaldict:
-        return jsonify({
-            "data": finaldict
-        }), 200
-    else:
-        return jsonify({
-            "message": "There was an error retrieving quiz questions, please contact an administrator."
-        }), 404
-
-# submit quiz questions
-@app.route("/quiz/submit", methods=['POST'])
-def submit_quiz():
-    data = request.get_json()
-    marks = 0
-    answerarray = data['answer']
-    # get one question id
-    question_id = answerarray[0]['qnID']
-    # check if quiz is graded
-    graded = quiz_graded(question_id)
-    # if quiz is graded, then grade quiz
-    if graded:
-        # get passing mark of the quiz
-        # passing_mark = quiz_passingmark(question_id)
-        for answer in answerarray:
-            # mark each question
-            questionmarks = markquestion(answer['ans'], answer['qnID'])
-            marks += questionmarks
-        # if marks >= passing_mark:
-            return jsonify({
-                "data": marks
-            }), 200
-    else:
-        return jsonify({
-            "data": -1
-        }), 200
-
-# marks each question individually
-def markquestion(answer, question_id):
-    questioninfo = Question.query.filter_by(question_id=question_id).first()
-    questionmarks = questioninfo.marks
-    correctvalue = retrieveanswer(question_id)
-    if correctvalue == answer:
-        return questionmarks
-    else:
-        return 0
-
-# retrieves the answer of each question
-def retrieveanswer(question_id):
-    # find out if the question is tf or mcq
-    question_tf = Questiontf.query.filter_by(question_tf_id=question_id).first()
-    if question_tf:
-        question_tf = Questiontf.query.filter_by(question_tf_id=question_id).first()
-        answer = question_tf.corrected_value
-    else:
-        question_mcq = Options.query.filter_by(question_mcq_id=question_id, corrected_value = True).first()
-        answer = question_mcq.value
-
-    return answer
-
-# create quiz questions
-@app.route("/quiz/createquestions", methods=['POST'])
-def create_questions():
-    data = request.get_json()
-    if not all(key in data.keys() for
-                key in ('quiz_id', 'question', 'marks')):
-        return jsonify({
-            "message": "Incorrect JSON object provided."
-        }), 500
-    # validate quiz
-    quiz = Quiz.query.filter_by(quiz_id=data['quiz_id']).first()
-    if not quiz:
-        return jsonify({
-            "message": "Invalid quiz details"
-        })
-    # create question record
-    question = Question(
-        quiz_id=data['quiz_id'],
-        question=data['question'],
-        marks=data['marks']
-    )
-    # commit to db
-    try:
-        db.session.add(question)
-        db.session.commit()
-        return jsonify(question.to_dict()), 201
-    except Exception:
-        return jsonify({
-            "message": "Unable to create question, please try again later or contact an administrator."
-        }), 500
-
-
-# create quiz options
-@app.route("/quiz/question/createoptions", methods=['POST'])
-def create_options():
-    data = request.get_json()
-    # options is a list value containing all options
-    if not all(key in data.keys() for
-                key in ('question_id', 'correct_value', 'options')):
-        return jsonify({
-            "message": "Incorrect JSON object provided."
-        }), 500
-    # validate question
-    question = Question.query.filter_by(question_id=data['question_id']).first()
-    if not question:
-        return jsonify({
-            "message": "Invalid question details."
-        })
-    # create question record
-    if len(data['options']) < 3:
-        question = Questiontf(
-            question_tf_id=data['question_id'],
-            corrected_value=data['correct_value']
-        )
-    else:
-        question = Questionmcq(
-            question_mcq_id=data['question_mcq_id'],
-        )
-        for option in data['options']:
-            options = Options(
-                question_mcq_id=data['question_mcq_id'],
-                value=option,
-                corrected_value=data['correct_value']
-            )
-    # commit to db
-    try:
-        db.session.add(question)
-        if options:
-            db.session.add(options)
-        db.session.commit()
-        return jsonify(question.to_dict()), 201
-    except Exception:
-        return jsonify({
-            "message": "Unable to create question options, please try again later or contact an administrator."
-        }), 500
-
-
-# check if user passed quiz and record completion
-@app.route("/complete/<int:user_id>/<int:quiz_id>/<totalmarks>")
-def passCourse(user_id, quiz_id, totalmarks):
-    totalmarks = int(totalmarks)
-    if totalmarks >= 0:
-        # query to retrieve passing_mark of quiz
-        quizinfo = Quiz.query.filter_by(quiz_id=quiz_id).first()
-        passing_mark = quizinfo.passing_mark
-        # query to retrieve class_id
-        chapterinfo = Chapter.query.filter_by(chapter_id=quizinfo.chapter_id).first()
-        class_id = chapterinfo.class_id
-        # record completion
-        usercourse = CourseProgression.query.filter_by(user_id = user_id, class_id = class_id).first()
-        usercourse.completion_date = dt.datetime.today()
-        usercourse.score = totalmarks
-        message = ""
-        # record pass or fail
-        if totalmarks >= passing_mark:
-            usercourse.status = 'completed'
-            message = "You have successfully completed the course, please inform your supervisor."
-        else:
-            usercourse.status = 'failed'
-            message = "You have failed the course, please inform your supervisor."
-
-        try:
-            db.session.commit()
-            return jsonify({
-                "message": message
-            }), 200
-        except Exception:
-            return jsonify({
-                "message": "There was a problem registering your quiz result, please inform an administrator."
-            }), 500
-    return jsonify({
-        "message": "Please click complete chapter to register your chapter completion."
-    }), 200
-
-
-# ENROLL FUNCTION:
-# base checkers:
-# check if user is already enrolled into course
-def enrollhistory(user_id, course_id):
-    # check user's existing course progress
-    progress = CourseProgression.query.filter_by(user_id=user_id, course_id=course_id).all()
-
-    # check that user is not currently in progress or enrolled into the course
-    if len(progress) > 0:
-        for i in progress:
-            if i.course_id == course_id:
-                if i.status == "ongoing" or i.status == "enrolled":
-                    return False
-    # else:
-    return True
-
-# check if user has already completed the course
-def completionhistory(user_id, course_id):
-    # check user's existing course progress
-    progress = CourseProgression.query.filter_by(user_id=user_id, course_id=course_id).all()
-    # check that user has not already completed the course
-    if len(progress) > 0:
-        for i in progress:
-            if i.course_id == course_id:
-                if i.status == "completed":
-                    return False
-    # else:
-    return True
-
-# check if class is open for enrollment
-def openclass(class_id):
-    classinfo = Class.query.filter_by(class_id=class_id).first()
-    if dt.datetime.today() >= classinfo.start_enrollment and dt.datetime.today() <= classinfo.end_enrollment:
-        return True
-    else:
-        return False
-
-# check if class is full
-def checkcapacity(class_id):
-    classinfo = Class.query.filter_by(class_id=class_id).first()
-    capacity = classinfo.capacity
-    enrolled = CourseProgression.query.filter_by(class_id=class_id, status="enrolled").all()
-    if len(enrolled) >= capacity:
-        return False
-    else:
-        return True
-
-# draw list of course prereqs
-def courseprereqs(course_id):
-    prereqs = Prerequisites.query.filter_by(course_id=course_id).all()
-    prereqlist = []
-    if len(prereqs) > 0:
-        for i in prereqs:
-            prereqlist.append(i.prereq_course_id)
-    return prereqlist
-# draw list of completed courses of user
-def completedcourses(user_id):
-    completed = CourseProgression.query.filter_by(user_id=user_id, status="completed").all()
-    completedlist = []
-    if len(completed) > 0:
-        for i in completed:
-            completedlist.append(i.course_id)
-    return completedlist
-# check if user meets prereq
-def prereqmet(course_id, user_id):
-    prereqlist = courseprereqs(course_id)
-    completedlist = completedcourses(user_id)
-    if len(prereqlist) != 0:
-        if len(prereqlist) > len(completedlist):
-            return False
-        else:
-            for prereq in prereqlist:
-                if prereq not in completedlist:
-                    return False
-    # else:
-    return True
-
-
-# USER SELF ENROLL - enroll user into class
+# learner - self-enroll into class
 @app.route("/learner/<int:course_id>/<int:class_id>/<int:user_id>")
 def self_enroll(course_id, class_id, user_id):
     if enrollhistory(user_id, course_id):
@@ -983,13 +535,8 @@ def self_enroll(course_id, class_id, user_id):
             "message": "You are already enrolled into the course."
         }), 200
 
-# datetime today
-@app.route("/datetimetoday")
-def datetime():
-    return dt.datetime.today()
 
-
-# HR ENROLL ENGINEER - enroll user into class
+# hr - enroll learner into class
 @app.route("/admin/<int:course_id>/<int:class_id>/<int:user_id>")
 def enroll(course_id, class_id, user_id):
     if enrollhistory(user_id, course_id):
@@ -1039,6 +586,359 @@ def enroll(course_id, class_id, user_id):
             "message": "Learner has already enrolled into the course."
         }), 200
 
+# ------------------------------------------------------------
+# Enroll - base checkers start
+
+# check if user is already enrolled into course
+def enrollhistory(user_id, course_id):
+    # check user's existing course progress
+    progress = CourseProgression.query.filter_by(user_id=user_id, course_id=course_id).all()
+
+    # check that user is not currently in progress or enrolled into the course
+    if len(progress) > 0:
+        for i in progress:
+            if i.course_id == course_id:
+                if i.status == "ongoing" or i.status == "enrolled":
+                    return False
+    return True
+
+# check if user has already completed the course
+def completionhistory(user_id, course_id):
+    # check user's existing course progress
+    progress = CourseProgression.query.filter_by(user_id=user_id, course_id=course_id).all()
+    # check that user has not already completed the course
+    if len(progress) > 0:
+        for i in progress:
+            if i.course_id == course_id:
+                if i.status == "completed":
+                    return False
+    return True
+
+# check if class is open for enrollment
+def openclass(class_id):
+    classinfo = Class.query.filter_by(class_id=class_id).first()
+    if dt.datetime.today() >= classinfo.start_enrollment and dt.datetime.today() <= classinfo.end_enrollment:
+        return True
+    else:
+        return False
+
+# check if class is full
+def checkcapacity(class_id):
+    classinfo = Class.query.filter_by(class_id=class_id).first()
+    capacity = classinfo.capacity
+    enrolled = CourseProgression.query.filter_by(class_id=class_id, status="enrolled").all()
+    if len(enrolled) >= capacity:
+        return False
+    else:
+        return True
+
+# draw list of course prereqs
+def courseprereqs(course_id):
+    prereqs = Prerequisites.query.filter_by(course_id=course_id).all()
+    prereqlist = []
+    if len(prereqs) > 0:
+        for i in prereqs:
+            prereqlist.append(i.prereq_course_id)
+    return prereqlist
+
+# draw list of completed courses of user
+def completedcourses(user_id):
+    completed = CourseProgression.query.filter_by(user_id=user_id, status="completed").all()
+    completedlist = []
+    if len(completed) > 0:
+        for i in completed:
+            completedlist.append(i.course_id)
+    return completedlist
+
+# check if user meets prereq
+def prereqmet(course_id, user_id):
+    prereqlist = courseprereqs(course_id)
+    completedlist = completedcourses(user_id)
+    if len(prereqlist) != 0:
+        if len(prereqlist) > len(completedlist):
+            return False
+        else:
+            for prereq in prereqlist:
+                if prereq not in completedlist:
+                    return False
+    return True
+
+# Enroll - base checkers end
+# ------------------------------------------------------------
+# CORE FEATURE - Enrollment end
+# --------------------------------------------------------------------------------------------------------------
+
+# CORE FEATURE - Create Quiz start
+
+# trainer - create quiz
+@app.route("/createquiz", methods=['POST'])
+def create_quiz():
+    data = request.get_json()
+    if not all(key in data.keys() for
+                key in ('chapter_id', 'duration', 'quizType', 'passing', 'qnsTF', 'qnsMCQ')):
+        return jsonify({
+            "message": "Incorrect JSON object provided."
+        }), 500
+
+    # validate chapter
+    chapter = Chapter.query.filter_by(chapter_id=data['chapter_id']).first()
+    if not chapter:
+        return jsonify({
+            "message": "Chapter does not exist."
+        }), 500
+    # create quiz record
+    quiz = Quiz(
+        chapter_id=data['chapter_id'],
+        duration=data['duration'],
+        graded=data['quizType'],
+        passing_mark=data['passing']
+    )
+    # commit to db
+    try:
+        db.session.add(quiz)
+        db.session.commit()
+        if (createQnTF(quiz.to_dict()["quiz_id"], data['qnsTF']) and createQnMCQ(quiz.to_dict()["quiz_id"], data['qnsMCQ'])):
+            return jsonify(quiz.to_dict()), 201
+
+    except Exception:
+        return jsonify({
+            "message": "Unable to create quiz, please try again later or contact an administrator."
+        }), 500
+
+# ------------------------------------------------------------
+# Create Quiz - base functions start
+
+# create MCQ Qn
+def createQnMCQ(quiz_id, mcq):
+    print(len(mcq))
+    for m in mcq:
+        question = Question(
+            quiz_id=quiz_id,
+            question=m['questions'],
+            marks=m['marks']
+        )
+        print(question)
+        try:
+            db.session.add(question)
+            db.session.commit()
+            createMCQ(question.to_dict()["question_id"])
+            createOptions(question.to_dict()["question_id"], m['options'])
+        except Exception:
+            return jsonify({
+                "message": "Unable to create question, please try again later or contact an administrator."
+            }), 500
+    return True
+
+# put mcq sub class
+def createMCQ(qnTf_id):
+    print(qnTf_id)
+    q = Questionmcq(
+        question_mcq_id=qnTf_id
+    )
+    try:
+        db.session.add(q)
+        db.session.commit()
+        return True
+    except Exception:
+        return jsonify({
+            "message": "Unable to create question, please try again later or contact an administrator."
+        }), 500
+
+
+# create options
+def createOptions(quiz_id, options):
+    for o in options:
+        print(o)
+        a = 1
+        if o['corrected'] == '':
+            a = 0
+
+        opt = Options(
+            question_mcq_id=quiz_id,
+            value=o['value'],
+            corrected_value=a
+        )
+        print(opt)
+        try:
+            db.session.add(opt)
+            db.session.commit()
+        except Exception:
+            return jsonify({
+                "message": "Unable to create question, please try again later or contact an administrator."
+            }), 500
+    return True
+
+# create TF Qn
+def createQnTF(quiz_id, tf):
+    for t in tf:
+        question = Question(
+            quiz_id = quiz_id,
+            question = t['questions'],
+            marks = t['marks']
+        )
+        print(question)
+        try:
+            db.session.add(question)
+            db.session.commit()
+            createTF(question.to_dict()["question_id"], t['value'])
+        except Exception:
+            return jsonify({
+                "message": "Unable to create question, please try again later or contact an administrator."
+            }), 500
+    return True
+
+# put TF answer
+def createTF(qnTf_id, value):
+    print(value)
+    q = Questiontf(
+        question_tf_id=qnTf_id,
+        corrected_value=int(value)
+    )
+    try:
+        db.session.add(q)
+        db.session.commit()
+        return True
+    except Exception:
+        return jsonify({
+            "message": "Unable to create question, please try again later or contact an administrator."
+        }), 500
+
+# Create Quiz - base functions end
+# ------------------------------------------------------------
+# CORE FEATURE - Create Quiz end
+# --------------------------------------------------------------------------------------------------------------
+
+# CORE FEATURE - Take Quiz start
+
+# retrieving questions for quiz
+@app.route("/quiz/<int:quiz_id>/questions")
+def getquestions(quiz_id):
+    questions = Question.query.filter_by(quiz_id=quiz_id).all()
+    finaldict = []
+    options = []
+    for question in questions:
+        # find out if the question is tf or mcq
+        question_tf = Questiontf.query.filter_by(question_tf_id=question.question_id).first()
+        if question_tf:
+            options = [True, False]
+            finaldict.append({
+                'question_id': question.question_id,
+                'question': question.question,
+                'options': options
+            })
+            options = []
+        else:
+            question_mcq = Options.query.filter_by(question_mcq_id=question.question_id).all()
+            for option in question_mcq:
+                options.append(option.value)
+            finaldict.append({
+                'question_id': question.question_id,
+                'question': question.question,
+                'options': options
+            })
+            options = []
+
+# submit quiz and return total marks
+@app.route("/quiz/submit", methods=['POST'])
+def submit_quiz():
+    data = request.get_json()
+    marks = 0
+    answerarray = data['answer']
+    # get one question id
+    question_id = answerarray[0]['qnID']
+    # check if quiz is graded
+    graded = quiz_graded(question_id)
+    # if quiz is graded, then grade quiz
+    if graded:
+        for answer in answerarray:
+            # mark each question
+            questionmarks = markquestion(answer['ans'], answer['qnID'])
+            marks += questionmarks
+            return jsonify({
+                "data": marks
+            }), 200
+    else:
+        return jsonify({
+            "data": -1
+        }), 200
+
+# check if user passed quiz and record completion
+@app.route("/complete/<int:user_id>/<int:quiz_id>/<totalmarks>")
+def passCourse(user_id, quiz_id, totalmarks):
+    totalmarks = int(totalmarks)
+    if totalmarks >= 0:
+        # query to retrieve passing_mark of quiz
+        quizinfo = Quiz.query.filter_by(quiz_id=quiz_id).first()
+        passing_mark = quizinfo.passing_mark
+        # query to retrieve class_id
+        chapterinfo = Chapter.query.filter_by(chapter_id=quizinfo.chapter_id).first()
+        class_id = chapterinfo.class_id
+        # record completion
+        usercourse = CourseProgression.query.filter_by(user_id = user_id, class_id = class_id).first()
+        usercourse.completion_date = dt.datetime.today()
+        usercourse.score = totalmarks
+        message = ""
+        # record pass or fail
+        if totalmarks >= passing_mark:
+            usercourse.status = 'completed'
+            message = "You have successfully completed the course, please inform your supervisor."
+        else:
+            usercourse.status = 'failed'
+            message = "You have failed the course, please inform your supervisor."
+
+        try:
+            db.session.commit()
+            return jsonify({
+                "message": message
+            }), 200
+        except Exception:
+            return jsonify({
+                "message": "There was a problem registering your quiz result, please inform an administrator."
+            }), 500
+    return jsonify({
+        "message": "Please click complete chapter to register your chapter completion."
+    }), 200
+
+# ------------------------------------------------------------
+# Take Quiz - base functions start
+
+# determine if quiz is graded: return T/F
+def quiz_graded(question_id):
+    questioninfo = Question.query.filter_by(question_id=question_id).first()
+    quiz_id = questioninfo.quiz_id
+    quizinfo = Quiz.query.filter_by(quiz_id=quiz_id).first()
+    graded = quizinfo.graded
+    return graded
+
+# marks each question individually
+def markquestion(answer, question_id):
+    questioninfo = Question.query.filter_by(question_id=question_id).first()
+    questionmarks = questioninfo.marks
+    correctvalue = retrieveanswer(question_id)
+    if correctvalue == answer:
+        return questionmarks
+    else:
+        return 0
+
+# retrieves the answer of each question
+def retrieveanswer(question_id):
+    # find out if the question is tf or mcq
+    question_tf = Questiontf.query.filter_by(question_tf_id=question_id).first()
+    if question_tf:
+        question_tf = Questiontf.query.filter_by(question_tf_id=question_id).first()
+        answer = question_tf.corrected_value
+    else:
+        question_mcq = Options.query.filter_by(question_mcq_id=question_id, corrected_value = True).first()
+        answer = question_mcq.value
+    return answer
+
+# Take Quiz - base functions end
+# ------------------------------------------------------------
+# CORE FEATURE - Take Quiz end
+# --------------------------------------------------------------------------------------------------------------
+
+# APPLICATION ROUTINGS section end
+#################################################################################################################
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
