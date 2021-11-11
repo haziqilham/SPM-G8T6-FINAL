@@ -5,6 +5,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import datetime as dt
 
+# BASE connectors 
+# --------------------------------------------------------------------------------------------------------------
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://admin:ilovespm88@spm-database.c3izrtomcbks.us-east-2.rds.amazonaws.com:3306/spm_database'
@@ -14,8 +16,13 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_size': 100,
                                            'pool_recycle': 280}
 db = SQLAlchemy(app)
 CORS(app)
+#---------------------------------------------------------------------------------------------------------------
 
-#JunHong
+#CLASS initialisation section start
+#---------------------------------------------------------------------------------------------------------------
+#CLASS - User
+#Person-in-charge: Jun Hong
+
 class User(db.Model):
     __tablename__ = 'user'
 
@@ -32,8 +39,10 @@ class User(db.Model):
         for column in columns:
             result[column] = getattr(self, column)
         return result
+#--------------------------------------------------------
+#CLASS - Course
+#Person-in-charge: Marcus
 
-#Marcus
 class Course(db.Model):
     __tablename__ = 'course'
 
@@ -61,8 +70,10 @@ class Prerequisites(db.Model):
         for column in columns:
             result[column] = getattr(self, column)
         return result
+#--------------------------------------------------------
+#CLASS - Class
+#Person-in-charge: Haziq
 
-#Haziq
 class Class(db.Model):
     __tablename__ = 'class'
 
@@ -82,8 +93,10 @@ class Class(db.Model):
         for column in columns:
             result[column] = getattr(self, column)
         return result
+#--------------------------------------------------------
+#CLASS - Chapter
+#Person-in-charge: Claudia
 
-#Claudia
 class Chapter(db.Model):
     __tablename__ = 'chapter'
 
@@ -99,8 +112,10 @@ class Chapter(db.Model):
         for column in columns:
             result[column] = getattr(self, column)
         return result
+#--------------------------------------------------------
+#CLASS - Quiz
+#Person-in-charge: Xinyi
 
-#Xinyi
 class Quiz(db.Model):
     __tablename__ = 'quiz'
 
@@ -171,6 +186,9 @@ class Options(db.Model):
         for column in columns:
             result[column] = getattr(self, column)
         return result
+#--------------------------------------------------------
+#CLASS - CourseProgression
+#Person-in-charge: Xinyi
 
 class CourseProgression(db.Model):
     __tablename__ = 'course_progression'
@@ -190,8 +208,13 @@ class CourseProgression(db.Model):
         for column in columns:
             result[column] = getattr(self, column)
         return result
-    
+#--------------------------------------------------------
 db.create_all()
+#---------------------------------------------------------------------------------------------------------------
+#CLASS initialisation section end
+
+
+
 
 #USER
 #display all users
