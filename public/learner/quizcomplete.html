@@ -84,8 +84,8 @@
             <p>Graded: {{ quizinfo.graded }}</p>
         </div>
         <hr>
-        <button type="button" class="btn btn-primary" v-on:click="nextPage(quizinfo.quiz_id)">
-            Start Quiz
+        <button type="button" class="btn btn-primary" v-on:click="nextPage()">
+            Complete Chapter
         </button>
         <!--
         <button type="button" class="btn btn-primary" v-on:click="sessionData(quizinfo.quiz_id, quizinfo.graded); nextPage(quizinfo.quiz_id)">Start Quiz</button>
@@ -95,9 +95,16 @@
     <script>
         let url = new URL(window.location.href);
         let complete = url.searchParams.get("complete");
+        let chid = url.searchParams.get("chid");
+        let cid = url.searchParams.get("courid");
+        let uid = url.searchParams.get("uid");
+        let clasid = url.searchParams.get("clasid");
+        let quizid = url.searchParams.get("quizid");
 
         var get_quiz_url = "http://127.0.0.1:5000/" + chid + "/quiz";
         //app.route("/quiz/<int:quiz_id>/questions")
+
+        var eurl = "http://127.0.0.1:5000/" + clasid + "/" + chid + "/" + uid
         var vm = new Vue({
             el: '#main',
             data: {
@@ -126,8 +133,21 @@
                     quizgrade = sessionStorage.setItem("quizgrade", quizgrade)
                 },
 
-                nextPage: function(quizid) {
-                    location.href = './takeQuiz.html?quizid=' + quizid;
+                nextPage: function() {
+                    const response =
+                        fetch(eurl)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(response);
+                            if (data.code === 404) {
+                                this.message = data.message
+                            } else {
+                                //this.quizinfo = data.data
+                                //console.log(data.data)
+                                //console.log(this.quizinfo)
+                                location.href = './viewClass.html?uid=' + uid + '&cid=' + cid
+                            }
+                        })
                 }
             },
             created: function() {
