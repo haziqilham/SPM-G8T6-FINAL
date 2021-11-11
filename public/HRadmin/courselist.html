@@ -111,7 +111,7 @@
     </div>
 
     <script>
-        var get_url = "http://127.0.0.1:5000/learners";
+        var get_url = "http://18.223.94.188:5000/learners";
 
         const vm = new Vue({
             el: '#users',
@@ -143,8 +143,8 @@
                 },
                 getEnrolledCourse: function(e) {
                     param = e.target.value;
-                    var get_enrolled_url = "http://127.0.0.1:5000/courses/users/" + param;
-                    var get_not_enrolled_url = "http://127.0.0.1:5000/not/courses/users/" + param;
+                    var get_enrolled_url = "http://18.223.94.188:5000/courses/users/" + param;
+                    var get_not_enrolled_url = "http://18.223.94.188:5000/not/courses/users/" + param;
 
                     const response =
                         fetch(get_enrolled_url)

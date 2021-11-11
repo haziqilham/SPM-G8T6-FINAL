@@ -127,11 +127,11 @@
         //let clasid = document.getElementById(classid).innerHTML
 
         // get course by course id
-        var get_c_url = "http://127.0.0.1:5000/courses/" + cid;
+        var get_c_url = "http://18.223.94.188:5000/courses/" + cid;
         // get user by user id
-        var get_n_url = "http://127.0.0.1:5000/users/" + uid;
+        var get_n_url = "http://18.223.94.188:5000/users/" + uid;
 
-        var get_class_url = "http://127.0.0.1:5000/user/" + uid + "/" + cid + "/class"
+        var get_class_url = "http://18.223.94.188:5000/user/" + uid + "/" + cid + "/class"
 
         var vm = new Vue({
             el: '#main',
@@ -200,7 +200,7 @@
 
                 getChapters: function() {
                     const response =
-                        fetch("http://127.0.0.1:5000/" + this.clasid + "/" + uid + "/chapters") //sessionStorage.getItem("userid") + "/chapters")
+                        fetch("http://18.223.94.188:5000/" + this.clasid + "/" + uid + "/chapters") //sessionStorage.getItem("userid") + "/chapters")
                         .then(response => response.json())
                         .then(data => {
                             console.log(response);
