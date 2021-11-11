@@ -434,7 +434,7 @@ def user_chapter(class_id, user_id):
         }), 404
 
 # update chapter progress for user when user clicks 'complete chapter' button
-@app.route("/complete/<int:class_id>/<int:chapter_id>/<int:user_id>")
+@app.route("/<int:class_id>/<int:chapter_id>/<int:user_id>")
 def updateprogress(class_id, chapter_id, user_id):
     currentprogress = CourseProgression.query.filter_by(user_id=user_id, class_id=class_id).first()
     currentprogress.chapter_id = chapter_id
