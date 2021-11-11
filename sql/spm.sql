@@ -163,12 +163,12 @@ CREATE table IF NOT EXISTS `course`(
 --
 
 INSERT INTO `course` (`course_id`, `course_name`, `archive_date`) VALUES
-(1, 'IS111 Programming', NULL),
-(2, 'IS212 SPM', NULL),
-(3, 'CS440 Cybersec', NULL),
-(4, 'E101 Engineering', NULL),
+(1, 'E111 Intro to Fujifilm Printers', NULL),
+(2, 'E112 Intro to FujiXerox Printers', NULL),
+(3, 'E113 Intro to Brother Printers', NULL),
+(4, 'E101 Printers Engineering', NULL),
 (5, 'E202 Printing Solutions', '2021-09-20 00:00:00'),
-(6, 'IS444 DBEA', '2021-09-15 00:00:00');
+(6, 'E203 Servicing Management', '2021-09-15 00:00:00');
 
 -- --------------------------------------------------------
 
