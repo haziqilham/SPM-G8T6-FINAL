@@ -94,7 +94,11 @@
 
     <script>
         let url = new URL(window.location.href);
+
         let chid = url.searchParams.get("chid");
+        let cid = url.searchParams.get("courid");
+        let uid = url.searchParams.get("uid");
+        let clasid = url.searchParams.get("clasid");
 
         var get_quiz_url = "http://127.0.0.1:5000/" + chid + "/quiz";
         //app.route("/quiz/<int:quiz_id>/questions")
@@ -127,7 +131,7 @@
                 },
 
                 nextPage: function(quizid) {
-                    location.href = './takeQuiz.html?quizid=' + quizid;
+                    location.href = './takeQuiz.html?quizid=' + quizid + '&chid=' + chid + '&uid=' + uid + '&courid=' + cid + '&clasid=' + clasid;
                 }
             },
             created: function() {
