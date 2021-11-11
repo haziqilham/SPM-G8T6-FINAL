@@ -402,6 +402,9 @@ def updateprogress(class_id, chapter_id, user_id):
     currentprogress.chapter_id = chapter_id
     try:
         db.session.commit()
+        return jsonify({
+            "message": "Ok"
+        }), 500
     except Exception:
         return jsonify({
             "message": "Trouble registering completion, please try again later or contact an administrator."
