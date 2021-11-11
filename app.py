@@ -704,22 +704,22 @@ def submit_quiz():
     #if quiz is graded, then grade quiz
     if graded:
         #get passing mark of the quiz
-        passing_mark = quiz_passingmark(question_id)
+        #passing_mark = quiz_passingmark(question_id)
         for answer in answerarray:
             #mark each question
             questionmarks = markquestion(answer['ans'], answer['qnID'])
             marks += questionmarks
-        if marks >= passing_mark:
+        #if marks >= passing_mark:
             return jsonify({
-                "data": 1
+                "data": marks
             }), 200
-        else:
-            return jsonify({
-                "data": 0
-            }), 200
+        #else:
+            #return jsonify({
+                #"data": marks
+            #}), 200
     else:
         return jsonify({
-            "data": 2
+            "data": -1
         }), 200
 
 #marks each question individually
@@ -823,35 +823,41 @@ def create_options():
 
 
 #check if user passed quiz and record completion
-@app.route("/complete/<int:user_id>/<int:quiz_id>/<int:totalmarks>")
+@app.route("/complete/<int:user_id>/<int:quiz_id>/<totalmarks>")
 def passCourse(user_id, quiz_id, totalmarks):
-    #query to retrieve passing_mark of quiz
-    quizinfo = Quiz.query.filter_by(quiz_id=quiz_id).first()
-    passing_mark = quizinfo.passing_mark
-    #query to retrieve class_id
-    chapterinfo = Chapter.query.filter_by(chapter_id=quizinfo.chapter_id).first()
-    class_id = chapterinfo.class_id
-    #record completion
-    usercourse = CourseProgression.query.filter_by(user_id = user_id, class_id = class_id).first()
-    usercourse.completion_date = dt.datetime.today()
-    usercourse.score = totalmarks
-    message = ""
-    #record pass or fail
-    if totalmarks >= passing_mark:
-        usercourse.status = 'completed'
-        message = "You have successfully completed the course, please inform your supervisor."
-    else:
-        usercourse.status = 'failed'
-        message = "You have failed the course, please inform your supervisor."
-    try:
-        db.session.commit()
-        return jsonify({
-            "message": message
-        }), 200
-    except Exception:
-        return jsonify({
-            "message": "There was a problem registering your quiz result, please inform an administrator."
-        }), 500
+    totalmarks = int(totalmarks)
+    if totalmarks >= 0:
+        #query to retrieve passing_mark of quiz
+        quizinfo = Quiz.query.filter_by(quiz_id=quiz_id).first()
+        passing_mark = quizinfo.passing_mark
+        #query to retrieve class_id
+        chapterinfo = Chapter.query.filter_by(chapter_id=quizinfo.chapter_id).first()
+        class_id = chapterinfo.class_id
+        #record completion
+        usercourse = CourseProgression.query.filter_by(user_id = user_id, class_id = class_id).first()
+        usercourse.completion_date = dt.datetime.today()
+        usercourse.score = totalmarks
+        message = ""
+        #record pass or fail
+        if totalmarks >= passing_mark:
+            usercourse.status = 'completed'
+            message = "You have successfully completed the course, please inform your supervisor."
+        else:
+            usercourse.status = 'failed'
+            message = "You have failed the course, please inform your supervisor."
+
+        try:
+            db.session.commit()
+            return jsonify({
+                "message": message
+            }), 200
+        except Exception:
+            return jsonify({
+                "message": "There was a problem registering your quiz result, please inform an administrator."
+            }), 500
+    return jsonify({
+        "message": "Please click complete chapter to register your chapter completion."
+    }), 200
 
 
 #ENROLL FUNCTION:
