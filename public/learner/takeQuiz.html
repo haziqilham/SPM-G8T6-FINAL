@@ -111,7 +111,12 @@
         //quizid = sessionStorage.getItem("quizid ")
         // get course by course id
         let url = new URL(window.location.href);
+
         let quizid = url.searchParams.get("quizid");
+        let chid = url.searchParams.get("chid");
+        let cid = url.searchParams.get("courid");
+        let uid = url.searchParams.get("uid");
+        let clasid = url.searchParams.get("clasid");
 
         var get_qns_url = "http://127.0.0.1:5000/quiz/" + quizid + "/questions"
 
@@ -155,6 +160,7 @@
                 submitForm: function() {
                     event.preventDefault();
                     //console.log(this.answers)
+                    console.log(quizid)
                     axios.post('http://127.0.0.1:5000/quiz/submit', {
                             answer: this.answers
                         })
@@ -163,24 +169,25 @@
                         //    window.location.replace("./viewQuiz.html ");
                         //    return false;
                         //})
-                        .then(data =>{
+                        .then(data => {
                             this.value = data.data.data
-                            //console.log(data)
-                            //console.log(data.data.data)
+                                //console.log(data.data)
+                                //console.log(data.data.data)
                             sessionStorage.setItem("quizcomplete", this.value)
-                            //console.log(sessionStorage.getItem("quizanswers"))
+                                //console.log(sessionStorage.getItem("quizanswers"))
                         })
                         //.catch(error => {
-                            //this.error = error.response.data.message
+                        //this.error = error.response.data.message
                         //});
-                        .then(response =>{
-                            window.location.replace('./quizcomplete.html?complete=' + this.value);
+                        .then(response => {
+                            window.location.replace('./quizcomplete.html?complete=' + this.value + '&chid=' + chid + '&uid=' + uid + '&courid=' + cid + '&clasid=' + clasid + '&quizid=' + quizid);
                             return false;
                         })
                 },
                 nextPage: function(value) {
                     location.href = './quizcomplete.html?complete=' + value;
-                }},
+                }
+            },
             created: function() {
                 // on Vue instance created, load the created list
                 this.getQuestions();
